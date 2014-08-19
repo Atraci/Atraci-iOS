@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "__58-[SearchResultViewController getThumbImage:andArtistCell:]_block_invoke:SearchResultViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "indexRow">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__44-[FirstViewController request:withSelector:]_block_invoke:FirstViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "url">
+            </PersistentString>
+            <PersistentString
+               value = "selector">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[SearchResultViewController tableView:cellForRowAtIndexPath:]:SearchResultViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(NSInteger)[indexPath row]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[FirstViewController request:]:FirstViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "results">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
