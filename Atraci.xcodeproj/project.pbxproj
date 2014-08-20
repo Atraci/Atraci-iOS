@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9DC3D76919A505EF00DFE919 /* Atraci-Prefix.pch in Sources */ = {isa = PBXBuildFile; fileRef = 9DC3D76819A505EF00DFE919 /* Atraci-Prefix.pch */; };
 		A408120419A336E100A98688 /* QueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A40811FF19A336E100A98688 /* QueueViewController.m */; };
 		A408120519A336E100A98688 /* SearchResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A408120119A336E100A98688 /* SearchResultViewController.m */; };
 		A408120619A336E100A98688 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A408120319A336E100A98688 /* SettingsTableViewController.m */; };
@@ -71,6 +72,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9DC3D76819A505EF00DFE919 /* Atraci-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Atraci-Prefix.pch"; sourceTree = "<group>"; };
 		A40811FE19A336E100A98688 /* QueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueViewController.h; sourceTree = "<group>"; };
 		A40811FF19A336E100A98688 /* QueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueueViewController.m; sourceTree = "<group>"; };
 		A408120019A336E100A98688 /* SearchResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultViewController.h; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 			children = (
 				A4EE4772195F9B20002C3AC8 /* Info.plist */,
 				A4EE4773195F9B20002C3AC8 /* main.m */,
+				9DC3D76819A505EF00DFE919 /* Atraci-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -425,6 +428,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DC3D76919A505EF00DFE919 /* Atraci-Prefix.pch in Sources */,
 				A4513EB119A3350300E84374 /* YTPlayerView.m in Sources */,
 				A4EE4777195F9B20002C3AC8 /* AppDelegate.m in Sources */,
 				A4EE4774195F9B20002C3AC8 /* main.m in Sources */,
@@ -569,6 +573,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PREFIX_HEADER = "Atraci/Atraci-Prefix.pch";
 				INFOPLIST_FILE = Atraci/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -582,6 +587,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PREFIX_HEADER = "Atraci/Atraci-Prefix.pch";
 				INFOPLIST_FILE = Atraci/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

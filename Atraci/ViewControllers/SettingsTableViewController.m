@@ -38,12 +38,18 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 2;
+    return 3;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ([[tableView cellForRowAtIndexPath:indexPath] tag] == 1) {
-       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/Atraci/Atraci"]];
+    NSInteger currentTag = [[tableView cellForRowAtIndexPath:indexPath] tag];
+    switch (currentTag) {
+        case 1:
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:ATRACI_GITHUB_LINK]];
+            break;
+        case 2:
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:ATRACI_DONATION_LINK]];
+            break;
     }
 }
 
