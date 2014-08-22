@@ -1,0 +1,10 @@
+//
+//  Atraci-Prefix.pch
+//  Atraci
+//
+//  Created by EragonJ on 2014/8/21.
+//  Copyright (c) 2014年 Atraci. All rights reserved.
+//
+
+#define ATRACI_GITHUB_LINK @"https://github.com/Atraci/Atraci"
+#define ATRACI_DONATION_LINK @"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q9SDPBK7VMQ8N"
