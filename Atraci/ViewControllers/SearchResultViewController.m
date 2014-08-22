@@ -331,7 +331,7 @@
     
     NSString* encoded = [searchText stringByAddingPercentEscapesUsingEncoding:
                          NSASCIIStringEncoding];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",@"http://api.getatraci.net/api/search/",encoded]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", ATRACI_API_LINK, encoded]];
     
     [request request:url withSelector:@selector(reloadMainTableWithData:)];
     [SVProgressHUD show];
