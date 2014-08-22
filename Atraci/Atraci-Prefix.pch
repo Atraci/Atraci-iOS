@@ -8,3 +8,4 @@
 
 #define ATRACI_GITHUB_LINK @"https://github.com/Atraci/Atraci"
 #define ATRACI_DONATION_LINK @"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q9SDPBK7VMQ8N"
+#define ATRACI_API_LINK @"http://api.getatraci.net/search/"
