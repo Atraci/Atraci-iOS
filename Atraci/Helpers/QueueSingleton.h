@@ -11,5 +11,6 @@
 @interface QueueSingleton : NSObject
 
 @property(strong ,nonatomic) NSMutableArray *queueSongs;
+@property int currentSongIndex;
 + (id)sharedInstance;
 @end

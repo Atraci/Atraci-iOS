@@ -12,15 +12,16 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 
-@interface QueueViewController : UIViewController <YTPlayerViewDelegate, RequestClassDelegate, AVAudioPlayerDelegate>
+@interface QueueViewController : UIViewController <YTPlayerViewDelegate, RequestClassDelegate, AVAudioPlayerDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     UITabBarItem *tabBarItem;
 }
 
 @property (nonatomic, assign) BOOL isPlaying;
 @property(strong ,nonatomic) RequestClass *request;
+@property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property(nonatomic, strong) IBOutlet YTPlayerView *playerView;
 
-- (void)loadSongs;
+- (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition;
 @end
 

@@ -9,7 +9,7 @@
 #import "QueueSingleton.h"
 
 @implementation QueueSingleton
-@synthesize queueSongs;
+@synthesize queueSongs, currentSongIndex;
 
 static QueueSingleton *sharedInstance = nil;
 
@@ -30,6 +30,7 @@ static QueueSingleton *sharedInstance = nil;
     if (self) {
         // Work your initialising magic here as you normally would
         queueSongs = [[NSMutableArray alloc] init];
+        currentSongIndex = 0;
     }
     
     return self;

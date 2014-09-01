@@ -20,6 +20,7 @@
     NSArray *autoCompletionSearchResults, *searchResults;
     NSMutableArray *artists, *albums, *tracks, *thumbnails;
     NSMutableDictionary *searchTableSections;
+    NSString *lastSearchBarText;
 }
 
 @synthesize request;
@@ -28,6 +29,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    lastSearchBarText = [[NSString alloc] init];
     thumbnails = [[NSMutableArray alloc] init];
     request = [[RequestClass alloc] init];
     request.delegate = self;
@@ -73,13 +75,19 @@
     return YES;
 }
 
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+
+}
+
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-
+    searchBar.text = lastSearchBarText;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
+    lastSearchBarText = searchText;
+    
     [self.searchTimer invalidate];
     self.searchTimer = nil; // this releases the retained property implicitly
     self.searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(OnTextChange:) userInfo:searchText repeats:NO];
@@ -118,23 +126,6 @@
     else{
         count = 3;
     }
-    
-//    searchTableSections = [[NSMutableDictionary alloc] init];
-//    
-//    if (artists.count > 0) {
-//        NSArray *sectionProp = [NSArray arrayWithObjects:artists,@"Artists", nil];
-//        [searchTableSections setObject:sectionProp forKey:[NSNumber numberWithInteger:count]];
-//        count += 1;
-//    }
-//    if (albums.count > 0) {
-//        NSArray *sectionProp = [NSArray arrayWithObjects:albums,@"Albums", nil];
-//        [searchTableSections setObject:sectionProp forKey:[NSNumber numberWithInteger:count]];
-//        count += 1;
-//    }
-//    if (tracks.count > 0) {
-//        NSArray *sectionProp = [NSArray arrayWithObjects:tracks,@"Songs", nil];
-//        [searchTableSections setObject:sectionProp forKey:[NSNumber numberWithInteger:count]];
-//    }
     
     return count;
 }
@@ -292,16 +283,9 @@
     NSString *value = @"";
     
     if (tableView == self.mainTable) {
-        NSMutableDictionary *searchResultsDic;
-        searchResultsDic = [self loadLockScreenAlbumArt:indexPath];
-        
-        QueueSingleton *sharedSingleton = [QueueSingleton sharedInstance];
-        [sharedSingleton.queueSongs removeAllObjects];
-        [sharedSingleton.queueSongs addObject:searchResultsDic];
-        
-        [self.tabBarController setSelectedIndex:1];
-        QueueViewController *qVc = (QueueViewController*)[self.tabBarController.viewControllers objectAtIndex:1];
-        [qVc loadSongs];
+        //Choose index of the last added song or the position choosen
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Play Now",@"Play Next",@"Play Last", nil];
+        [actionSheet showFromTabBar:self.tabBarController.tabBar];
     }
     else{
         switch (indexPath.section) {
@@ -454,32 +438,40 @@
     return sortfoundTracks;
 }
 
-- (NSMutableDictionary *)loadLockScreenAlbumArt:(NSIndexPath *)indexPath {
-    NSMutableDictionary* searchResultsDic = [[NSMutableDictionary alloc] init];
-    [searchResultsDic addEntriesFromDictionary:[searchResults objectAtIndex:indexPath.row]];
-    
-    //Load big image to use in lockscreen
-    id imageUrl = [searchResultsDic objectForKey:@"cover_url_large"];
-    
-    if (imageUrl != [NSNull null] && imageUrl != nil) {
-        NSURL *imgUrl = [NSURL URLWithString:imageUrl];
-        NSData *imgData = [NSData dataWithContentsOfURL:imgUrl];
-        UIImage *image = [UIImage imageWithData:imgData];
+#pragma mark -
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != 3) {
+        QueueSingleton *sharedSingleton = [QueueSingleton sharedInstance];
+        int songAtIndex = (int)sharedSingleton.currentSongIndex;
         
-        if (image != nil) {
-            [searchResultsDic setValue:image forKey:@"cover_url_large"];
+        switch (buttonIndex) {
+            case 1:
+                if (sharedSingleton.queueSongs.count > 0) {
+                    songAtIndex = songAtIndex + 1;
+                }
+                break;
+            case 2:
+                songAtIndex = (int)sharedSingleton.queueSongs.count;
+                break;
+            default:
+                break;
+        }
+
+        id song = [searchResults objectAtIndex:self.mainTable.indexPathForSelectedRow.row];
+        [sharedSingleton.queueSongs insertObject:song atIndex:songAtIndex];
+        QueueViewController *qVc = (QueueViewController*)[self.tabBarController.viewControllers objectAtIndex:1];
+        
+        if (buttonIndex == 0) {
+            [self.tabBarController setSelectedIndex:1];//Important to be set before loading a song
+            [qVc loadSongs:YES shouldReloadTable:YES withSongPostition:[sharedSingleton.queueSongs indexOfObject:song]];
         }
         else
         {
-            [searchResultsDic setValue:[UIImage imageNamed:@"cover_default_large.png"] forKey:@"cover_url_large"];
+            [SVProgressHUD showSuccessWithStatus:@"Song Added"];
+            [qVc loadSongs:NO shouldReloadTable:YES withSongPostition:0];
         }
     }
-    else
-    {
-        [searchResultsDic setValue:[UIImage imageNamed:@"cover_default_large.png"] forKey:@"cover_url_large"];
-    }
-    
-    return searchResultsDic;
 }
 
 #pragma mark -

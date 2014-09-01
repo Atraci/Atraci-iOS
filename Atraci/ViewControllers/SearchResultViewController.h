@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RequestClass.h"
 
-@interface SearchResultViewController : UIViewController <UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, RequestClassDelegate>
+@interface SearchResultViewController : UIViewController <UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, RequestClassDelegate>
 @property (readwrite, retain) NSTimer *searchTimer;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property(strong ,nonatomic) RequestClass *request;

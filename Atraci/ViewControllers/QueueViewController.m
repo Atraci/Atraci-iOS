@@ -8,16 +8,20 @@
 
 #import "QueueViewController.h"
 #import "QueueSingleton.h"
+#import "ArtistCell.h"
 
 @implementation QueueViewController
 {
-    NSDictionary* currentSong;
+    NSDictionary* currentSongObj;
+    NSMutableArray *artists, *albums, *tracks, *thumbnails, *queue;
 }
-@synthesize request,isPlaying;
+@synthesize request,isPlaying,mainTable;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    thumbnails = [[NSMutableArray alloc] init];
     self.request = [[RequestClass alloc] init];
     self.request.delegate = self;
     
@@ -44,20 +48,40 @@
 }
 
 #pragma mark -
-- (void)loadSongs {    
-    QueueSingleton *sharedSingleton = [QueueSingleton sharedInstance];
-    NSArray *songs = sharedSingleton.queueSongs;
+- (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition {
+    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+    queue = queueSingleton.queueSongs;
     
-    currentSong = [[NSDictionary alloc] initWithDictionary:[songs objectAtIndex:0]];
+    [thumbnails removeAllObjects];
     
-    NSString *artist = [currentSong objectForKey:@"artist"];
-    NSString *title = [currentSong objectForKey:@"title"];
-    NSString *stringToEncode = [NSString stringWithFormat:@"%@ - %@",artist,title];
-    NSString* encoded = [stringToEncode stringByAddingPercentEscapesUsingEncoding:
-                         NSASCIIStringEncoding];
+    if (reloadTable == YES) {
+        //Reload Table
+        [self.mainTable reloadData];
+        if ([self.mainTable numberOfRowsInSection:0] > 0) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:queueSingleton.currentSongIndex inSection: 0];
+            [self.mainTable selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            [self.mainTable scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+        }
+    }
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://gdata.youtube.com/feeds/api/videos?alt=json&max-results=1&q=%@",encoded]];
-    [self.request request:url withSelector:@selector(loadPlayerWithData:)];
+    if (load == YES) {
+        queueSingleton.currentSongIndex = (int)songPosition;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:queueSingleton.currentSongIndex inSection: 0];
+        [self.mainTable selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        [self.mainTable scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+        [self loadLockScreenAlbumArt:queueSingleton.currentSongIndex];
+        
+        currentSongObj = [[NSDictionary alloc] initWithDictionary:[queue objectAtIndex:songPosition]];
+        
+        NSString *artist = [currentSongObj objectForKey:@"artist"];
+        NSString *title = [currentSongObj objectForKey:@"title"];
+        NSString *stringToEncode = [NSString stringWithFormat:@"%@ - %@",artist,title];
+        NSString* encoded = [stringToEncode stringByAddingPercentEscapesUsingEncoding:
+                             NSASCIIStringEncoding];
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://gdata.youtube.com/feeds/api/videos?alt=json&max-results=1&q=%@",encoded]];
+        [self.request request:url withSelector:@selector(loadPlayerWithData:)];
+    }
 }
 
 - (void)loadPlayerWithData:(NSData *)data
@@ -94,7 +118,7 @@
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self.playerView playVideo];
-        tabBarItem.badgeValue = @"1";
+        //tabBarItem.badgeValue = @"1";
     });
 }
 
@@ -120,7 +144,9 @@
         case kYTPlayerStateEnded:
             NSLog(@"Ended playback");
             isPlaying = NO;
-            tabBarItem.badgeValue = nil;
+            
+            [self playNextSong];
+            //tabBarItem.badgeValue = nil;
             break;
         default:
             break;
@@ -129,11 +155,20 @@
    [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
 }
 
+-(void)playNextSong
+{
+    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+    int nextSongPosition = queueSingleton.currentSongIndex + 1;
+    if (nextSongPosition <= queue.count) {
+        [self loadSongs:YES shouldReloadTable:NO withSongPostition:nextSongPosition];
+    }
+}
+
 -(void)getSongInfo
 {
-    NSString *artist = [currentSong objectForKey:@"artist"];
-    NSString *title = [currentSong objectForKey:@"title"];
-    UIImage* musicImage = [currentSong objectForKey:@"cover_url_large"];
+    NSString *artist = [currentSongObj objectForKey:@"artist"];
+    NSString *title = [currentSongObj objectForKey:@"title"];
+    UIImage* musicImage = [currentSongObj objectForKey:@"cover_url_large"];
     
     [self setLockSProperties:artist withSong:title andAlbumArt:musicImage];
 }
@@ -167,4 +202,135 @@
 #pragma clang diagnostic pop
     });
 }
+
+#pragma mark -
+#pragma mark TableView Delegate Methods
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [queue count];
+}
+
+- (void)getThumbImage:(int)indexRow andArtistCell:(ArtistCell *)cellArtist
+{
+    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Add code here to do background processing
+        //request album art
+        id imageUrl = [[queue objectAtIndex:indexRow] objectForKey:@"cover_url_medium"];
+        if (imageUrl != [NSNull null] && imageUrl != nil) {
+            NSURL *imgUrl = [NSURL URLWithString:imageUrl];
+            NSData *imgData = [NSData dataWithContentsOfURL:imgUrl];
+            UIImage *image = [UIImage imageWithData:imgData];
+            
+            if (image != nil) {
+                [thumbnails addObject:image];
+                
+                dispatch_async( dispatch_get_main_queue(), ^{
+                    // Add code here to update the UI/send notifications based on the
+                    // results of the background processing
+                    cellArtist.thumbnailImageView.image = (UIImage *)image;
+                });
+            }
+        }
+    });
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier;
+    UITableViewCell *cell;
+    ArtistCell *cellArtist;
+    int rowIndex = (int)indexPath.row;
+    
+    if (tableView == self.mainTable) {
+        CellIdentifier = @"ArtistCell";
+        cellArtist = (ArtistCell *)[self.mainTable dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cellArtist == nil) {
+            cellArtist = [[ArtistCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        // Configure the cell...
+        
+        if (rowIndex < thumbnails.count) {
+            cellArtist.thumbnailImageView.image = [thumbnails objectAtIndex:rowIndex];
+        }
+        else
+        {
+            cellArtist.thumbnailImageView.image = [UIImage imageNamed:@"cover_default_large.png"];
+            [self getThumbImage:(int)rowIndex andArtistCell:cellArtist];
+        }
+        
+        NSString *artist = [[queue objectAtIndex:rowIndex] objectForKey:@"artist"];
+        NSString *title = [[queue objectAtIndex:rowIndex] objectForKey:@"title"];
+        
+        if (artist) {
+            cellArtist.artistLabel.text = artist;
+        }
+        
+        if (title) {
+            cellArtist.titleLabel.text = title;
+        }
+        
+        return cellArtist;
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    if (tableView == self.mainTable) {
+        [self loadSongs:YES shouldReloadTable:NO withSongPostition:indexPath.row];
+    }
+}
+
+#pragma mark -
+- (void)loadLockScreenAlbumArt:(int)index {
+    NSMutableDictionary* updatedQueueSong = [[queue objectAtIndex:index] mutableCopy];
+
+    //Load big image to use in lockscreen
+    id imageProp = [updatedQueueSong objectForKey:@"cover_url_large"];
+
+    if (imageProp != [NSNull null] && imageProp != nil) {
+        if([imageProp isKindOfClass:[UIImage class]]){
+            [updatedQueueSong setValue:imageProp forKey:@"cover_url_large"];
+        }
+        else
+        {
+            NSURL *imgUrl = [NSURL URLWithString:imageProp];
+            NSData *imgData = [NSData dataWithContentsOfURL:imgUrl];
+            UIImage *image = [UIImage imageWithData:imgData];
+            
+            if (image != nil) {
+                [updatedQueueSong setValue:image forKey:@"cover_url_large"];
+            }
+            else
+            {
+                [updatedQueueSong setValue:[UIImage imageNamed:@"cover_default_large.png"] forKey:@"cover_url_large"];
+            }
+        }
+    }
+    else
+    {
+        [updatedQueueSong setValue:[UIImage imageNamed:@"cover_default_large.png"] forKey:@"cover_url_large"];
+    }
+    
+    [queue setObject:updatedQueueSong atIndexedSubscript:index];
+}
+
+- (IBAction)emptyQueue:(id)sender {
+    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+    queueSingleton.currentSongIndex = 0;
+    [queueSingleton.queueSongs removeAllObjects];
+    [queue removeAllObjects];
+    [thumbnails removeAllObjects];
+    
+    [self.mainTable reloadData];
+    [self.playerView stopVideo];
+    [self.playerView clearVideo];
+}
+
 @end
