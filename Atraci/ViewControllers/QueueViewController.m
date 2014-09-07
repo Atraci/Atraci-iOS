@@ -14,6 +14,7 @@
 {
     NSDictionary* currentSongObj;
     NSMutableArray *artists, *albums, *tracks, *thumbnails, *queue;
+    BOOL repeatQueue,shuffleQueue;
 }
 @synthesize request,isPlaying,mainTable;
 
@@ -35,6 +36,16 @@
         NSError *activationError = nil;
         success = [audioSession setActive:YES error:&activationError];
         if (!success) { /* handle the error condition */ }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemEnded:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    
+    repeatQueue = NO;
+    shuffleQueue = NO;
+}
+
+- (void)playerItemEnded:(NSNotification *)notification
+{
+    NSLog(@"end");
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -144,6 +155,7 @@
         case kYTPlayerStateEnded:
             NSLog(@"Ended playback");
             isPlaying = NO;
+            [self.playerView stopVideo];
             
             [self playNextSong];
             //tabBarItem.badgeValue = nil;
@@ -158,9 +170,20 @@
 -(void)playNextSong
 {
     QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
-    int nextSongPosition = queueSingleton.currentSongIndex + 1;
-    if (nextSongPosition <= queue.count) {
-        [self loadSongs:YES shouldReloadTable:NO withSongPostition:nextSongPosition];
+    if (shuffleQueue == YES) {
+        [self loadSongs:YES shouldReloadTable:NO withSongPostition:arc4random() % queue.count];
+    }
+    else
+    {
+        int nextSongPosition = queueSingleton.currentSongIndex + 1;
+        if (nextSongPosition < queue.count) {
+            [self loadSongs:YES shouldReloadTable:NO withSongPostition:nextSongPosition];
+        }
+        else{
+            if (repeatQueue == YES) {
+                [self loadSongs:YES shouldReloadTable:NO withSongPostition:0];
+            }
+        }
     }
 }
 
@@ -287,6 +310,15 @@
     }
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    [queue removeObjectAtIndex:indexPath.row];
+    [self.mainTable reloadData];
+}
+
 #pragma mark -
 - (void)loadLockScreenAlbumArt:(int)index {
     NSMutableDictionary* updatedQueueSong = [[queue objectAtIndex:index] mutableCopy];
@@ -319,6 +351,27 @@
     }
     
     [queue setObject:updatedQueueSong atIndexedSubscript:index];
+}
+
+
+- (IBAction)repeatQueue:(id)sender {
+    repeatQueue = !repeatQueue;
+    if (repeatQueue == YES) {
+        [_repeatBarBtn setTintColor:[UIColor redColor]];
+    }
+    else{
+        [_repeatBarBtn setTintColor:self.view.tintColor];
+    }
+}
+
+- (IBAction)shuffleQueue:(id)sender {
+    shuffleQueue = !shuffleQueue;
+    if (shuffleQueue == YES) {
+        [_shuffleBarBtn setTintColor:[UIColor redColor]];
+    }
+    else{
+        [_shuffleBarBtn setTintColor:self.view.tintColor];
+    }
 }
 
 - (IBAction)emptyQueue:(id)sender {

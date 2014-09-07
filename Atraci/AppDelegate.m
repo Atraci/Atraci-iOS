@@ -18,7 +18,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     self.window.tintColor = [UIColor colorWithRed:0.35 green:0.36 blue:0.35 alpha:1.0];
-
+    
     return YES;
 }
 
@@ -52,25 +52,23 @@
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
     
-    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
-    QueueViewController *qVc = (QueueViewController*)[tabBarController.viewControllers objectAtIndex:1];
-    
-    id presentedViewController = [window.rootViewController presentedViewController];
-    NSString *className = presentedViewController ? NSStringFromClass([presentedViewController class]) : nil;
+//    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+//    QueueViewController *qVc = (QueueViewController*)[tabBarController.viewControllers objectAtIndex:1];
+//    
+//    id presentedViewController = [window.rootViewController presentedViewController];
+//    NSString *className = presentedViewController ? NSStringFromClass([presentedViewController class]) : nil;
 
-    if(qVc.isPlaying){
-        //[window.rootViewController presentViewController:@"AVFullScreenViewController" animated:YES completion:nil];
-        //[qVc.playerView.webView setFrame:[[UIScreen mainScreen] applicationFrame]];
-        //[qVc.playerView.webView setNeedsLayout];
-        
-        return UIInterfaceOrientationMaskAll;
-    }
-    else{
-        if (window && [className isEqualToString:@"AVFullScreenViewController"]) {
-            return UIInterfaceOrientationMaskAll;
-        } else {
-            return UIInterfaceOrientationMaskPortrait;
-        }
-    }
+//    if(qVc.isPlaying){
+//        return UIInterfaceOrientationMaskAll;
+//    }
+//    else{
+//        if (window && [className isEqualToString:@"AVFullScreenViewController"]) {
+//            return UIInterfaceOrientationMaskAll;
+//        }
+//        else {
+//            return UIInterfaceOrientationMaskPortrait;
+//        }
+//    }
+    return UIInterfaceOrientationMaskPortrait;
 }
 @end

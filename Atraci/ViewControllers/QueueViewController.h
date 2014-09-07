@@ -21,6 +21,9 @@
 @property(strong ,nonatomic) RequestClass *request;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property(nonatomic, strong) IBOutlet YTPlayerView *playerView;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *repeatBarBtn;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *shuffleBarBtn;
 
 - (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition;
 @end
