@@ -38,6 +38,7 @@
 		A4EE4782195F9B20002C3AC8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4EE4781195F9B20002C3AC8 /* Images.xcassets */; };
 		A4EE478E195F9B20002C3AC8 /* AtraciTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4EE478D195F9B20002C3AC8 /* AtraciTests.m */; };
 		A4F57603197CC78600499E94 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4F57602197CC78600499E94 /* MediaPlayer.framework */; };
+		A4F71C2119BD2A5C000C93AB /* SettingsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4F71C2019BD2A5C000C93AB /* SettingsWebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +118,8 @@
 		A4EE478C195F9B20002C3AC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4EE478D195F9B20002C3AC8 /* AtraciTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AtraciTests.m; sourceTree = "<group>"; };
 		A4F57602197CC78600499E94 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		A4F71C1F19BD2A5C000C93AB /* SettingsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsWebViewController.h; sourceTree = "<group>"; };
+		A4F71C2019BD2A5C000C93AB /* SettingsWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsWebViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +152,8 @@
 				A408120119A336E100A98688 /* SearchResultViewController.m */,
 				A408120219A336E100A98688 /* SettingsTableViewController.h */,
 				A408120319A336E100A98688 /* SettingsTableViewController.m */,
+				A4F71C1F19BD2A5C000C93AB /* SettingsWebViewController.h */,
+				A4F71C2019BD2A5C000C93AB /* SettingsWebViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -428,6 +433,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4F71C2119BD2A5C000C93AB /* SettingsWebViewController.m in Sources */,
 				9DC3D76919A505EF00DFE919 /* Atraci-Prefix.pch in Sources */,
 				A4513EB119A3350300E84374 /* YTPlayerView.m in Sources */,
 				A4EE4777195F9B20002C3AC8 /* AppDelegate.m in Sources */,

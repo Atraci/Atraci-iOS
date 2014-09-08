@@ -314,6 +314,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="LnF-zN-PY8" kind="show" identifier="SupportSegue" id="bLq-At-qQH"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell tag="2" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ZjB-rq-EmF">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -329,6 +332,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="LnF-zN-PY8" kind="show" identifier="DonateSegue" id="MDY-WI-iBf"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -389,6 +395,45 @@ The Atraci Team (atraciapp@gmail.com)</string>
             </objects>
             <point key="canvasLocation" x="4442" y="1815"/>
         </scene>
+        <!--Atraci-->
+        <scene sceneID="Jzm-WF-K9x">
+            <objects>
+                <viewController title="Atraci" id="LnF-zN-PY8" customClass="SettingsWebViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="a8M-gy-iwS"/>
+                        <viewControllerLayoutGuide type="bottom" id="7Dh-4s-sel"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8Hg-Jf-Oe2">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AJ8-uo-0s8">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="delegate" destination="LnF-zN-PY8" id="tKB-7h-Q52"/>
+                                </connections>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="AJ8-uo-0s8" secondAttribute="trailing" constant="-16" id="WF6-9y-f6U"/>
+                            <constraint firstItem="AJ8-uo-0s8" firstAttribute="leading" secondItem="8Hg-Jf-Oe2" secondAttribute="leadingMargin" constant="-16" id="eYZ-nM-Ot1"/>
+                            <constraint firstItem="7Dh-4s-sel" firstAttribute="top" secondItem="AJ8-uo-0s8" secondAttribute="bottom" id="iXj-4R-7Rw"/>
+                            <constraint firstItem="AJ8-uo-0s8" firstAttribute="top" secondItem="a8M-gy-iwS" secondAttribute="bottom" id="yyb-Ro-A9n"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Atraci" id="RNA-Kk-hbA"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="webView" destination="AJ8-uo-0s8" id="eAz-zi-kPv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IYL-xt-xSW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4405" y="2535"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
@@ -417,4 +462,7 @@ The Atraci Team (atraciapp@gmail.com)</string>
         <image name="Settings" width="25" height="25"/>
         <image name="Shuffle" width="25" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="bLq-At-qQH"/>
+    </inferredMetricsTieBreakers>
 </document>

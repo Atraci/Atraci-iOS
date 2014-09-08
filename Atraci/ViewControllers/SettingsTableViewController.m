@@ -7,6 +7,7 @@
 //
 
 #import "SettingsTableViewController.h"
+#import "SettingsWebViewController.h"
 
 @interface SettingsTableViewController ()
 
@@ -42,15 +43,15 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSInteger currentTag = [[tableView cellForRowAtIndexPath:indexPath] tag];
-    switch (currentTag) {
-        case 1:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:ATRACI_GITHUB_LINK]];
-            break;
-        case 2:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:ATRACI_DONATION_LINK]];
-            break;
-    }
+//    NSInteger currentTag = [[tableView cellForRowAtIndexPath:indexPath] tag];
+//    switch (currentTag) {
+//        case 1:
+//            //[self performSegueWithIdentifier:@"SupportSegue" sender:self];
+//            break;
+//        case 2:
+//            //[self performSegueWithIdentifier:@"DonateSegue" sender:self];
+//            break;
+//    }
 }
 
 /*
@@ -97,14 +98,23 @@
 }
 */
 
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    UIViewController *vC = [segue destinationViewController];
+    
+    if ([segue.identifier isEqualToString:@"SupportSegue"]) {
+        SettingsWebViewController *sWvC = (SettingsWebViewController *)vC;
+        sWvC.url = ATRACI_GITHUB_LINK;
+    }
+    else if ([segue.identifier isEqualToString:@"DonateSegue"])
+    {
+        SettingsWebViewController *sWvC = (SettingsWebViewController *)vC;
+        sWvC.url = ATRACI_DONATION_LINK;
+    }
 }
-*/
 
 @end
