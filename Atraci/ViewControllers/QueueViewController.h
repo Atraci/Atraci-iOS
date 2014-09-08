@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *repeatBarBtn;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shuffleBarBtn;
+@property (weak, nonatomic) IBOutlet UITabBarItem *QueueIcon;
 
 - (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition;
 @end

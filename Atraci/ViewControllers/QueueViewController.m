@@ -311,12 +311,33 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+    if (queueSingleton.currentSongIndex != -1) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:queueSingleton.currentSongIndex inSection: 0];
+            [tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        });
+    }
+    
     return YES;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+    
     [queue removeObjectAtIndex:indexPath.row];
-    [self.mainTable reloadData];
+    [tableView reloadData];
+    
+    if (indexPath.row == queueSingleton.currentSongIndex) {
+        [self.playerView stopVideo];
+        queueSingleton.currentSongIndex = -1;
+    }
+    else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:queueSingleton.currentSongIndex inSection: 0];
+            [tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        });
+    }
 }
 
 #pragma mark -
