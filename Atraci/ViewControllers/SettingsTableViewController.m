@@ -8,6 +8,7 @@
 
 #import "SettingsTableViewController.h"
 #import "SettingsWebViewController.h"
+#import "QueueViewController.h"
 
 @interface SettingsTableViewController ()
 
@@ -23,6 +24,12 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    if ([QueueViewController sharedQueue].playerView.playerState == kYTPlayerStatePlaying ) {
+        [[QueueViewController sharedQueue].playerView playVideo];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

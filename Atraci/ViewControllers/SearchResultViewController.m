@@ -35,6 +35,12 @@
     request.delegate = self;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    if ([QueueViewController sharedQueue].playerView.playerState == kYTPlayerStatePlaying ) {
+        [[QueueViewController sharedQueue].playerView playVideo];
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

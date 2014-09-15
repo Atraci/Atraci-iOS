@@ -27,5 +27,6 @@
 @property (weak, nonatomic) IBOutlet UITabBarItem *QueueIcon;
 
 - (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition;
++ (instancetype)sharedQueue;
 @end
 

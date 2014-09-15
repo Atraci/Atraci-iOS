@@ -9,6 +9,7 @@
 #import "QueueViewController.h"
 #import "QueueSingleton.h"
 #import "ArtistCell.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @implementation QueueViewController
 {
@@ -17,6 +18,15 @@
     BOOL repeatQueue,shuffleQueue;
 }
 @synthesize request,isPlaying,mainTable;
+
++ (instancetype)sharedQueue{
+    static id _sharedInstance = nil;
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        _sharedInstance = [[self alloc] init];
+    });
+    return _sharedInstance;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -55,7 +65,30 @@
 
 -(BOOL)canBecomeFirstResponder
 {
-    return  true;
+    return  YES;
+}
+
+
+
+#pragma mark - Receive events
+
+- (void) remoteControlReceivedWithEvent: (UIEvent*) event
+{
+    if (event.type == UIEventTypeRemoteControl) {
+        
+        switch (event.subtype) {
+                
+            case UIEventSubtypeRemoteControlNextTrack:
+                [self playNextSong];
+                break;
+            case UIEventSubtypeRemoteControlPreviousTrack:
+                [self playPreviousSong];
+                break;
+            default:
+                break;
+        }
+    }
+
 }
 
 #pragma mark -
@@ -128,6 +161,7 @@
     double delayInSeconds = 2.5;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [QueueViewController sharedQueue].playerView = self.playerView;
         [self.playerView playVideo];
         //tabBarItem.badgeValue = @"1";
     });
@@ -185,6 +219,28 @@
             }
         }
     }
+}
+
+-(void)playPreviousSong
+{
+    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+    int previousSongPosition;
+    
+        float seconds = self.playerView.currentTime;
+            if (seconds < 15.0) {
+                previousSongPosition = queueSingleton.currentSongIndex - 1;
+            } else{
+                previousSongPosition = queueSingleton.currentSongIndex;
+            }
+        if (previousSongPosition < queue.count) {
+            [self loadSongs:YES shouldReloadTable:NO withSongPostition:previousSongPosition];
+        }
+        else{
+            if (repeatQueue == YES) {
+                [self loadSongs:YES shouldReloadTable:NO withSongPostition:0];
+            }
+        }
+    
 }
 
 -(void)getSongInfo

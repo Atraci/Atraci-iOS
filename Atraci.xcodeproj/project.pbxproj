@@ -368,10 +368,11 @@
 				TargetAttributes = {
 					A4EE476D195F9B20002C3AC8 = {
 						CreatedOnToolsVersion = 6.0;
-						DevelopmentTeam = LXTZ7EZD67;
+						DevelopmentTeam = F38M23FYV6;
 					};
 					A4EE4786195F9B20002C3AC8 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = F38M23FYV6;
 						TestTargetID = A4EE476D195F9B20002C3AC8;
 					};
 				};
@@ -581,7 +582,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PREFIX_HEADER = "Atraci/Atraci-Prefix.pch";
 				INFOPLIST_FILE = Atraci/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -595,7 +596,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PREFIX_HEADER = "Atraci/Atraci-Prefix.pch";
 				INFOPLIST_FILE = Atraci/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
