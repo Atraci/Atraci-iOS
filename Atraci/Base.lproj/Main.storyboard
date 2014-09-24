@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6205" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6198"/>
-        <capability name="Constraints with attributes relative to the layout margin" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Search Result View Controller-->
@@ -188,7 +187,7 @@
                                     <outlet property="delegate" destination="8rJ-Kc-sve" id="fYF-Vq-gIL"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Set-ot-mQn" customClass="YTPlayerView">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Set-ot-mQn" customClass="YTPlayerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -205,9 +204,9 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="FyT-kE-std"/>
-                                    <barButtonItem systemItem="trash" id="L7G-YO-VC8">
+                                    <barButtonItem title="Atraci" style="plain" id="L7G-YO-VC8">
                                         <connections>
-                                            <action selector="emptyQueue:" destination="8rJ-Kc-sve" id="E4N-9h-A3B"/>
+                                            <action selector="AtraciTools:" destination="8rJ-Kc-sve" id="6UH-d9-ndl"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Ia9-ZV-pzl"/>
@@ -333,9 +332,21 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="LnF-zN-PY8" kind="show" identifier="DonateSegue" id="MDY-WI-iBf"/>
-                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell tag="3" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="Lfs-Be-Wnv" style="IBUITableViewCellStyleDefault" id="Shz-Zo-Pco">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Shz-Zo-Pco" id="ZWd-Pn-MBk">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Share the love with your friends!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Lfs-Be-Wnv">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -346,6 +357,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="4CF-SE-rpi"/>
+                    <connections>
+                        <outlet property="AboutAtraciLabel" destination="mfG-nf-rOr" id="A5q-Lh-gSN"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eGW-Bs-paz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -367,16 +381,13 @@
                                 <rect key="frame" x="16" y="72" width="568" height="471"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <string key="text">Atraci is a application for Windows, Mac, Linux and iOS that lets you listen instantly to more than 60 million songs (way more than iTunes's 26 million). It requires no sign up, displays no ads and is 100% safe. 
+                                <mutableString key="text">Atraci is an application for iOS, Mac, Windows and Linux that lets you listen instantly to more than 60 million songs. It requires no sign up.
 
-We believe that listening to music should always be free and available to everyone, and that only owning it should bear a cost. 
-
-We also believe that software both useful and open-source simply can't die. 
 Join us now and contribute at github.com/Atraci/Atraci. 
 Don't forget to share the love; you may not need Atraci, but some of your friends might. 
 
-Download our desktop app for free at: http://atraci.github.io/Atraci 
-The Atraci Team (atraciapp@gmail.com)</string>
+Download our desktop app for free at: http://atra.ci 
+The Atraci Team (atraciapp@gmail.com)</mutableString>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" link="YES"/>
@@ -463,7 +474,4 @@ The Atraci Team (atraciapp@gmail.com)</string>
         <image name="Settings" width="25" height="25"/>
         <image name="Shuffle" width="25" height="25"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="bLq-At-qQH"/>
-    </inferredMetricsTieBreakers>
 </document>

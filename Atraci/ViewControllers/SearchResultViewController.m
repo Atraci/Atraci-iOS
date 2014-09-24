@@ -307,6 +307,8 @@
             default:
                 break;
         }
+        lastSearchBarText = value;
+        self.searchDisplayController.searchBar.text = value;
         [self.searchDisplayController setActive:NO animated:YES];
         [self requestMainTableData:value];
         //Ressing Keyboard and search here

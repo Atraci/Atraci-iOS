@@ -36,17 +36,10 @@
     self.request = [[RequestClass alloc] init];
     self.request.delegate = self;
     
-        // for run application in background
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    
-        NSError *setCategoryError = nil;
-        BOOL success = [audioSession setCategory:AVAudioSessionCategoryPlayback error:&setCategoryError];
-        if (!success) { /* handle the error condition */ }
-    
-        NSError *activationError = nil;
-        success = [audioSession setActive:YES error:&activationError];
-        if (!success) { /* handle the error condition */ }
-    
+    // for run application in background
+    NSError *setCategoryError = nil;
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &setCategoryError];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemEnded:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     
     repeatQueue = NO;
@@ -55,7 +48,7 @@
 
 - (void)playerItemEnded:(NSNotification *)notification
 {
-    NSLog(@"end");
+    //NSLog(@"end");
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -140,7 +133,7 @@
     charStart = [videoID rangeOfString:@"&"];
     videoID = [videoID substringToIndex:charStart.location];
     
-    NSLog(@"%@",videoID);
+    //NSLog(@"%@",videoID);
     
     NSString *videoId = videoID;
     NSDictionary *playerVars = @{
@@ -158,7 +151,7 @@
     [self.playerView loadWithVideoId:videoId playerVars:playerVars];
     
     
-    double delayInSeconds = 2.5;
+    double delayInSeconds = 2.8;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [QueueViewController sharedQueue].playerView = self.playerView;
@@ -177,6 +170,8 @@
 }
 
 - (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state {
+    [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
+    
     switch (state) {
         case kYTPlayerStatePlaying:
             NSLog(@"Started playback");
@@ -197,8 +192,6 @@
         default:
             break;
     }
-    
-   [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
 }
 
 -(void)playNextSong
@@ -262,8 +255,9 @@
     // Step 2: Create
     NSMutableDictionary* songInfo = [[NSMutableDictionary alloc] init];
     
-    [songInfo setObject:song forKey:MPMediaItemPropertyTitle];
-    [songInfo setObject:artist forKey:MPMediaItemPropertyArtist];
+    songInfo = [[[MPNowPlayingInfoCenter defaultCenter] nowPlayingInfo] mutableCopy];
+    //[songInfo setObject:song forKey:MPMediaItemPropertyTitle];
+    //[songInfo setObject:artist forKey:MPMediaItemPropertyArtist];
     //[songInfo setObject:@"Audio Album" forKey:MPMediaItemPropertyAlbumTitle];
     [songInfo setObject:albumArt forKey:MPMediaItemPropertyArtwork];
     
@@ -451,16 +445,36 @@
     }
 }
 
-- (IBAction)emptyQueue:(id)sender {
-    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
-    queueSingleton.currentSongIndex = 0;
-    [queueSingleton.queueSongs removeAllObjects];
-    [queue removeAllObjects];
-    [thumbnails removeAllObjects];
-    
-    [self.mainTable reloadData];
-    [self.playerView stopVideo];
-    [self.playerView clearVideo];
+- (IBAction)AtraciTools:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Delete Queue",@"Save Playlist", nil];
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+}
+
+#pragma mark -
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != 3) {
+        QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+
+        switch (buttonIndex) {
+            case 1:
+
+                queueSingleton.currentSongIndex = 0;
+                [queueSingleton.queueSongs removeAllObjects];
+                [queue removeAllObjects];
+                [thumbnails removeAllObjects];
+                [self.mainTable reloadData];
+                [self.playerView stopVideo];
+                [self.playerView clearVideo];
+                
+                break;
+            case 2:
+                
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 @end

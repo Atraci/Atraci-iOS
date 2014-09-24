@@ -657,10 +657,10 @@ NSString static *const kYTPlayerEmbedUrlRegexPattern = @"^http(s)://(www.)youtub
   //CUSTOM: Altered Method
 //  [self.webView loadHTMLString:embedHTML baseURL:[NSURL URLWithString:@"about:blank"]];
   [self.webView loadHTMLString:embedHTML baseURL:[NSURL URLWithString:@"http://localhost:8000/"]];
-    
-  [self.webView setDelegate:self];
   self.webView.allowsInlineMediaPlayback = YES;
   self.webView.mediaPlaybackRequiresUserAction = NO;
+    
+  [self.webView setDelegate:self];
   return YES;
 }
 

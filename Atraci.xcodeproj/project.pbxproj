@@ -33,6 +33,7 @@
 		A47ED785197272A1003AEDB7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A47ED784197272A1003AEDB7 /* AVFoundation.framework */; };
 		A49810F6197234E0000CAE28 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49810F5197234E0000CAE28 /* QuartzCore.framework */; };
 		A4A36965199C824A00F69560 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4EE477E195F9B20002C3AC8 /* Main.storyboard */; };
+		A4C2D18E19D2AD6500062518 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C2D18D19D2AD6400062518 /* MessageUI.framework */; };
 		A4EE4774195F9B20002C3AC8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A4EE4773195F9B20002C3AC8 /* main.m */; };
 		A4EE4777195F9B20002C3AC8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A4EE4776195F9B20002C3AC8 /* AppDelegate.m */; };
 		A4EE4782195F9B20002C3AC8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4EE4781195F9B20002C3AC8 /* Images.xcassets */; };
@@ -107,6 +108,7 @@
 		A4513EB819A3352F00E84374 /* RequestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestClass.m; sourceTree = "<group>"; };
 		A47ED784197272A1003AEDB7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A49810F5197234E0000CAE28 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		A4C2D18D19D2AD6400062518 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A4EE476E195F9B20002C3AC8 /* Atraci.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atraci.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4EE4772195F9B20002C3AC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4EE4773195F9B20002C3AC8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4C2D18E19D2AD6500062518 /* MessageUI.framework in Frameworks */,
 				A4F57603197CC78600499E94 /* MediaPlayer.framework in Frameworks */,
 				A47ED785197272A1003AEDB7 /* AVFoundation.framework in Frameworks */,
 				A49810F6197234E0000CAE28 /* QuartzCore.framework in Frameworks */,
@@ -246,6 +249,7 @@
 		A49810F71972350F000CAE28 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A4C2D18D19D2AD6400062518 /* MessageUI.framework */,
 				A4F57602197CC78600499E94 /* MediaPlayer.framework */,
 				A47ED784197272A1003AEDB7 /* AVFoundation.framework */,
 				A49810F5197234E0000CAE28 /* QuartzCore.framework */,
@@ -511,7 +515,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Alan Uriel Garcia Calvillo (PRJ88B8T97)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -554,7 +558,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Alan Uriel Garcia Calvillo (PRJ88B8T97)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -579,7 +583,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Alan Uriel Garcia Calvillo (PRJ88B8T97)";
 				GCC_PREFIX_HEADER = "Atraci/Atraci-Prefix.pch";
 				INFOPLIST_FILE = Atraci/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
@@ -593,7 +597,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Alan Uriel Garcia Calvillo (PRJ88B8T97)";
 				GCC_PREFIX_HEADER = "Atraci/Atraci-Prefix.pch";
 				INFOPLIST_FILE = Atraci/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
