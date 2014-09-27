@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9DC3D76919A505EF00DFE919 /* Atraci-Prefix.pch in Sources */ = {isa = PBXBuildFile; fileRef = 9DC3D76819A505EF00DFE919 /* Atraci-Prefix.pch */; };
 		A408120419A336E100A98688 /* QueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A40811FF19A336E100A98688 /* QueueViewController.m */; };
 		A408120519A336E100A98688 /* SearchResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A408120119A336E100A98688 /* SearchResultViewController.m */; };
 		A408120619A336E100A98688 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A408120319A336E100A98688 /* SettingsTableViewController.m */; };
+		A426416D19D6AF4E00C79365 /* AtraciLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = A426416C19D6AF4E00C79365 /* AtraciLogo.png */; };
 		A4513E8319A334C800E84374 /* Atraci.ico in Resources */ = {isa = PBXBuildFile; fileRef = A4513E7719A334C800E84374 /* Atraci.ico */; };
 		A4513E8419A334C800E84374 /* Atraci.png in Resources */ = {isa = PBXBuildFile; fileRef = A4513E7819A334C800E84374 /* Atraci.png */; };
 		A4513E8519A334C800E84374 /* cover_default_large.png in Resources */ = {isa = PBXBuildFile; fileRef = A4513E7919A334C800E84374 /* cover_default_large.png */; };
@@ -81,6 +81,7 @@
 		A408120119A336E100A98688 /* SearchResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultViewController.m; sourceTree = "<group>"; };
 		A408120219A336E100A98688 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		A408120319A336E100A98688 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
+		A426416C19D6AF4E00C79365 /* AtraciLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AtraciLogo.png; sourceTree = "<group>"; };
 		A4513E7719A334C800E84374 /* Atraci.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = Atraci.ico; sourceTree = "<group>"; };
 		A4513E7819A334C800E84374 /* Atraci.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Atraci.png; sourceTree = "<group>"; };
 		A4513E7919A334C800E84374 /* cover_default_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cover_default_large.png; sourceTree = "<group>"; };
@@ -166,6 +167,7 @@
 			children = (
 				A4513E7719A334C800E84374 /* Atraci.ico */,
 				A4513E7819A334C800E84374 /* Atraci.png */,
+				A426416C19D6AF4E00C79365 /* AtraciLogo.png */,
 				A4513E7919A334C800E84374 /* cover_default_large.png */,
 				A4513E7A19A334C800E84374 /* icon.icns */,
 				A4513E7B19A334C800E84374 /* icon.png */,
@@ -412,6 +414,7 @@
 				A4513E8719A334C800E84374 /* icon.png in Resources */,
 				A4513E8E19A334C800E84374 /* settings-50.png in Resources */,
 				A4513E8319A334C800E84374 /* Atraci.ico in Resources */,
+				A426416D19D6AF4E00C79365 /* AtraciLogo.png in Resources */,
 				A4513E8519A334C800E84374 /* cover_default_large.png in Resources */,
 				A4513E8D19A334C800E84374 /* settings-25.png in Resources */,
 				A4513E8B19A334C800E84374 /* search.png in Resources */,
@@ -439,7 +442,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4F71C2119BD2A5C000C93AB /* SettingsWebViewController.m in Sources */,
-				9DC3D76919A505EF00DFE919 /* Atraci-Prefix.pch in Sources */,
 				A4513EB119A3350300E84374 /* YTPlayerView.m in Sources */,
 				A4EE4777195F9B20002C3AC8 /* AppDelegate.m in Sources */,
 				A4EE4774195F9B20002C3AC8 /* main.m in Sources */,

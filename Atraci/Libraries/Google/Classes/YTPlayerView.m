@@ -49,7 +49,6 @@ NSString static *const kYTPlayerCallbackOnStateChange = @"onStateChange";
 NSString static *const kYTPlayerCallbackOnPlaybackQualityChange = @"onPlaybackQualityChange";
 NSString static *const kYTPlayerCallbackOnError = @"onError";
 NSString static *const kYTPlayerCallbackOnYouTubeIframeAPIReady = @"onYouTubeIframeAPIReady";
-
 NSString static *const kYTPlayerEmbedUrlRegexPattern = @"^http(s)://(www.)youtube.com/embed/(.*)$";
 
 @implementation YTPlayerView

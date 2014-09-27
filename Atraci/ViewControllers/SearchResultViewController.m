@@ -20,7 +20,6 @@
     NSArray *autoCompletionSearchResults, *searchResults;
     NSMutableArray *artists, *albums, *tracks, *thumbnails;
     NSMutableDictionary *searchTableSections;
-    NSString *lastSearchBarText;
 }
 
 @synthesize request;
@@ -29,7 +28,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    lastSearchBarText = [[NSString alloc] init];
     thumbnails = [[NSMutableArray alloc] init];
     request = [[RequestClass alloc] init];
     request.delegate = self;
@@ -87,13 +85,11 @@
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    searchBar.text = lastSearchBarText;
+
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    lastSearchBarText = searchText;
-    
     [self.searchTimer invalidate];
     self.searchTimer = nil; // this releases the retained property implicitly
     self.searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(OnTextChange:) userInfo:searchText repeats:NO];
@@ -307,11 +303,11 @@
             default:
                 break;
         }
-        lastSearchBarText = value;
-        self.searchDisplayController.searchBar.text = value;
+        //Hide search bar
         [self.searchDisplayController setActive:NO animated:YES];
+        
         [self requestMainTableData:value];
-        //Ressing Keyboard and search here
+        self.searchDisplayController.searchBar.text = value;
     }
 }
 

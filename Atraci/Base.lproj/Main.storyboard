@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
     <dependencies>
+        <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -187,16 +188,26 @@
                                     <outlet property="delegate" destination="8rJ-Kc-sve" id="fYF-Vq-gIL"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Set-ot-mQn" customClass="YTPlayerView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Set-ot-mQn" customClass="YTPlayerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="fnr-C8-3D1"/>
                                 </constraints>
+                                <variation key="heightClass=compact">
+                                    <mask key="constraints">
+                                        <exclude reference="fnr-C8-3D1"/>
+                                    </mask>
+                                </variation>
                             </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uKI-Ni-Khg">
                                 <rect key="frame" x="0.0" y="150" width="600" height="44"/>
                                 <items>
+                                    <barButtonItem systemItem="rewind" id="dv3-Fu-Zg7">
+                                        <connections>
+                                            <action selector="btnPlayPrevious:" destination="8rJ-Kc-sve" id="9Kw-9e-w7l"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ZhS-cc-azZ"/>
                                     <barButtonItem image="Repeat" id="Jk0-oa-x7h">
                                         <connections>
@@ -204,11 +215,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="FyT-kE-std"/>
-                                    <barButtonItem title="Atraci" style="plain" id="L7G-YO-VC8">
-                                        <connections>
-                                            <action selector="AtraciTools:" destination="8rJ-Kc-sve" id="6UH-d9-ndl"/>
-                                        </connections>
-                                    </barButtonItem>
+                                    <barButtonItem title="Atraci" style="plain" id="L7G-YO-VC8"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Ia9-ZV-pzl"/>
                                     <barButtonItem image="Shuffle" id="Wj5-7n-2Rr">
                                         <connections>
@@ -216,11 +223,17 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ZAe-5N-LEt"/>
+                                    <barButtonItem systemItem="fastForward" id="HHN-AJ-keb">
+                                        <connections>
+                                            <action selector="btnPlayNext:" destination="8rJ-Kc-sve" id="F23-p4-GZ5"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="Set-ot-mQn" secondAttribute="bottom" id="4z2-ic-Hyr"/>
                             <constraint firstItem="W2s-9J-J1p" firstAttribute="top" secondItem="uKI-Ni-Khg" secondAttribute="bottom" id="PV9-fb-EgC"/>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="W2s-9J-J1p" secondAttribute="bottom" id="VFQ-cl-V8s"/>
                             <constraint firstItem="uKI-Ni-Khg" firstAttribute="top" secondItem="Set-ot-mQn" secondAttribute="bottom" id="XTE-WK-fvV"/>
@@ -236,6 +249,12 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="scX-pA-xAM"/>
+                                <exclude reference="4z2-ic-Hyr"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="constraints">
+                                <include reference="4z2-ic-Hyr"/>
                             </mask>
                         </variation>
                     </view>
@@ -244,6 +263,7 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="AtraciBarBtn" destination="L7G-YO-VC8" id="G3n-fN-w8d"/>
                         <outlet property="QueueIcon" destination="cPa-gy-q4n" id="aZ2-Ak-Taq"/>
                         <outlet property="mainTable" destination="W2s-9J-J1p" id="5bN-El-Z3K"/>
                         <outlet property="playerView" destination="Set-ot-mQn" id="V1S-9a-emS"/>
@@ -381,13 +401,13 @@
                                 <rect key="frame" x="16" y="72" width="568" height="471"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <mutableString key="text">Atraci is an application for iOS, Mac, Windows and Linux that lets you listen instantly to more than 60 million songs. It requires no sign up.
+                                <string key="text">Atraci is an application for iOS, Mac, Windows and Linux that lets you listen instantly to more than 60 million songs. It requires no sign up.
 
 Join us now and contribute at github.com/Atraci/Atraci. 
 Don't forget to share the love; you may not need Atraci, but some of your friends might. 
 
 Download our desktop app for free at: http://atra.ci 
-The Atraci Team (atraciapp@gmail.com)</mutableString>
+The Atraci Team (atraciapp@gmail.com)</string>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" link="YES"/>

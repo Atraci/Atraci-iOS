@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *repeatBarBtn;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shuffleBarBtn;
 @property (weak, nonatomic) IBOutlet UITabBarItem *QueueIcon;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *AtraciBarBtn;
 
 - (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition;
 + (instancetype)sharedQueue;

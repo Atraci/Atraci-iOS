@@ -53,23 +53,12 @@
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
     
-//    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
-//    QueueViewController *qVc = (QueueViewController*)[tabBarController.viewControllers objectAtIndex:1];
-//    
-//    id presentedViewController = [window.rootViewController presentedViewController];
-//    NSString *className = presentedViewController ? NSStringFromClass([presentedViewController class]) : nil;
-
-//    if(qVc.isPlaying){
-//        return UIInterfaceOrientationMaskAll;
-//    }
-//    else{
-//        if (window && [className isEqualToString:@"AVFullScreenViewController"]) {
-//            return UIInterfaceOrientationMaskAll;
-//        }
-//        else {
-//            return UIInterfaceOrientationMaskPortrait;
-//        }
-//    }
-    return UIInterfaceOrientationMaskPortrait;
+    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+    if(tabBarController.selectedIndex == 0 || tabBarController.selectedIndex == 2 || [QueueViewController sharedQueue].isPlaying == false)
+    {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    
+    return UIInterfaceOrientationMaskAll;
 }
 @end

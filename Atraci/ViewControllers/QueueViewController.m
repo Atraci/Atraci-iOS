@@ -44,11 +44,23 @@
     
     repeatQueue = NO;
     shuffleQueue = NO;
-}
-
-- (void)playerItemEnded:(NSNotification *)notification
-{
-    //NSLog(@"end");
+    
+    
+    //create the image for your button, and set the frame for its size
+    UIImage *image = [UIImage imageNamed:@"AtraciLogo.png"];
+    CGRect frame = CGRectMake(0, 0, 35, 35);
+    
+    //init a normal UIButton using that image
+    UIButton* button = [[UIButton alloc] initWithFrame:frame];
+    [button setBackgroundImage:image forState:UIControlStateNormal];
+    [button setShowsTouchWhenHighlighted:YES];
+    
+    //set the button to handle clicks - this one calls a method called 'downloadClicked'
+    [button addTarget:self action:@selector(AtraciTools:) forControlEvents:UIControlEventTouchDown];
+    
+    //finally, create your UIBarButtonItem using that button
+    self.AtraciBarBtn.customView = button;
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -62,6 +74,10 @@
 }
 
 
+- (void)playerItemEnded:(NSNotification *)notification
+{
+    //NSLog(@"end");
+}
 
 #pragma mark - Receive events
 
@@ -82,6 +98,14 @@
         }
     }
 
+}
+
+- (IBAction)btnPlayPrevious:(id)sender {
+    [self playPreviousSong];
+}
+
+- (IBAction)btnPlayNext:(id)sender {
+    [self playNextSong];
 }
 
 #pragma mark -
@@ -150,7 +174,6 @@
     self.playerView.delegate = self;
     [self.playerView loadWithVideoId:videoId playerVars:playerVars];
     
-    
     double delayInSeconds = 2.8;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -175,15 +198,17 @@
     switch (state) {
         case kYTPlayerStatePlaying:
             NSLog(@"Started playback");
-            isPlaying = YES;
+            [QueueViewController sharedQueue].isPlaying = YES;
+            
+            [self resetPlayerSize];
             break;
         case kYTPlayerStatePaused:
             NSLog(@"Paused playback");
-            isPlaying = NO;
+            [QueueViewController sharedQueue].isPlaying = NO;
             break;
         case kYTPlayerStateEnded:
             NSLog(@"Ended playback");
-            isPlaying = NO;
+            [QueueViewController sharedQueue].isPlaying = NO;
             [self.playerView stopVideo];
             
             [self playNextSong];
@@ -451,14 +476,42 @@
 }
 
 #pragma mark -
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                               duration:(NSTimeInterval)duration
+{
+    if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
+        toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)
+    {
+        self.toolbar.hidden = YES;
+        self.tabBarController.tabBar.hidden = YES;
+        [self.playerView.webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('player').height = screen.width;"];
+    }
+    else
+    {
+        self.toolbar.hidden = NO;
+        self.tabBarController.tabBar.hidden = NO;
+        [self.playerView.webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('player').height=\"100%\";"];
+    }
+}
+
+//Used only when player loads another song while device is in landscape, since the web view's iframe is loaded again, we need to modify the height again.
+- (void)resetPlayerSize {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    if (orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight) {
+        [self.playerView.webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('player').height = screen.width;"];
+    }
+}
+
+#pragma mark -
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex != 3) {
+    if (buttonIndex != 2) {
         QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
 
         switch (buttonIndex) {
-            case 1:
-
+            case 0:
+                
+                [QueueViewController sharedQueue].isPlaying = NO;
                 queueSingleton.currentSongIndex = 0;
                 [queueSingleton.queueSongs removeAllObjects];
                 [queue removeAllObjects];
@@ -468,7 +521,7 @@
                 [self.playerView clearVideo];
                 
                 break;
-            case 2:
+            case 1:
                 
                 break;
             default:
