@@ -10,12 +10,16 @@
 #import "QueueSingleton.h"
 #import "ArtistCell.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "AppDelegate.h"
+#import "Playlist.h"
+#import "PlaylistSong.h"
 
 @implementation QueueViewController
 {
     NSDictionary* currentSongObj;
     NSMutableArray *artists, *albums, *tracks, *thumbnails, *queue;
     BOOL repeatQueue,shuffleQueue;
+    UIAlertView *deleteQueueAlert, *playlistAlert;
 }
 @synthesize request,isPlaying,mainTable;
 
@@ -61,6 +65,8 @@
     //finally, create your UIBarButtonItem using that button
     self.AtraciBarBtn.customView = button;
     
+    //Load Main queue
+    [self loadPlaylist:@"MainQueue"];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -471,7 +477,7 @@
 }
 
 - (IBAction)AtraciTools:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Delete Queue",@"Save Playlist", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Load Playlist",@"Save Playlist",@"Delete Queue", nil];
     [actionSheet showFromTabBar:self.tabBarController.tabBar];
 }
 
@@ -505,27 +511,167 @@
 #pragma mark -
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex != 2) {
-        QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
-
+    if (buttonIndex != 3) {
+        
         switch (buttonIndex) {
             case 0:
-                
-                [QueueViewController sharedQueue].isPlaying = NO;
-                queueSingleton.currentSongIndex = 0;
-                [queueSingleton.queueSongs removeAllObjects];
-                [queue removeAllObjects];
-                [thumbnails removeAllObjects];
-                [self.mainTable reloadData];
-                [self.playerView stopVideo];
-                [self.playerView clearVideo];
-                
+
                 break;
             case 1:
+                if (queue.count > 0) {
+                    playlistAlert = [[UIAlertView alloc] initWithTitle:@"Playlist Name:" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
+                    [playlistAlert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+                    [playlistAlert show];
+                }
+                break;
+            case 2:
+                deleteQueueAlert = [[UIAlertView alloc] initWithTitle:@"¿Proceed on clearing the queue?" message:@"" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
+                [deleteQueueAlert show];
                 
                 break;
             default:
                 break;
+        }
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        NSLog(@"Cancel Tapped.");
+    }
+    else if (buttonIndex == 1) {
+        if(alertView == playlistAlert)
+        {
+            //handle save playlist with current queue
+            [self savePlaylist];
+        }
+        else
+        {
+            QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+            [QueueViewController sharedQueue].isPlaying = NO;
+            queueSingleton.currentSongIndex = 0;
+            [queueSingleton.queueSongs removeAllObjects];
+            [queue removeAllObjects];
+            [thumbnails removeAllObjects];
+            [self.mainTable reloadData];
+            [self.playerView stopVideo];
+            [self.playerView clearVideo];
+        }
+    }
+}
+
+- (void)didPresentAlertView:(UIAlertView *)alertView {
+    if(alertView == playlistAlert)
+    {
+        [[alertView textFieldAtIndex:0] becomeFirstResponder];//not working, probably we need to create a custom alert view with uitextfield
+    }
+}
+
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
+{
+    if(alertView == playlistAlert)
+    {
+        NSString *inputText = [[alertView textFieldAtIndex:0] text];
+        if( [inputText length] >= 1 )
+        {
+            return YES;
+        }
+        else
+        {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+#pragma mark - playlist events
+- (PlaylistSong *)addPlaylistSong:(NSManagedObjectContext *)context withSong:(NSDictionary*)song playlist:(Playlist *)playlist
+{
+    //---Add playlist song to entity---//
+    NSEntityDescription *playlistSongEntityDesc = [NSEntityDescription entityForName:@"PlaylistSong" inManagedObjectContext:context];
+    
+    PlaylistSong *playlistSong = (PlaylistSong *)[[NSManagedObject alloc] initWithEntity:playlistSongEntityDesc
+                                                          insertIntoManagedObjectContext:context];
+    
+    NSString *artist = [song objectForKey:@"artist"];
+    NSString *title = [song objectForKey:@"title"];
+    NSString *coverMedium = [song objectForKey:@"cover_url_medium"];
+    NSString *coverLarge = [song objectForKey:@"cover_url_large"];
+    
+    [playlistSong setValue:artist forKey:@"artist"];
+    [playlistSong setValue:title forKey:@"title"];
+    [playlistSong setValue:coverMedium forKey:@"coverMedium"];
+    [playlistSong setValue:coverLarge forKey:@"coverLarge"];
+    
+    //---Creating a Relationship between entitiy records---//
+    [playlist addPlaylistSongObject:playlistSong];
+    NSLog(@"%@",[playlistSong objectID]);
+    
+    return playlistSong;
+}
+
+-(void)savePlaylist
+{
+    NSString *inputText = [[playlistAlert textFieldAtIndex:0] text];
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    
+    //---Add playlist to entity---//
+    NSEntityDescription *playlistEntityDesc = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context];
+
+    Playlist *playlist = (Playlist *)[[NSManagedObject alloc] initWithEntity:playlistEntityDesc
+                                              insertIntoManagedObjectContext:context];
+
+    [playlist setValue:inputText forKey:@"name"];
+
+    //---Add playlist song to entity---//
+    PlaylistSong *playlistSong;
+    for (NSDictionary* song in queue) {
+        playlistSong = [self addPlaylistSong:context withSong:song playlist:playlist];
+    }
+
+    // Save Managed Object Context
+    NSError *error = nil;
+    if (![context save:&error]) {
+        NSLog(@"Unable to save managed object context.");
+        NSLog(@"%@, %@", error, error.localizedDescription);
+    }
+    
+    NSLog(@"%@",[playlist objectID]);
+}
+
+-(void)loadPlaylist:(NSString *)playlistName
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context];
+    NSFetchRequest *fRequest = [[NSFetchRequest alloc] init];
+    [fRequest setEntity:entityDesc];
+    
+    if ([playlistName isEqualToString:@"MainQueue"]) {
+        NSPredicate *pred =[NSPredicate predicateWithFormat:@"(name = %@)", playlistName];
+        [fRequest setPredicate:pred];
+    }
+
+    NSManagedObject *matches = nil;
+    
+    NSError *error;
+    NSArray *objects = [context executeFetchRequest:fRequest
+                                              error:&error];
+    
+    if ([objects count] == 0)
+    {
+        NSLog(@"No matches");
+    }
+    else
+    {
+        for (int i = 0; i < [objects count]; i++)
+        {
+            matches = objects[i];
+            //[self.name addObject:[matches valueForKey:@"name"]];
+            //[self.phone addObject:[matches valueForKey:@"phone"]];
         }
     }
 }

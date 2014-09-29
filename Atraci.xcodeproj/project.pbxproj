@@ -34,6 +34,10 @@
 		A49810F6197234E0000CAE28 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49810F5197234E0000CAE28 /* QuartzCore.framework */; };
 		A4A36965199C824A00F69560 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4EE477E195F9B20002C3AC8 /* Main.storyboard */; };
 		A4C2D18E19D2AD6500062518 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C2D18D19D2AD6400062518 /* MessageUI.framework */; };
+		A4E8FCC119D92B83006EEE8B /* Playlist.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E8FCC019D92B83006EEE8B /* Playlist.m */; };
+		A4E8FCC419D92B83006EEE8B /* PlaylistSong.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E8FCC319D92B83006EEE8B /* PlaylistSong.m */; };
+		A4E8FCC719D92BC7006EEE8B /* AtraciModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4E8FCC519D92BC7006EEE8B /* AtraciModel.xcdatamodeld */; };
+		A4E985B119D8E7F0005AD8C6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4E985B019D8E7F0005AD8C6 /* CoreData.framework */; };
 		A4EE4774195F9B20002C3AC8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A4EE4773195F9B20002C3AC8 /* main.m */; };
 		A4EE4777195F9B20002C3AC8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A4EE4776195F9B20002C3AC8 /* AppDelegate.m */; };
 		A4EE4782195F9B20002C3AC8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4EE4781195F9B20002C3AC8 /* Images.xcassets */; };
@@ -110,6 +114,12 @@
 		A47ED784197272A1003AEDB7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A49810F5197234E0000CAE28 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A4C2D18D19D2AD6400062518 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		A4E8FCBF19D92B83006EEE8B /* Playlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Playlist.h; path = Storage/Playlist.h; sourceTree = "<group>"; };
+		A4E8FCC019D92B83006EEE8B /* Playlist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Playlist.m; path = Storage/Playlist.m; sourceTree = "<group>"; };
+		A4E8FCC219D92B83006EEE8B /* PlaylistSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaylistSong.h; path = Storage/PlaylistSong.h; sourceTree = "<group>"; };
+		A4E8FCC319D92B83006EEE8B /* PlaylistSong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaylistSong.m; path = Storage/PlaylistSong.m; sourceTree = "<group>"; };
+		A4E8FCC619D92BC7006EEE8B /* AtraciModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AtraciModel.xcdatamodel; sourceTree = "<group>"; };
+		A4E985B019D8E7F0005AD8C6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A4EE476E195F9B20002C3AC8 /* Atraci.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atraci.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4EE4772195F9B20002C3AC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4EE4773195F9B20002C3AC8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -130,6 +140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4E985B119D8E7F0005AD8C6 /* CoreData.framework in Frameworks */,
 				A4C2D18E19D2AD6500062518 /* MessageUI.framework in Frameworks */,
 				A4F57603197CC78600499E94 /* MediaPlayer.framework in Frameworks */,
 				A47ED785197272A1003AEDB7 /* AVFoundation.framework in Frameworks */,
@@ -251,12 +262,25 @@
 		A49810F71972350F000CAE28 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A4E985B019D8E7F0005AD8C6 /* CoreData.framework */,
 				A4C2D18D19D2AD6400062518 /* MessageUI.framework */,
 				A4F57602197CC78600499E94 /* MediaPlayer.framework */,
 				A47ED784197272A1003AEDB7 /* AVFoundation.framework */,
 				A49810F5197234E0000CAE28 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A4E985A919D8DF78005AD8C6 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				A4E8FCC519D92BC7006EEE8B /* AtraciModel.xcdatamodeld */,
+				A4E8FCC219D92B83006EEE8B /* PlaylistSong.h */,
+				A4E8FCC319D92B83006EEE8B /* PlaylistSong.m */,
+				A4E8FCBF19D92B83006EEE8B /* Playlist.h */,
+				A4E8FCC019D92B83006EEE8B /* Playlist.m */,
+			);
+			name = Storage;
 			sourceTree = "<group>";
 		};
 		A4EE4765195F9B20002C3AC8 = {
@@ -281,6 +305,7 @@
 		A4EE4770195F9B20002C3AC8 /* Atraci */ = {
 			isa = PBXGroup;
 			children = (
+				A4E985A919D8DF78005AD8C6 /* Storage */,
 				A4513E9F19A3350300E84374 /* Libraries */,
 				A4513EB419A3352F00E84374 /* Helpers */,
 				A40811FD19A336E100A98688 /* ViewControllers */,
@@ -447,10 +472,13 @@
 				A4EE4774195F9B20002C3AC8 /* main.m in Sources */,
 				A4513EB919A3352F00E84374 /* QueueSingleton.m in Sources */,
 				A4513E9219A334E800E84374 /* ArtistCell.m in Sources */,
+				A4E8FCC119D92B83006EEE8B /* Playlist.m in Sources */,
 				A408120619A336E100A98688 /* SettingsTableViewController.m in Sources */,
 				A4513EBA19A3352F00E84374 /* RequestClass.m in Sources */,
 				A408120419A336E100A98688 /* QueueViewController.m in Sources */,
 				A4513EB319A3350300E84374 /* SVProgressHUD.m in Sources */,
+				A4E8FCC719D92BC7006EEE8B /* AtraciModel.xcdatamodeld in Sources */,
+				A4E8FCC419D92B83006EEE8B /* PlaylistSong.m in Sources */,
 				A408120519A336E100A98688 /* SearchResultViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -517,7 +545,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Alan Uriel Garcia Calvillo (PRJ88B8T97)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -560,8 +588,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Alan Uriel Garcia Calvillo (PRJ88B8T97)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -675,6 +703,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A4E8FCC519D92BC7006EEE8B /* AtraciModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A4E8FCC619D92BC7006EEE8B /* AtraciModel.xcdatamodel */,
+			);
+			currentVersion = A4E8FCC619D92BC7006EEE8B /* AtraciModel.xcdatamodel */;
+			name = AtraciModel.xcdatamodeld;
+			path = Storage/AtraciModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A4EE4766195F9B20002C3AC8 /* Project object */;
 }
