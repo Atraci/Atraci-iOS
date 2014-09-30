@@ -2,7 +2,7 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="13F34" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Playlist" representedClassName="Playlist" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="playlistSong" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PlaylistSong" inverseName="playlist" inverseEntity="PlaylistSong" syncable="YES"/>
+        <relationship name="playlistSong" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PlaylistSong" inverseName="playlist" inverseEntity="PlaylistSong" syncable="YES"/>
     </entity>
     <entity name="PlaylistSong" representedClassName="PlaylistSong" syncable="YES">
         <attribute name="artist" optional="YES" attributeType="String" syncable="YES"/>

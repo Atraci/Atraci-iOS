@@ -11,6 +11,8 @@
 		A408120519A336E100A98688 /* SearchResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A408120119A336E100A98688 /* SearchResultViewController.m */; };
 		A408120619A336E100A98688 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A408120319A336E100A98688 /* SettingsTableViewController.m */; };
 		A426416D19D6AF4E00C79365 /* AtraciLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = A426416C19D6AF4E00C79365 /* AtraciLogo.png */; };
+		A442394B19DA516100471DAD /* ATCSong.m in Sources */ = {isa = PBXBuildFile; fileRef = A442394A19DA516100471DAD /* ATCSong.m */; };
+		A442394E19DA68F800471DAD /* ATCLogicAlgorithms.m in Sources */ = {isa = PBXBuildFile; fileRef = A442394D19DA68F800471DAD /* ATCLogicAlgorithms.m */; };
 		A4513E8319A334C800E84374 /* Atraci.ico in Resources */ = {isa = PBXBuildFile; fileRef = A4513E7719A334C800E84374 /* Atraci.ico */; };
 		A4513E8419A334C800E84374 /* Atraci.png in Resources */ = {isa = PBXBuildFile; fileRef = A4513E7819A334C800E84374 /* Atraci.png */; };
 		A4513E8519A334C800E84374 /* cover_default_large.png in Resources */ = {isa = PBXBuildFile; fileRef = A4513E7919A334C800E84374 /* cover_default_large.png */; };
@@ -86,6 +88,10 @@
 		A408120219A336E100A98688 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		A408120319A336E100A98688 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 		A426416C19D6AF4E00C79365 /* AtraciLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AtraciLogo.png; sourceTree = "<group>"; };
+		A442394919DA516100471DAD /* ATCSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ATCSong.h; path = Model/ATCSong.h; sourceTree = "<group>"; };
+		A442394A19DA516100471DAD /* ATCSong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ATCSong.m; path = Model/ATCSong.m; sourceTree = "<group>"; };
+		A442394C19DA68F800471DAD /* ATCLogicAlgorithms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATCLogicAlgorithms.h; sourceTree = "<group>"; };
+		A442394D19DA68F800471DAD /* ATCLogicAlgorithms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATCLogicAlgorithms.m; sourceTree = "<group>"; };
 		A4513E7719A334C800E84374 /* Atraci.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = Atraci.ico; sourceTree = "<group>"; };
 		A4513E7819A334C800E84374 /* Atraci.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Atraci.png; sourceTree = "<group>"; };
 		A4513E7919A334C800E84374 /* cover_default_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cover_default_large.png; sourceTree = "<group>"; };
@@ -173,6 +179,15 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
+		A442394819DA502900471DAD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A442394919DA516100471DAD /* ATCSong.h */,
+				A442394A19DA516100471DAD /* ATCSong.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		A4513E7619A334C800E84374 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -255,6 +270,8 @@
 				A4513EB619A3352F00E84374 /* QueueSingleton.m */,
 				A4513EB719A3352F00E84374 /* RequestClass.h */,
 				A4513EB819A3352F00E84374 /* RequestClass.m */,
+				A442394C19DA68F800471DAD /* ATCLogicAlgorithms.h */,
+				A442394D19DA68F800471DAD /* ATCLogicAlgorithms.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -305,8 +322,9 @@
 		A4EE4770195F9B20002C3AC8 /* Atraci */ = {
 			isa = PBXGroup;
 			children = (
-				A4E985A919D8DF78005AD8C6 /* Storage */,
 				A4513E9F19A3350300E84374 /* Libraries */,
+				A442394819DA502900471DAD /* Model */,
+				A4E985A919D8DF78005AD8C6 /* Storage */,
 				A4513EB419A3352F00E84374 /* Helpers */,
 				A40811FD19A336E100A98688 /* ViewControllers */,
 				A4513E8F19A334E800E84374 /* Cells */,
@@ -475,11 +493,13 @@
 				A4E8FCC119D92B83006EEE8B /* Playlist.m in Sources */,
 				A408120619A336E100A98688 /* SettingsTableViewController.m in Sources */,
 				A4513EBA19A3352F00E84374 /* RequestClass.m in Sources */,
+				A442394B19DA516100471DAD /* ATCSong.m in Sources */,
 				A408120419A336E100A98688 /* QueueViewController.m in Sources */,
 				A4513EB319A3350300E84374 /* SVProgressHUD.m in Sources */,
 				A4E8FCC719D92BC7006EEE8B /* AtraciModel.xcdatamodeld in Sources */,
 				A4E8FCC419D92B83006EEE8B /* PlaylistSong.m in Sources */,
 				A408120519A336E100A98688 /* SearchResultViewController.m in Sources */,
+				A442394E19DA68F800471DAD /* ATCLogicAlgorithms.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
