@@ -10,6 +10,10 @@
 #define ATRACI_DONATION_LINK @"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q9SDPBK7VMQ8N"
 #define ATRACI_API_LINK @"http://api.getatraci.net/search/"
 
+//Predefined Playlists
+#define ATRACI_PLAYLIST_MAINQUEUE @"MAINQUEUE-aa2a7162-66c2-419a-b0a7-4f9236644d4b"
+
 #ifdef __OBJC__
     #import <CoreData/CoreData.h>
+    #import "SVProgressHUD.h"
 #endif

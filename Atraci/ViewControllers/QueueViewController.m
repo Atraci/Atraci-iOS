@@ -9,11 +9,8 @@
 #import "QueueViewController.h"
 #import "QueueSingleton.h"
 #import "ArtistCell.h"
-#import <MediaPlayer/MediaPlayer.h>
-#import "AppDelegate.h"
-#import "Playlist.h"
-#import "PlaylistSong.h"
 #import "ATCSong.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @implementation QueueViewController
 {
@@ -22,7 +19,7 @@
     BOOL repeatQueue,shuffleQueue;
     UIAlertView *deleteQueueAlert, *playlistAlert;
 }
-@synthesize request,isPlaying,mainTable;
+@synthesize request,isPlaying,mainTable,shoudDisplayHUD;
 
 + (instancetype)sharedQueue{
     static id _sharedInstance = nil;
@@ -65,8 +62,16 @@
     //finally, create your UIBarButtonItem using that button
     self.AtraciBarBtn.customView = button;
     
-    //Load Main queue
-    [self loadPlaylist:@"MainQueue"];
+    if (self.shoudDisplayHUD == YES && queue.count == 0) {
+        [SVProgressHUD show];
+    }
+}
+
+//required delegate from defined protocol
+-(void)reloadQueueDelegate
+{
+    [self loadSongs:NO shouldReloadTable:YES withSongPostition:0];
+    [SVProgressHUD dismiss];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -79,12 +84,10 @@
     return  YES;
 }
 
-
 - (void)playerItemEnded:(NSNotification *)notification
 {
     //NSLog(@"end");
 }
-
 #pragma mark - Receive events
 
 - (void) remoteControlReceivedWithEvent: (UIEvent*) event
@@ -490,7 +493,11 @@
         if(alertView == playlistAlert)
         {
             //handle save playlist with current queue
-            [self savePlaylist];
+            NSString *inputText = [[playlistAlert textFieldAtIndex:0] text];
+            if([ATCPlaylistHelper setPlaylist:inputText withSongQueue:queue])
+            {
+                [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"Playlist %@ Saved",inputText]];
+            }
         }
         else
         {
@@ -504,7 +511,7 @@
             [self.playerView clearVideo];
             
             //Delete MainQueue Playlist
-            [self deletePlaylist:@"MainQueue"];
+            [ATCPlaylistHelper deletePlaylist:ATRACI_PLAYLIST_MAINQUEUE];
         }
     }
 }
@@ -532,188 +539,4 @@
     }
     return YES;
 }
-
-#pragma mark - playlist events
-- (void)deletePlaylist:(NSString *)playlistName
-{
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *context = [appDelegate managedObjectContext];
-    
-    //Delete Playlist
-    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context];
-    NSFetchRequest *fRequest = [[NSFetchRequest alloc] init];
-    [fRequest setEntity:entityDesc];
-    
-    NSPredicate *pred =[NSPredicate predicateWithFormat:
-                        @"(name = %@)", playlistName];
-    [fRequest setPredicate:pred];
-    
-    NSManagedObject *match = nil;
-    
-    NSError *error;
-    NSArray *objects = [context executeFetchRequest:fRequest
-                                              error:&error];
-    
-    if ([objects count] == 0)
-    {
-        NSLog(@"No matches");
-    }
-    else
-    {
-        match = objects[0];
-        [context deleteObject:match];
-        
-        NSError *error = nil;
-        if (![context save:&error])
-        {
-            NSLog(@"Error deleting movie, %@", [error userInfo]);
-        }
-    }
-}
-
--(void)savePlaylist
-{
-    NSString *inputText = [[playlistAlert textFieldAtIndex:0] text];
-    
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *context = [appDelegate managedObjectContext];
-    
-    //if Playlist is Main Queue return
-    BOOL isMainQueueOrExists = NO;
-    if ([inputText isEqualToString:@"MainQueue"]) {
-        NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context];
-        NSFetchRequest *fRequest = [[NSFetchRequest alloc] init];
-        [fRequest setEntity:entityDesc];
-        
-        //Criteria
-            NSPredicate *pred =[NSPredicate predicateWithFormat:
-                                @"(name = %@)", @"MainQueue"];
-            [fRequest setPredicate:pred];
-        NSError *error;
-        NSArray *objects = [context executeFetchRequest:fRequest
-                                                  error:&error];
-        
-        if ([objects count] > 0)
-        {
-            isMainQueueOrExists = YES;
-        }
-    }
-
-    if (isMainQueueOrExists == NO) {
-        
-        //---Add playlist to entity---//
-        NSEntityDescription *playlistEntityDesc = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context];
-
-        Playlist *playlist = (Playlist *)[[NSManagedObject alloc] initWithEntity:playlistEntityDesc
-                                                  insertIntoManagedObjectContext:context];
-
-        [playlist setValue:inputText forKey:@"name"];
-
-        //---Add playlist song to entity---//
-        PlaylistSong *playlistSong;
-        for (ATCSong* song in queue) {
-            playlistSong = [self addPlaylistSong:context withSong:song playlist:playlist];
-        }
-
-        // Save Managed Object Context
-        NSError *error = nil;
-        if (![context save:&error]) {
-            NSLog(@"Unable to save managed object context.");
-            NSLog(@"%@, %@", error, error.localizedDescription);
-        }
-        
-        NSLog(@"%@",[playlist objectID]);
-    }
-}
-
-- (PlaylistSong *)addPlaylistSong:(NSManagedObjectContext *)context withSong:(ATCSong*)song playlist:(Playlist *)playlist
-{
-    //---Add playlist song to entity---//
-    NSEntityDescription *playlistSongEntityDesc = [NSEntityDescription entityForName:@"PlaylistSong" inManagedObjectContext:context];
-    
-    PlaylistSong *playlistSong = (PlaylistSong *)[[NSManagedObject alloc] initWithEntity:playlistSongEntityDesc
-                                                          insertIntoManagedObjectContext:context];
-    
-    [playlistSong setValue:song.artist forKey:@"artist"];
-    [playlistSong setValue:song.title forKey:@"title"];
-    [playlistSong setValue:[song.urlCoverMedium absoluteString] forKey:@"coverMedium"];
-    [playlistSong setValue:[song.urlCoverLarge absoluteString] forKey:@"coverLarge"];
-    
-    //---Creating a Relationship between entitiy records---//
-    [playlist addPlaylistSongObject:playlistSong];
-    NSLog(@"%@",[playlistSong objectID]);
-
-    return playlistSong;
-}
-
--(void)loadPlaylist:(NSString *)playlistName
-{
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *context = [appDelegate managedObjectContext];
-    
-    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context];
-    NSFetchRequest *fRequest = [[NSFetchRequest alloc] init];
-    [fRequest setEntity:entityDesc];
-    
-    //Criteria
-    if ([playlistName isEqualToString:@"MainQueue"]) {
-        NSPredicate *pred =[NSPredicate predicateWithFormat:
-                            @"(name = %@)", playlistName];
-        [fRequest setPredicate:pred];
-    }
-
-    NSManagedObject *match = nil;
-    
-    NSError *error;
-    NSArray *objects = [context executeFetchRequest:fRequest
-                                              error:&error];
-    
-    if ([objects count] == 0)
-    {
-        NSLog(@"No matches for playlist: %@", playlistName);
-    }
-    else
-    {
-        for (int i = 0; i < [objects count]; i++)
-        {
-            match = objects[i];
-            //Fetch Playlist Songs
-            Playlist *playlist = (Playlist *)match;
-            NSSet *set = [playlist playlistSong];
-            
-            queue = [[NSMutableArray alloc] init];
-            
-            for (PlaylistSong *plsSong in set) {
-                ATCSong *song = [[ATCSong alloc] init];
-                song.artist = plsSong.artist;
-                song.title = plsSong.title;
-                song.urlCoverMedium = (id)plsSong.coverMedium;
-                song.urlCoverLarge = (id)plsSong.coverLarge;
-                song.imageCoverMedium = [UIImage imageNamed:@"cover_default_large.png"];
-                
-                dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    // Add code here to do background processing
-                    [song setImageCoverMedium];
-                    [queue addObject:song];
-                    
-                    dispatch_async( dispatch_get_main_queue(), ^{
-                        // Add code here to update the UI/send notifications based on the
-                        // results of the background processing
-                        if (queue.count == set.count) {
-                            [self.mainTable reloadData];
-                            
-                            if ([self.mainTable numberOfRowsInSection:0] > 0) {
-                                [self.mainTable deselectRowAtIndexPath:0 animated:NO];
-                            }
-                            
-                            QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
-                            queueSingleton.queueSongs = queue;
-                        }
-                    });
-                });
-            }
-        }
-    }
-}
-
 @end

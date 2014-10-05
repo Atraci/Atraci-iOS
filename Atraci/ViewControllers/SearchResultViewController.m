@@ -10,7 +10,6 @@
 #import "ArtistCell.h"
 #import "QueueSingleton.h"
 #import "QueueViewController.h"
-#import "SVProgressHUD.h"
 #import "ATCLogicAlgorithms.h"
 #import "ATCSong.h"
 

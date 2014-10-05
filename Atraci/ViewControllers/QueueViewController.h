@@ -9,14 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "YTPlayerView.h"
 #import "RequestClass.h"
+#import "ATCPlaylistHelper.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 
-@interface QueueViewController : UIViewController <YTPlayerViewDelegate, RequestClassDelegate, AVAudioPlayerDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface QueueViewController : UIViewController <YTPlayerViewDelegate, RequestClassDelegate, AVAudioPlayerDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource
+                                                    ,ATCPlaylistHelperDelegate>
 {
     UITabBarItem *tabBarItem;
 }
 
+@property (nonatomic, assign) BOOL shoudDisplayHUD;
 @property (nonatomic, assign) BOOL isPlaying;
 @property(strong ,nonatomic) RequestClass *request;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;

@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "QueueViewController.h"
+#import "QueueSingleton.h"
+#import "ATCPlaylistHelper.h"
 
 @interface AppDelegate ()
 
@@ -23,6 +25,8 @@
     // Override point for customization after application launch.
     self.window.tintColor = [UIColor colorWithRed:0.35 green:0.36 blue:0.35 alpha:1.0];
     
+    [self LoadMainQueuePlaylist];
+    
     return YES;
 }
 
@@ -37,7 +41,6 @@
         });
     }
 }
-
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
@@ -57,6 +60,9 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    //Save current queue playlist
+    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+    [ATCPlaylistHelper setPlaylist:ATRACI_PLAYLIST_MAINQUEUE withSongQueue:queueSingleton.queueSongs];
 }
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
@@ -68,6 +74,31 @@
     }
     
     return UIInterfaceOrientationMaskAll;
+}
+
+#pragma mark - Initial Playlist Interactions
+- (void)LoadMainQueuePlaylist {
+    //The first time the app loads we'll load the main queue playlist if exists, otherwise create it of it return NO
+    //Set delegate method to always reload queue when loading playlists
+    ATCPlaylistHelper *atcPlaylistHelper = [[ATCPlaylistHelper alloc] init];
+    // assign delegate
+    // grab a reference to the Tab Bar Controller and its viewController array
+    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+    NSArray *allTabs = tabBarController.viewControllers;
+    
+    QueueViewController *qVc = (QueueViewController*)[allTabs objectAtIndex:1];
+    atcPlaylistHelper.delegate = qVc;
+    
+    if([atcPlaylistHelper getPlaylist:ATRACI_PLAYLIST_MAINQUEUE withPredicate:nil andSongs:YES] == NO)
+    {
+        [ATCPlaylistHelper setPlaylist:ATRACI_PLAYLIST_MAINQUEUE withSongQueue:nil];
+    }
+    else
+    {
+        if (atcPlaylistHelper.recordsFound == YES) {
+            qVc.shoudDisplayHUD = YES;
+        }
+    }
 }
 
 #pragma mark - Application's Core Data

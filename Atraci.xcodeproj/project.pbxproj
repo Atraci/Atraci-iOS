@@ -32,6 +32,7 @@
 		A4513EB319A3350300E84374 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = A4513EAA19A3350300E84374 /* SVProgressHUD.m */; };
 		A4513EB919A3352F00E84374 /* QueueSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = A4513EB619A3352F00E84374 /* QueueSingleton.m */; };
 		A4513EBA19A3352F00E84374 /* RequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A4513EB819A3352F00E84374 /* RequestClass.m */; };
+		A464B13219E0F38A00F5ADCB /* ATCPlaylistHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A464B13119E0F38A00F5ADCB /* ATCPlaylistHelper.m */; };
 		A47ED785197272A1003AEDB7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A47ED784197272A1003AEDB7 /* AVFoundation.framework */; };
 		A49810F6197234E0000CAE28 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49810F5197234E0000CAE28 /* QuartzCore.framework */; };
 		A4A36965199C824A00F69560 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4EE477E195F9B20002C3AC8 /* Main.storyboard */; };
@@ -117,6 +118,8 @@
 		A4513EB619A3352F00E84374 /* QueueSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueueSingleton.m; sourceTree = "<group>"; };
 		A4513EB719A3352F00E84374 /* RequestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestClass.h; sourceTree = "<group>"; };
 		A4513EB819A3352F00E84374 /* RequestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestClass.m; sourceTree = "<group>"; };
+		A464B13019E0F38A00F5ADCB /* ATCPlaylistHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATCPlaylistHelper.h; sourceTree = "<group>"; };
+		A464B13119E0F38A00F5ADCB /* ATCPlaylistHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATCPlaylistHelper.m; sourceTree = "<group>"; };
 		A47ED784197272A1003AEDB7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A49810F5197234E0000CAE28 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A4C2D18D19D2AD6400062518 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -272,6 +275,8 @@
 				A4513EB819A3352F00E84374 /* RequestClass.m */,
 				A442394C19DA68F800471DAD /* ATCLogicAlgorithms.h */,
 				A442394D19DA68F800471DAD /* ATCLogicAlgorithms.m */,
+				A464B13019E0F38A00F5ADCB /* ATCPlaylistHelper.h */,
+				A464B13119E0F38A00F5ADCB /* ATCPlaylistHelper.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -498,6 +503,7 @@
 				A4513EB319A3350300E84374 /* SVProgressHUD.m in Sources */,
 				A4E8FCC719D92BC7006EEE8B /* AtraciModel.xcdatamodeld in Sources */,
 				A4E8FCC419D92B83006EEE8B /* PlaylistSong.m in Sources */,
+				A464B13219E0F38A00F5ADCB /* ATCPlaylistHelper.m in Sources */,
 				A408120519A336E100A98688 /* SearchResultViewController.m in Sources */,
 				A442394E19DA68F800471DAD /* ATCLogicAlgorithms.m in Sources */,
 			);
