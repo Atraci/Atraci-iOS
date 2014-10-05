@@ -373,7 +373,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
-    
+    self.shoudDisplayHUD = NO;
     [queue removeObjectAtIndex:indexPath.row];
     [tableView reloadData];
     
@@ -503,6 +503,7 @@
         }
         else
         {
+            self.shoudDisplayHUD = NO;
             QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
             [QueueViewController sharedQueue].isPlaying = NO;
             queueSingleton.currentSongIndex = 0;

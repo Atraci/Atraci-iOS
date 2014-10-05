@@ -320,7 +320,7 @@
     [ATCSearchResults removeAllObjects];
     [self.mainTable reloadData];
     
-    NSString* encoded = [searchText stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+    NSString* encoded = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", ATRACI_API_LINK, encoded]];
     
     [request request:url withSelector:@selector(reloadMainTableWithData:)];
