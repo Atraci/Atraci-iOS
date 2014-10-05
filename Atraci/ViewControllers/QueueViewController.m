@@ -61,20 +61,14 @@
     
     //finally, create your UIBarButtonItem using that button
     self.AtraciBarBtn.customView = button;
+}
+
+-(void)viewDidAppear:(BOOL)animated{
     
     if (self.shoudDisplayHUD == YES && queue.count == 0) {
         [SVProgressHUD show];
     }
-}
-
-//required delegate from defined protocol
--(void)reloadQueueDelegate
-{
-    [self loadSongs:NO shouldReloadTable:YES withSongPostition:0];
-    [SVProgressHUD dismiss];
-}
-
--(void)viewDidAppear:(BOOL)animated{
+    
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
     [self becomeFirstResponder];
 }
@@ -88,6 +82,14 @@
 {
     //NSLog(@"end");
 }
+
+//required delegate from defined protocol
+-(void)reloadQueueDelegate
+{
+    [self loadSongs:NO shouldReloadTable:YES withSongPostition:0];
+    [SVProgressHUD dismiss];
+}
+
 #pragma mark - Receive events
 
 - (void) remoteControlReceivedWithEvent: (UIEvent*) event
@@ -465,7 +467,7 @@
         
         switch (buttonIndex) {
             case 0:
-
+                [self performSegueWithIdentifier:@"PlaylistsSegue" sender:self];
                 break;
             case 1:
                 if (queue.count > 0) {

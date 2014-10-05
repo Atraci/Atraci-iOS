@@ -16,6 +16,17 @@
 @implementation ATCPlaylistHelper
 @synthesize delegate, recordsFound;
 
+static ATCPlaylistHelper *sharedInstance = nil;
+
+// Get the shared instance and create it if necessary.
++ (ATCPlaylistHelper *)sharedInstance {
+    if (sharedInstance == nil) {
+        sharedInstance = [[super allocWithZone:NULL] init];
+    }
+    
+    return sharedInstance;
+}
+
 -(id)init {
     if ( self = [super init] ) {
 
@@ -81,6 +92,32 @@
     NSLog(@"%@",[playlistSong objectID]);
     
     return playlistSong;
+}
+
++(NSArray *)getAllPlaylists
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context];
+    NSFetchRequest *fRequest = [[NSFetchRequest alloc] init];
+    [fRequest setEntity:entityDesc];
+    
+    //Get All Except MainQueue
+    NSPredicate *predicatePlaylistName =[NSPredicate predicateWithFormat:
+                                         @"(name != %@)", ATRACI_PLAYLIST_MAINQUEUE];
+    [fRequest setPredicate:predicatePlaylistName];
+    
+    NSError *error;
+    NSArray *objects = [context executeFetchRequest:fRequest
+                                              error:&error];
+    
+    if ([objects count] == 0)
+    {
+        NSLog(@"No playlists");
+    }
+    
+    return objects;
 }
 
 +(BOOL)getPlaylist:(NSString *)playlistName withPredicate:(NSPredicate *)predicate

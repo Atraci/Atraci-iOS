@@ -19,5 +19,8 @@
 @property (nonatomic, weak) id <ATCPlaylistHelperDelegate> delegate; //define ATCPlaylistHelperDelegate as delegate
 +(BOOL)setPlaylist:(NSString *)playlistName withSongQueue:(NSMutableArray *)queue;
 -(BOOL)getPlaylist:(NSString *)playlistName withPredicate:(NSPredicate *)predicate andSongs:(BOOL)getSongs;
++(NSArray *)getAllPlaylists;
 +(BOOL)deletePlaylist:(NSString *)playlistName;
++ (id)sharedInstance;
+
 @end

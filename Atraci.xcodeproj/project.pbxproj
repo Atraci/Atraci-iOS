@@ -37,6 +37,7 @@
 		A49810F6197234E0000CAE28 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49810F5197234E0000CAE28 /* QuartzCore.framework */; };
 		A4A36965199C824A00F69560 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4EE477E195F9B20002C3AC8 /* Main.storyboard */; };
 		A4C2D18E19D2AD6500062518 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C2D18D19D2AD6400062518 /* MessageUI.framework */; };
+		A4D2BCF119E12FF60084DDC5 /* PlaylistsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D2BCF019E12FF50084DDC5 /* PlaylistsViewController.m */; };
 		A4E8FCC119D92B83006EEE8B /* Playlist.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E8FCC019D92B83006EEE8B /* Playlist.m */; };
 		A4E8FCC419D92B83006EEE8B /* PlaylistSong.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E8FCC319D92B83006EEE8B /* PlaylistSong.m */; };
 		A4E8FCC719D92BC7006EEE8B /* AtraciModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4E8FCC519D92BC7006EEE8B /* AtraciModel.xcdatamodeld */; };
@@ -123,6 +124,8 @@
 		A47ED784197272A1003AEDB7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A49810F5197234E0000CAE28 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A4C2D18D19D2AD6400062518 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		A4D2BCEF19E12FF50084DDC5 /* PlaylistsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistsViewController.h; sourceTree = "<group>"; };
+		A4D2BCF019E12FF50084DDC5 /* PlaylistsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistsViewController.m; sourceTree = "<group>"; };
 		A4E8FCBF19D92B83006EEE8B /* Playlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Playlist.h; path = Storage/Playlist.h; sourceTree = "<group>"; };
 		A4E8FCC019D92B83006EEE8B /* Playlist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Playlist.m; path = Storage/Playlist.m; sourceTree = "<group>"; };
 		A4E8FCC219D92B83006EEE8B /* PlaylistSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaylistSong.h; path = Storage/PlaylistSong.h; sourceTree = "<group>"; };
@@ -178,6 +181,8 @@
 				A408120319A336E100A98688 /* SettingsTableViewController.m */,
 				A4F71C1F19BD2A5C000C93AB /* SettingsWebViewController.h */,
 				A4F71C2019BD2A5C000C93AB /* SettingsWebViewController.m */,
+				A4D2BCEF19E12FF50084DDC5 /* PlaylistsViewController.h */,
+				A4D2BCF019E12FF50084DDC5 /* PlaylistsViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -494,6 +499,7 @@
 				A4EE4777195F9B20002C3AC8 /* AppDelegate.m in Sources */,
 				A4EE4774195F9B20002C3AC8 /* main.m in Sources */,
 				A4513EB919A3352F00E84374 /* QueueSingleton.m in Sources */,
+				A4D2BCF119E12FF60084DDC5 /* PlaylistsViewController.m in Sources */,
 				A4513E9219A334E800E84374 /* ArtistCell.m in Sources */,
 				A4E8FCC119D92B83006EEE8B /* Playlist.m in Sources */,
 				A408120619A336E100A98688 /* SettingsTableViewController.m in Sources */,

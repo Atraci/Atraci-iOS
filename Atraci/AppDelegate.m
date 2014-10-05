@@ -80,7 +80,7 @@
 - (void)LoadMainQueuePlaylist {
     //The first time the app loads we'll load the main queue playlist if exists, otherwise create it of it return NO
     //Set delegate method to always reload queue when loading playlists
-    ATCPlaylistHelper *atcPlaylistHelper = [[ATCPlaylistHelper alloc] init];
+    ATCPlaylistHelper *atcPlaylistHelper = [ATCPlaylistHelper sharedInstance];
     // assign delegate
     // grab a reference to the Tab Bar Controller and its viewController array
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
