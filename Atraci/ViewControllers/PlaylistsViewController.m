@@ -42,7 +42,7 @@
 
 #pragma mark - Top Bar Events
 - (IBAction)done:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:NO];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -86,7 +86,7 @@
     {
         if (atcPlaylistHelper.recordsFound == YES) {
             [SVProgressHUD showWithStatus:@"Loading Playlist..."];
-            [self dismissViewControllerAnimated:YES completion:NO];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
     }
 }
