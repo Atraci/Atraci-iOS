@@ -144,7 +144,7 @@
         currentSongObj = song;
         NSString *stringToEncode = [NSString stringWithFormat:@"%@ - %@",song.artist,song.title];
         NSString* encoded = [stringToEncode stringByAddingPercentEscapesUsingEncoding:
-                             NSASCIIStringEncoding];
+                             NSUTF8StringEncoding];
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://gdata.youtube.com/feeds/api/videos?alt=json&max-results=1&q=%@",encoded]];
         [self.request request:url withSelector:@selector(loadPlayerWithData:)];

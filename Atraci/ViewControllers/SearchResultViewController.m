@@ -287,7 +287,7 @@
     
     if (tableView == self.mainTable) {
         //Choose index of the last added song or the position choosen
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Play Now",@"Add Next",@"Add Last", nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Play Now",@"Play Next",@"Add To Queue", nil];
         [actionSheet showFromTabBar:self.tabBarController.tabBar];
     }
     else{
