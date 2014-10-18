@@ -42,31 +42,35 @@ static ATCPlaylistHelper *sharedInstance = nil;
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
     
-    if ([ATCPlaylistHelper getPlaylist:playlistName withPredicate:nil] == YES) {
-        [ATCPlaylistHelper deletePlaylist:playlistName];
+    Playlist *playlist = [ATCPlaylistHelper getPlaylist:playlistName withPredicate:nil];
+    
+    if (playlist != nil) {
+        //just delete the songs
+        [ATCPlaylistHelper deletePlaylistSongs:playlistName];
+        
+    }else{
+        //---Add playlist to entity---//
+        NSEntityDescription *playlistEntityDesc = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context];
+        
+        playlist = (Playlist *)[[NSManagedObject alloc] initWithEntity:playlistEntityDesc
+                                        insertIntoManagedObjectContext:context];
+        
+        [playlist setValue:playlistName forKey:@"name"];
     }
-    
-    //---Add playlist to entity---//
-    NSEntityDescription *playlistEntityDesc = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context];
-    
-    Playlist *playlist = (Playlist *)[[NSManagedObject alloc] initWithEntity:playlistEntityDesc
-                                              insertIntoManagedObjectContext:context];
-    
-    [playlist setValue:playlistName forKey:@"name"];
     
     //---Add playlist song to entity---//
     PlaylistSong *playlistSong;
     for (ATCSong* song in queue) {
         playlistSong = [ATCPlaylistHelper addPlaylistSong:context withSong:song playlist:playlist];
-    }
-    
-    // Save Managed Object Context
-    NSError *error = nil;
-    if (![context save:&error]) {
-        NSLog(@"Unable to save managed object context.");
-        NSLog(@"%@, %@", error, error.localizedDescription);
         
-        isSuccessful = NO;
+        // Save Managed Object Context
+        NSError *error = nil;
+        if (![context save:&error]) {
+            NSLog(@"Unable to save managed object context.");
+            NSLog(@"%@, %@", error, error.localizedDescription);
+            
+            isSuccessful = NO;
+        }
     }
     
     NSLog(@"%@",[playlist objectID]);
@@ -77,10 +81,7 @@ static ATCPlaylistHelper *sharedInstance = nil;
 + (PlaylistSong *)addPlaylistSong:(NSManagedObjectContext *)context withSong:(ATCSong*)song playlist:(Playlist *)playlist
 {
     //---Add playlist song to entity---//
-    NSEntityDescription *playlistSongEntityDesc = [NSEntityDescription entityForName:@"PlaylistSong" inManagedObjectContext:context];
-    
-    PlaylistSong *playlistSong = (PlaylistSong *)[[NSManagedObject alloc] initWithEntity:playlistSongEntityDesc
-                                                          insertIntoManagedObjectContext:context];
+    PlaylistSong *playlistSong = [NSEntityDescription insertNewObjectForEntityForName:@"PlaylistSong"  inManagedObjectContext:context];
     
     [playlistSong setValue:song.artist forKey:@"artist"];
     [playlistSong setValue:song.title forKey:@"title"];
@@ -120,7 +121,7 @@ static ATCPlaylistHelper *sharedInstance = nil;
     return objects;
 }
 
-+(BOOL)getPlaylist:(NSString *)playlistName withPredicate:(NSPredicate *)predicate
++(Playlist *)getPlaylist:(NSString *)playlistName withPredicate:(NSPredicate *)predicate
 {
     BOOL isSuccessful = YES;
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -147,8 +148,11 @@ static ATCPlaylistHelper *sharedInstance = nil;
     {
         NSLog(@"No matches for playlist: %@", playlistName);
         isSuccessful = NO;
+        
+        return nil;
     }
-    return isSuccessful;
+    
+    return [objects firstObject];
 }
 
 -(BOOL)getPlaylist:(NSString *)playlistName withPredicate:(NSPredicate *)predicate andSongs:(BOOL)getSongs
@@ -198,7 +202,16 @@ static ATCPlaylistHelper *sharedInstance = nil;
                 }
                 else
                 {
-                    for (PlaylistSong *plsSong in set) {
+                    //Order by Id
+                    NSArray *sortedSet = [[set allObjects] sortedArrayUsingComparator:^NSComparisonResult(NSManagedObject *obj1, NSManagedObject *obj2) {
+                        
+                        NSString *s = [obj1.objectID.URIRepresentation lastPathComponent];
+                        NSString *r = [obj2.objectID.URIRepresentation lastPathComponent];
+                        return [s compare:r];
+                        
+                    }];
+                    
+                    for (PlaylistSong *plsSong in sortedSet) {
                         ATCSong *song = [[ATCSong alloc] init];
                         song.artist = plsSong.artist;
                         song.title = plsSong.title;
@@ -206,15 +219,16 @@ static ATCPlaylistHelper *sharedInstance = nil;
                         song.urlCoverLarge = (id)plsSong.coverLarge;
                         song.imageCoverMedium = [UIImage imageNamed:@"cover_default_large.png"];
                         
+                        [queue addObject:song];
+                        
                         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                             // Add code here to do background processing
                             [song setImageCoverMedium];
-                            [queue addObject:song];
                             
                             dispatch_async( dispatch_get_main_queue(), ^{
                                 // Add code here to update the UI/send notifications based on the
                                 // results of the background processing
-                                if (queue.count == set.count) {
+                                if (queue.count == sortedSet.count) {
                                     QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
                                     queueSingleton.queueSongs = queue;
                                     
@@ -228,6 +242,55 @@ static ATCPlaylistHelper *sharedInstance = nil;
             }
         }
     }
+    return isSuccessful;
+}
+
++(BOOL)deletePlaylistSongs:(NSString *)playlistName
+{
+    BOOL isSuccessful = YES;
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    
+    //Delete Playlist
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context];
+    NSFetchRequest *fRequest = [[NSFetchRequest alloc] init];
+    [fRequest setEntity:entityDesc];
+    
+    NSPredicate *pred =[NSPredicate predicateWithFormat:
+                        @"(name = %@)", playlistName];
+    [fRequest setPredicate:pred];
+    
+    NSError *error;
+    NSArray *objects = [context executeFetchRequest:fRequest
+                                              error:&error];
+    
+    if ([objects count] == 0)
+    {
+        NSLog(@"No matches");
+        isSuccessful = NO;
+    }
+    else
+    {
+        NSManagedObject *match = nil;
+        match = objects[0];
+        
+        //Fetch Playlist Songs
+        Playlist *playlist = (Playlist *)match;
+        NSSet *set = playlist.playlistSong;
+        
+        for (PlaylistSong *plsSong in set) {
+            [context deleteObject:plsSong];
+        }
+        
+        NSError *error = nil;
+        if (![context save:&error])
+        {
+            isSuccessful = NO;
+            NSLog(@"Error deleting, %@", [error userInfo]);
+            return isSuccessful;
+        }
+    }
+    
     return isSuccessful;
 }
 

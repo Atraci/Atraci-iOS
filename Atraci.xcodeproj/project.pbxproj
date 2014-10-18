@@ -427,7 +427,7 @@
 				TargetAttributes = {
 					A4EE476D195F9B20002C3AC8 = {
 						CreatedOnToolsVersion = 6.0;
-						DevelopmentTeam = F38M23FYV6;
+						DevelopmentTeam = LXTZ7EZD67;
 					};
 					A4EE4786195F9B20002C3AC8 = {
 						CreatedOnToolsVersion = 6.0;
@@ -645,10 +645,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Alan Uriel Garcia Calvillo (PRJ88B8T97)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PREFIX_HEADER = "Atraci/Atraci-Prefix.pch";
 				INFOPLIST_FILE = Atraci/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -659,10 +659,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Alan Uriel Garcia Calvillo (PRJ88B8T97)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PREFIX_HEADER = "Atraci/Atraci-Prefix.pch";
 				INFOPLIST_FILE = Atraci/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
