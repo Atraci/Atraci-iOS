@@ -15,9 +15,8 @@
 @property (nonatomic, retain) NSString * key;
 @property (nonatomic, retain) NSString * value;
 
--(BOOL)addSettingValue:(NSString *)value forKey:(NSString *)key;
--(AppSetting *)getSettingforKey:(NSString *)key;
--(BOOL)deleteSetting:(NSString *)key;
--(BOOL)updateSettingValue:(NSString *)value forSetting:(AppSetting *)setting;
-
++(BOOL)addSettingValue:(NSString *)value forKey:(NSString *)key;
++(AppSetting *)getSettingforKey:(NSString *)key;
++(BOOL)deleteSetting:(NSString *)key;
++(BOOL)updateSettingValue:(NSString *)value forSetting:(AppSetting *)setting;
 @end

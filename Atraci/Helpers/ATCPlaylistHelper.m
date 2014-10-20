@@ -238,8 +238,7 @@ static ATCPlaylistHelper *sharedInstance = nil;
                                     
                                     //Set lastPlayed Index
                                     if ([playlistName isEqualToString:ATRACI_PLAYLIST_MAINQUEUE] == YES) {
-                                        AppSetting *appSetting = [AppSetting alloc];
-                                        appSetting = [appSetting getSettingforKey:@"LAST_PLAYED_SONG"];
+                                        AppSetting *appSetting = [AppSetting getSettingforKey:@"LAST_PLAYED_SONG"];
                                         QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
                                         queueSingleton.currentSongIndex = [appSetting.value intValue];
                                     }

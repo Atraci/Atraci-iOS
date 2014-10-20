@@ -16,7 +16,7 @@
 
 NSString *const ENTITY = @"AppSetting";
 
--(BOOL)addSettingValue:(NSString *)value forKey:(NSString *)key
++(BOOL)addSettingValue:(NSString *)value forKey:(NSString *)key
 {
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
@@ -38,7 +38,7 @@ NSString *const ENTITY = @"AppSetting";
     return YES;
 }
 
--(AppSetting *)getSettingforKey:(NSString *)key
++(AppSetting *)getSettingforKey:(NSString *)key
 {
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
@@ -69,7 +69,7 @@ NSString *const ENTITY = @"AppSetting";
     return nil;
 }
 
--(BOOL)deleteSetting:(NSString *)key
++(BOOL)deleteSetting:(NSString *)key
 {
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
@@ -116,7 +116,7 @@ NSString *const ENTITY = @"AppSetting";
     return isSuccessful;
 }
 
--(BOOL)updateSettingValue:(NSString *)value forSetting:(AppSetting *)setting
++(BOOL)updateSettingValue:(NSString *)value forSetting:(AppSetting *)setting
 {
     BOOL isSuccessful = YES;
 

@@ -69,15 +69,14 @@
     //Save current played song index
     NSString *settingKey = @"LAST_PLAYED_SONG";
     NSString *currentSongIndex = [NSString stringWithFormat:@"%d",queueSingleton.currentSongIndex];
-    AppSetting *appSetting = [AppSetting alloc];
-    appSetting = [appSetting getSettingforKey:settingKey];
-    
-    if ([appSetting getSettingforKey:settingKey] == nil) {
-        [appSetting addSettingValue:currentSongIndex forKey:settingKey];
+    AppSetting *appSetting = [AppSetting getSettingforKey:settingKey];
+
+    if (appSetting == nil) {
+        [AppSetting addSettingValue:currentSongIndex forKey:settingKey];
     }
     else
     {
-        [appSetting updateSettingValue:currentSongIndex forSetting:appSetting];
+        [AppSetting updateSettingValue:currentSongIndex forSetting:appSetting];
     }
 }
 
@@ -90,6 +89,29 @@
     }
     
     return UIInterfaceOrientationMaskAll;
+}
+
+-(void)removeAllSQLiteFiles
+{
+    NSFileManager  *manager = [NSFileManager defaultManager];
+    
+    // the preferred way to get the apps documents directory
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    // grab all the files in the documents dir
+    NSArray *allFiles = [manager contentsOfDirectoryAtPath:documentsDirectory error:nil];
+    
+    // filter the array for only sqlite files
+    NSPredicate *fltr = [NSPredicate predicateWithFormat:@"self ENDSWITH '.sqlite'"];
+    NSArray *sqliteFiles = [allFiles filteredArrayUsingPredicate:fltr];
+    
+    // use fast enumeration to iterate the array and delete the files
+    for (NSString *sqliteFile in sqliteFiles)
+    {
+        NSError *error = nil;
+        [manager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:sqliteFile] error:&error];
+    }
 }
 
 #pragma mark - Initial Playlist Interactions
