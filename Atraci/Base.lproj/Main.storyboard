@@ -299,7 +299,7 @@
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <items>
                                     <navigationItem title="Playlists" id="0c1-Jb-HBn">
-                                        <barButtonItem key="leftBarButtonItem" title="Done" id="6On-D8-qqJ">
+                                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="6On-D8-qqJ">
                                             <connections>
                                                 <action selector="done:" destination="HP8-db-jqP" id="t8V-fr-Uqw"/>
                                             </connections>

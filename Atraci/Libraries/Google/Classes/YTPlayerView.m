@@ -758,6 +758,7 @@ NSString static *const kYTPlayerEmbedUrlRegexPattern = @"^http(s)://(www.)youtub
   webView.backgroundColor = [UIColor blackColor];
   webView.scrollView.scrollEnabled = NO;
   webView.scrollView.bounces = NO;
+  webView.mediaPlaybackAllowsAirPlay = YES;
 
   return webView;
 }

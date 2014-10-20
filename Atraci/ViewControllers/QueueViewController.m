@@ -38,10 +38,8 @@
     self.request.delegate = self;
     
     // for run application in background
-    NSError *setCategoryError = nil;
-    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &setCategoryError];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemEnded:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    NSError *sessionError = nil;
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&sessionError];
     
     repeatQueue = NO;
     shuffleQueue = NO;
@@ -76,11 +74,6 @@
 -(BOOL)canBecomeFirstResponder
 {
     return  YES;
-}
-
-- (void)playerItemEnded:(NSNotification *)notification
-{
-    //NSLog(@"end");
 }
 
 //required delegate from defined protocol
@@ -175,14 +168,15 @@
                                  @"showinfo" : @0,
                                  @"modestbranding" : @1,
                                  @"iv_load_policy" : @3,
-                                 @"autoplay" : @1
+                                 @"autoplay" : @1,
+                                 @"rel": @0
                                  };
     self.playerView.opaque = NO;
     self.playerView.backgroundColor = [UIColor blackColor];
     self.playerView.delegate = self;
     [self.playerView loadWithVideoId:videoId playerVars:playerVars];
     
-    double delayInSeconds = 2.8;
+    double delayInSeconds = 3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [QueueViewController sharedQueue].playerView = self.playerView;
@@ -214,11 +208,11 @@
         case kYTPlayerStatePaused:
             NSLog(@"Paused playback");
             [QueueViewController sharedQueue].isPlaying = NO;
+            
             break;
         case kYTPlayerStateEnded:
             NSLog(@"Ended playback");
             [QueueViewController sharedQueue].isPlaying = NO;
-            [self.playerView stopVideo];
             
             [self playNextSong];
             //tabBarItem.badgeValue = nil;
@@ -382,6 +376,10 @@
         queueSingleton.currentSongIndex = -1;
     }
     else{
+        if (indexPath.row < queueSingleton.currentSongIndex) {
+            queueSingleton.currentSongIndex = queueSingleton.currentSongIndex - 1;
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:queueSingleton.currentSongIndex inSection: 0];
             [tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -429,7 +427,7 @@
 }
 
 - (IBAction)AtraciTools:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Load Playlist",@"Save Playlist",@"Delete Queue", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Load Playlist",@"Save Playlist",@"Clear Queue", nil];
     [actionSheet showFromTabBar:self.tabBarController.tabBar];
 }
 

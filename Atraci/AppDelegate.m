@@ -10,6 +10,7 @@
 #import "QueueViewController.h"
 #import "QueueSingleton.h"
 #import "ATCPlaylistHelper.h"
+#import "Storage/AppSetting.h"
 
 @interface AppDelegate ()
 
@@ -33,6 +34,7 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
     if([QueueViewController sharedQueue].isPlaying == YES){
         double delayInSeconds = 1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -63,6 +65,20 @@
     //Save current queue playlist
     QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
     [ATCPlaylistHelper setPlaylist:ATRACI_PLAYLIST_MAINQUEUE withSongQueue:queueSingleton.queueSongs];
+    
+    //Save current played song index
+    NSString *settingKey = @"LAST_PLAYED_SONG";
+    NSString *currentSongIndex = [NSString stringWithFormat:@"%d",queueSingleton.currentSongIndex];
+    AppSetting *appSetting = [AppSetting alloc];
+    appSetting = [appSetting getSettingforKey:settingKey];
+    
+    if ([appSetting getSettingforKey:settingKey] == nil) {
+        [appSetting addSettingValue:currentSongIndex forKey:settingKey];
+    }
+    else
+    {
+        [appSetting updateSettingValue:currentSongIndex forSetting:appSetting];
+    }
 }
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
@@ -89,6 +105,7 @@
     QueueViewController *qVc = (QueueViewController*)[allTabs objectAtIndex:1];
     atcPlaylistHelper.delegate = qVc;
     
+    //Load or Create the playlist
     if([atcPlaylistHelper getPlaylist:ATRACI_PLAYLIST_MAINQUEUE withPredicate:nil andSongs:YES] == NO)
     {
         [ATCPlaylistHelper setPlaylist:ATRACI_PLAYLIST_MAINQUEUE withSongQueue:nil];

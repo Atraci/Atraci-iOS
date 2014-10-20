@@ -10,6 +10,7 @@
 		A408120419A336E100A98688 /* QueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A40811FF19A336E100A98688 /* QueueViewController.m */; };
 		A408120519A336E100A98688 /* SearchResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A408120119A336E100A98688 /* SearchResultViewController.m */; };
 		A408120619A336E100A98688 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A408120319A336E100A98688 /* SettingsTableViewController.m */; };
+		A4165BDA19F476110038DD2C /* AppSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = A4165BD919F476110038DD2C /* AppSetting.m */; };
 		A426416D19D6AF4E00C79365 /* AtraciLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = A426416C19D6AF4E00C79365 /* AtraciLogo.png */; };
 		A442394B19DA516100471DAD /* ATCSong.m in Sources */ = {isa = PBXBuildFile; fileRef = A442394A19DA516100471DAD /* ATCSong.m */; };
 		A442394E19DA68F800471DAD /* ATCLogicAlgorithms.m in Sources */ = {isa = PBXBuildFile; fileRef = A442394D19DA68F800471DAD /* ATCLogicAlgorithms.m */; };
@@ -89,6 +90,8 @@
 		A408120119A336E100A98688 /* SearchResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultViewController.m; sourceTree = "<group>"; };
 		A408120219A336E100A98688 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		A408120319A336E100A98688 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
+		A4165BD819F476110038DD2C /* AppSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppSetting.h; path = Storage/AppSetting.h; sourceTree = "<group>"; };
+		A4165BD919F476110038DD2C /* AppSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppSetting.m; path = Storage/AppSetting.m; sourceTree = "<group>"; };
 		A426416C19D6AF4E00C79365 /* AtraciLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AtraciLogo.png; sourceTree = "<group>"; };
 		A442394919DA516100471DAD /* ATCSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ATCSong.h; path = Model/ATCSong.h; sourceTree = "<group>"; };
 		A442394A19DA516100471DAD /* ATCSong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ATCSong.m; path = Model/ATCSong.m; sourceTree = "<group>"; };
@@ -302,10 +305,12 @@
 			isa = PBXGroup;
 			children = (
 				A4E8FCC519D92BC7006EEE8B /* AtraciModel.xcdatamodeld */,
-				A4E8FCC219D92B83006EEE8B /* PlaylistSong.h */,
-				A4E8FCC319D92B83006EEE8B /* PlaylistSong.m */,
 				A4E8FCBF19D92B83006EEE8B /* Playlist.h */,
 				A4E8FCC019D92B83006EEE8B /* Playlist.m */,
+				A4E8FCC219D92B83006EEE8B /* PlaylistSong.h */,
+				A4E8FCC319D92B83006EEE8B /* PlaylistSong.m */,
+				A4165BD819F476110038DD2C /* AppSetting.h */,
+				A4165BD919F476110038DD2C /* AppSetting.m */,
 			);
 			name = Storage;
 			sourceTree = "<group>";
@@ -504,6 +509,7 @@
 				A4E8FCC119D92B83006EEE8B /* Playlist.m in Sources */,
 				A408120619A336E100A98688 /* SettingsTableViewController.m in Sources */,
 				A4513EBA19A3352F00E84374 /* RequestClass.m in Sources */,
+				A4165BDA19F476110038DD2C /* AppSetting.m in Sources */,
 				A442394B19DA516100471DAD /* ATCSong.m in Sources */,
 				A408120419A336E100A98688 /* QueueViewController.m in Sources */,
 				A4513EB319A3350300E84374 /* SVProgressHUD.m in Sources */,

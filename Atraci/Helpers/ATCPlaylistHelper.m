@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "Playlist.h"
 #import "PlaylistSong.h"
+#import "AppSetting.h"
 #import "ATCSong.h"
 #import "QueueSingleton.h"
 
@@ -211,6 +212,8 @@ static ATCPlaylistHelper *sharedInstance = nil;
                         
                     }];
                     
+                    __block int songsCount = 0;
+                    
                     for (PlaylistSong *plsSong in sortedSet) {
                         ATCSong *song = [[ATCSong alloc] init];
                         song.artist = plsSong.artist;
@@ -218,7 +221,6 @@ static ATCPlaylistHelper *sharedInstance = nil;
                         song.urlCoverMedium = (id)plsSong.coverMedium;
                         song.urlCoverLarge = (id)plsSong.coverLarge;
                         song.imageCoverMedium = [UIImage imageNamed:@"cover_default_large.png"];
-                        
                         [queue addObject:song];
                         
                         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -228,11 +230,21 @@ static ATCPlaylistHelper *sharedInstance = nil;
                             dispatch_async( dispatch_get_main_queue(), ^{
                                 // Add code here to update the UI/send notifications based on the
                                 // results of the background processing
-                                if (queue.count == sortedSet.count) {
+                                songsCount = songsCount + 1;
+                                
+                                if (songsCount == sortedSet.count) {
                                     QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
                                     queueSingleton.queueSongs = queue;
                                     
-                                    //Relaod table
+                                    //Set lastPlayed Index
+                                    if ([playlistName isEqualToString:ATRACI_PLAYLIST_MAINQUEUE] == YES) {
+                                        AppSetting *appSetting = [AppSetting alloc];
+                                        appSetting = [appSetting getSettingforKey:@"LAST_PLAYED_SONG"];
+                                        QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+                                        queueSingleton.currentSongIndex = [appSetting.value intValue];
+                                    }
+                                    
+                                    //Reload table
                                     [self.delegate reloadQueueDelegate];
                                 }
                             });
