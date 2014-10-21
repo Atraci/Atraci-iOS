@@ -25,10 +25,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property(nonatomic, strong) IBOutlet YTPlayerView *playerView;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *repeatBarBtn;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *shuffleBarBtn;
 @property (weak, nonatomic) IBOutlet UITabBarItem *QueueIcon;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *AtraciBarBtn;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *PlayListBtn;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *PlayPauseBtn;
 
 - (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition;
 + (instancetype)sharedQueue;

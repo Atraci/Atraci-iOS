@@ -16,8 +16,10 @@
 {
     ATCSong* currentSongObj;
     NSMutableArray *artists, *albums, *tracks, *queue;
-    BOOL repeatQueue,shuffleQueue;
+    BOOL repeatQueue,repeatSong,shuffleQueue;
     UIAlertView *deleteQueueAlert, *playlistAlert;
+    UIActionSheet *actionSheetPlayerOptions, *actionSheetPlaylistAction;
+    QueueSingleton *queueSingleton;
 }
 @synthesize request,isPlaying,mainTable,shoudDisplayHUD;
 
@@ -33,6 +35,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    queueSingleton = [QueueSingleton sharedInstance];
     
     self.request = [[RequestClass alloc] init];
     self.request.delegate = self;
@@ -42,23 +45,29 @@
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&sessionError];
     
     repeatQueue = NO;
+    repeatSong = NO;
     shuffleQueue = NO;
     
+    //finally, create your UIBarButtonItem using that button
+    self.PlayListBtn.target = self;
+    self.PlayListBtn.action = @selector(playlistAction:);
     
     //create the image for your button, and set the frame for its size
-    UIImage *image = [UIImage imageNamed:@"AtraciLogo.png"];
+    UIImage *imagePlay = [UIImage imageNamed:@"Play"];
+    UIImage *imagePause = [UIImage imageNamed:@"Pause"];
     CGRect frame = CGRectMake(0, 0, 35, 35);
-    
+
     //init a normal UIButton using that image
     UIButton* button = [[UIButton alloc] initWithFrame:frame];
-    [button setBackgroundImage:image forState:UIControlStateNormal];
+    [button setBackgroundImage:imagePlay forState:UIControlStateNormal];
+    [button setBackgroundImage:imagePause forState:UIControlStateSelected];
     [button setShowsTouchWhenHighlighted:YES];
-    
+
     //set the button to handle clicks - this one calls a method called 'downloadClicked'
-    [button addTarget:self action:@selector(AtraciTools:) forControlEvents:UIControlEventTouchDown];
-    
+    [button addTarget:self action:@selector(playPause:) forControlEvents:UIControlEventTouchDown];
+
     //finally, create your UIBarButtonItem using that button
-    self.AtraciBarBtn.customView = button;
+    self.PlayPauseBtn.customView = button;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -114,7 +123,6 @@
 
 #pragma mark -
 - (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition {
-    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
     queue = queueSingleton.queueSongs;
     
     if (reloadTable == YES) {
@@ -143,6 +151,9 @@
         [self.request request:url withSelector:@selector(loadPlayerWithData:)];
         
         [self loadLockScreenAlbumArt:queueSingleton.currentSongIndex];
+        
+        UIButton* button = (UIButton *)self.PlayPauseBtn.customView;
+        [button setSelected:YES];
     }
 }
 
@@ -198,24 +209,38 @@
     //Always reload lockscreen data due to how the video api performs
     [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
     
+    UIButton *button;
+    
     switch (state) {
         case kYTPlayerStatePlaying:
             NSLog(@"Started playback");
             [QueueViewController sharedQueue].isPlaying = YES;
+            button = (UIButton *)self.PlayPauseBtn.customView;
+            [button setSelected:YES];
             
             [self resetPlayerSize];
             break;
         case kYTPlayerStatePaused:
             NSLog(@"Paused playback");
             [QueueViewController sharedQueue].isPlaying = NO;
+            button = (UIButton *)self.PlayPauseBtn.customView;
+            [button setSelected:NO];
             
             break;
         case kYTPlayerStateEnded:
             NSLog(@"Ended playback");
             [QueueViewController sharedQueue].isPlaying = NO;
+            button = (UIButton *)self.PlayPauseBtn.customView;
+            [button setSelected:YES];
             
-            [self playNextSong];
-            //tabBarItem.badgeValue = nil;
+            if (repeatSong == YES) {
+                [self.playerView seekToSeconds:0.0 allowSeekAhead:YES];
+            }
+            else
+            {
+                [self playNextSong];
+            }
+            
             break;
         default:
             break;
@@ -224,7 +249,6 @@
 
 -(void)playNextSong
 {
-    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
     if (shuffleQueue == YES) {
         [self loadSongs:YES shouldReloadTable:NO withSongPostition:arc4random() % queue.count];
     }
@@ -244,9 +268,7 @@
 
 -(void)playPreviousSong
 {
-    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
     int previousSongPosition;
-    
         float seconds = self.playerView.currentTime;
             if (seconds < 15.0) {
                 previousSongPosition = queueSingleton.currentSongIndex - 1;
@@ -349,12 +371,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
     if (tableView == self.mainTable) {
+        UIButton *button = (UIButton *)self.PlayPauseBtn.customView;
+        [button setSelected:YES];
+        
         [self loadSongs:YES shouldReloadTable:NO withSongPostition:indexPath.row];
     }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
     if (queueSingleton.currentSongIndex != -1) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:queueSingleton.currentSongIndex inSection: 0];
@@ -366,7 +390,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+
     self.shoudDisplayHUD = NO;
     [queue removeObjectAtIndex:indexPath.row];
     [tableView reloadData];
@@ -406,29 +430,57 @@
 }
 
 
-- (IBAction)repeatQueue:(id)sender {
-    repeatQueue = !repeatQueue;
-    if (repeatQueue == YES) {
-        [_repeatBarBtn setTintColor:[UIColor redColor]];
+- (IBAction)playPause:(id)sender {
+    UIButton *button;
+    
+    if ([self.playerView playerState] == kYTPlayerStatePlaying) {
+        [self.playerView pauseVideo];
+        
+        button = (UIButton *)self.PlayPauseBtn.customView;
+        [button setSelected:NO];
     }
-    else{
-        [_repeatBarBtn setTintColor:self.view.tintColor];
+    else if([self.playerView playerState] == kYTPlayerStatePaused)
+    {
+        [self.playerView playVideo];
+        
+        button = (UIButton *)self.PlayPauseBtn.customView;
+        [button setSelected:YES];
+    }
+    else if([self.playerView playerState] == kYTPlayerStateUnknown)
+    {
+        if (queueSingleton.queueSongs.count > 0) {
+            [self loadSongs:YES shouldReloadTable:NO withSongPostition:queueSingleton.currentSongIndex];
+            
+            button = (UIButton *)self.PlayPauseBtn.customView;
+            [button setSelected:YES];
+        }
     }
 }
 
-- (IBAction)shuffleQueue:(id)sender {
-    shuffleQueue = !shuffleQueue;
+- (IBAction)playerOptions:(id)sender {
+    NSString *shuffleState = @"Turn Shuffle On";
+    NSString *repeatState = @"Turn Repeat All On";
+    NSString *repeatSongState = @"Turn Repeat Song On";
+    
     if (shuffleQueue == YES) {
-        [_shuffleBarBtn setTintColor:[UIColor redColor]];
+        shuffleState = @"Turn Shuffle Off";
     }
-    else{
-        [_shuffleBarBtn setTintColor:self.view.tintColor];
+    
+    if (repeatQueue == YES) {
+        repeatState = @"Turn Repeat All Off";
     }
+    
+    if (repeatSong == YES) {
+        repeatSongState = @"Turn Repeat Song Off";
+    }
+    
+    actionSheetPlayerOptions = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:shuffleState,repeatState,repeatSongState, nil];
+    [actionSheetPlayerOptions showFromTabBar:self.tabBarController.tabBar];
 }
 
-- (IBAction)AtraciTools:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Load Playlist",@"Save Playlist",@"Clear Queue", nil];
-    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+- (IBAction)playlistAction:(id)sender {
+    actionSheetPlaylistAction = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Load Playlist",@"Save Playlist",@"Clear Queue", nil];
+    [actionSheetPlaylistAction showFromTabBar:self.tabBarController.tabBar];
 }
 
 #pragma mark -
@@ -461,26 +513,46 @@
 #pragma mark -
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex != 3) {
-        
-        switch (buttonIndex) {
-            case 0:
-                [self performSegueWithIdentifier:@"PlaylistsSegue" sender:self];
-                break;
-            case 1:
-                if (queue.count > 0) {
-                    playlistAlert = [[UIAlertView alloc] initWithTitle:@"Playlist Name:" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
-                    [playlistAlert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-                    [playlistAlert show];
-                }
-                break;
-            case 2:
-                deleteQueueAlert = [[UIAlertView alloc] initWithTitle:@"¿Proceed on clearing the queue?" message:@"" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
-                [deleteQueueAlert show];
-                
-                break;
-            default:
-                break;
+    if (actionSheet == actionSheetPlaylistAction) {
+        if (buttonIndex != 3) {
+            switch (buttonIndex) {
+                case 0:
+                    [self performSegueWithIdentifier:@"PlaylistsSegue" sender:self];
+                    break;
+                case 1:
+                    if (queue.count > 0) {
+                        playlistAlert = [[UIAlertView alloc] initWithTitle:@"Playlist Name:" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
+                        [playlistAlert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+                        [playlistAlert show];
+                    }
+                    break;
+                case 2:
+                    deleteQueueAlert = [[UIAlertView alloc] initWithTitle:@"¿Proceed on clearing the queue?" message:@"" delegate:self
+                                                        cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
+                    [deleteQueueAlert show];
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    else if (actionSheet == actionSheetPlayerOptions)
+    {
+        if (buttonIndex != 3) {
+            
+            switch (buttonIndex) {
+                case 0:
+                    shuffleQueue = !shuffleQueue;
+                    break;
+                case 1:
+                    repeatQueue = !repeatQueue;
+                    break;
+                case 2:
+                    repeatSong = !repeatSong;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
@@ -501,8 +573,10 @@
         }
         else
         {
+            UIButton *button = (UIButton *)self.PlayPauseBtn.customView;
+            [button setSelected:NO];
+            
             self.shoudDisplayHUD = NO;
-            QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
             [QueueViewController sharedQueue].isPlaying = NO;
             queueSingleton.currentSongIndex = 0;
             [queueSingleton.queueSongs removeAllObjects];

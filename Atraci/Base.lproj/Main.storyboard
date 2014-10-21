@@ -111,7 +111,7 @@
             </objects>
             <point key="canvasLocation" x="2974" y="267"/>
         </scene>
-        <!--Queue-->
+        <!--Player-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
                 <viewController id="8rJ-Kc-sve" customClass="QueueViewController" sceneMemberID="viewController">
@@ -203,35 +203,31 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uKI-Ni-Khg">
                                 <rect key="frame" x="0.0" y="150" width="600" height="44"/>
                                 <items>
-                                    <barButtonItem systemItem="rewind" id="dv3-Fu-Zg7">
+                                    <barButtonItem image="MusicSettings" style="plain" id="Jk0-oa-x7h">
+                                        <connections>
+                                            <action selector="playerOptions:" destination="8rJ-Kc-sve" id="7ig-SS-X35"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZhS-cc-azZ"/>
+                                    <barButtonItem image="Rewind" style="plain" id="dv3-Fu-Zg7">
                                         <connections>
                                             <action selector="btnPlayPrevious:" destination="8rJ-Kc-sve" id="9Kw-9e-w7l"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZhS-cc-azZ"/>
-                                    <barButtonItem image="Repeat" id="Jk0-oa-x7h">
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="FyT-kE-std"/>
+                                    <barButtonItem image="Play" style="plain" id="rVk-FK-FE4"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Ia9-ZV-pzl"/>
+                                    <barButtonItem image="Forward" id="HHN-AJ-keb">
                                         <connections>
-                                            <action selector="repeatQueue:" destination="8rJ-Kc-sve" id="7jD-Yj-iHk"/>
+                                            <action selector="btnPlayNext:" destination="8rJ-Kc-sve" id="F23-p4-GZ5"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="FyT-kE-std"/>
-                                    <barButtonItem title="Atraci" style="plain" id="L7G-YO-VC8">
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZAe-5N-LEt"/>
+                                    <barButtonItem image="Playlists" style="plain" id="L7G-YO-VC8">
                                         <connections>
                                             <segue destination="HP8-db-jqP" kind="popoverPresentation" identifier="PlaylistsSegue" popoverAnchorBarButtonItem="L7G-YO-VC8" id="X7S-Bs-TKH">
                                                 <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                             </segue>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Ia9-ZV-pzl"/>
-                                    <barButtonItem image="Shuffle" id="Wj5-7n-2Rr">
-                                        <connections>
-                                            <action selector="shuffleQueue:" destination="8rJ-Kc-sve" id="M6R-BY-tAp"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZAe-5N-LEt"/>
-                                    <barButtonItem systemItem="fastForward" id="HHN-AJ-keb">
-                                        <connections>
-                                            <action selector="btnPlayNext:" destination="8rJ-Kc-sve" id="F23-p4-GZ5"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -265,16 +261,15 @@
                         </variation>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <tabBarItem key="tabBarItem" title="Queue" image="Queue" id="cPa-gy-q4n"/>
+                    <tabBarItem key="tabBarItem" title="Player" image="Queue" id="cPa-gy-q4n"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="AtraciBarBtn" destination="L7G-YO-VC8" id="G3n-fN-w8d"/>
+                        <outlet property="PlayListBtn" destination="L7G-YO-VC8" id="xVp-yh-xkr"/>
+                        <outlet property="PlayPauseBtn" destination="rVk-FK-FE4" id="q3y-pq-Rkg"/>
                         <outlet property="QueueIcon" destination="cPa-gy-q4n" id="aZ2-Ak-Taq"/>
                         <outlet property="mainTable" destination="W2s-9J-J1p" id="5bN-El-Z3K"/>
                         <outlet property="playerView" destination="Set-ot-mQn" id="V1S-9a-emS"/>
-                        <outlet property="repeatBarBtn" destination="Jk0-oa-x7h" id="YOx-Iy-Uxm"/>
-                        <outlet property="shuffleBarBtn" destination="Wj5-7n-2Rr" id="9Zr-EB-hBN"/>
                         <outlet property="toolbar" destination="uKI-Ni-Khg" id="jsm-dm-S30"/>
                     </connections>
                 </viewController>
@@ -556,9 +551,12 @@ The Atraci Team (atraciapp@gmail.com)</string>
         </scene>
     </scenes>
     <resources>
+        <image name="Forward" width="50" height="50"/>
+        <image name="MusicSettings" width="50" height="50"/>
+        <image name="Play" width="50" height="50"/>
+        <image name="Playlists" width="50" height="50"/>
         <image name="Queue" width="25" height="25"/>
-        <image name="Repeat" width="25" height="25"/>
+        <image name="Rewind" width="50" height="50"/>
         <image name="Settings" width="25" height="25"/>
-        <image name="Shuffle" width="25" height="25"/>
     </resources>
 </document>
