@@ -130,7 +130,7 @@
         count = 1;
     }
     else{
-        count = queryResults.count;
+        count = (int)queryResults.count;
     }
     
     return count;
@@ -256,7 +256,7 @@
         UIImage *image;
         
         NSArray *object = [queryResults objectAtIndex:indexPath.section] ;
-        int objCount = [object count];
+        int objCount = (int)object.count;
         if (objCount > 0 && rowIndex < objCount){
             label = [[object objectAtIndex:rowIndex] objectForKey:@"label"];
             image = [[object objectAtIndex:rowIndex] objectForKey:@"image"];
