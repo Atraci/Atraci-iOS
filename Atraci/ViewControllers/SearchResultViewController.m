@@ -19,8 +19,9 @@
 @implementation SearchResultViewController
 {
     NSArray *autoCompletionSearchResults, *searchResults;
-    NSMutableArray *artists, *albums, *tracks, *ATCSearchResults;
+    NSMutableArray *artists, *albums, *tracks, *customSearch, *ATCSearchResults, *queryResults;
     NSMutableDictionary *searchTableSections;
+    NSString *customSearchText;
 }
 
 @synthesize request;
@@ -107,6 +108,8 @@
     if ([searchText length] > 0) {
         NSString* encoded = [searchText stringByAddingPercentEscapesUsingEncoding:
                              NSASCIIStringEncoding];
+        customSearchText = searchText;
+        
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",@"http://www.last.fm/search/autocomplete?q=",encoded]];
         
         [request request:url withSelector:@selector(reloadSearchTableWithData:)];
@@ -127,7 +130,7 @@
         count = 1;
     }
     else{
-        count = 3;
+        count = queryResults.count;
     }
     
     return count;
@@ -143,13 +146,16 @@
     else{
         switch (section) {
             case 0:
-                count = artists.count;
+                count = [[queryResults objectAtIndex:section] count];
                 break;
             case 1:
-                count = albums.count;
+                count = [[queryResults objectAtIndex:section] count];
                 break;
             case 2:
-                count = tracks.count;
+                count = [[queryResults objectAtIndex:section] count];
+                break;
+            case 3:
+                count = [[queryResults objectAtIndex:section] count];
                 break;
             default:
                 break;
@@ -163,18 +169,15 @@
     NSString * sectionTitle = @"";
     
     if (tableView != self.mainTable) {
-        switch (section) {
-            case 0:
-                sectionTitle = @"Artists";
-                break;
-            case 1:
-                sectionTitle = @"Albums";
-                break;
-            case 2:
-                sectionTitle = @"Songs";
-                break;
-            default:
-                break;
+        if ([queryResults objectAtIndex:section] == artists) {
+            sectionTitle = @"Artists";
+        }else if([queryResults objectAtIndex:section] == albums) {
+            sectionTitle = @"Albums";
+        }else if([queryResults objectAtIndex:section] == tracks) {
+            sectionTitle = @"Songs";
+        }
+        else if([queryResults objectAtIndex:section] == customSearch) {
+            sectionTitle = @"Search";
         }
     }
     return sectionTitle;
@@ -252,27 +255,11 @@
         NSString *label;
         UIImage *image;
         
-        switch (indexPath.section) {
-            case 0:
-                if (artists.count > 0 && rowIndex < artists.count){
-                    label = [[artists objectAtIndex:rowIndex] objectForKey:@"label"];
-                    image = [[artists objectAtIndex:rowIndex] objectForKey:@"image"];
-                }
-                break;
-            case 1:
-                if (albums.count > 0 && rowIndex < albums.count){
-                    label = [[albums objectAtIndex:rowIndex] objectForKey:@"label"];
-                    image = [[albums objectAtIndex:rowIndex] objectForKey:@"image"];
-                }
-                break;
-            case 2:
-                if (tracks.count > 0 && rowIndex < tracks.count){
-                    label = [[tracks objectAtIndex:rowIndex] objectForKey:@"label"];
-                    image = [[tracks objectAtIndex:rowIndex] objectForKey:@"image"];
-                }
-                break;
-            default:
-                break;
+        NSArray *object = [queryResults objectAtIndex:indexPath.section] ;
+        int objCount = [object count];
+        if (objCount > 0 && rowIndex < objCount){
+            label = [[object objectAtIndex:rowIndex] objectForKey:@"label"];
+            image = [[object objectAtIndex:rowIndex] objectForKey:@"image"];
         }
         
         cell.imageView.image = image;
@@ -291,23 +278,13 @@
         [actionSheet showFromTabBar:self.tabBarController.tabBar];
     }
     else{
-        switch (indexPath.section) {
-            case 0:
-                value = [[artists objectAtIndex:indexPath.row] objectForKey:@"value"];
-                break;
-            case 1:
-                value = [[albums objectAtIndex:indexPath.row] objectForKey:@"value"];
-                break;
-            case 2:
-                value = [[tracks objectAtIndex:indexPath.row] objectForKey:@"value"];
-                break;
-            default:
-                break;
-        }
+        NSDictionary *object = [[queryResults objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+        value = [object objectForKey:@"value"];
+
         //Hide search bar
         [self.searchDisplayController setActive:NO animated:YES];
-        
         [self requestMainTableData:value];
+        
         self.searchDisplayController.searchBar.text = value;
     }
 }
@@ -356,6 +333,7 @@
     artists = [[NSMutableArray alloc] init];
     albums = [[NSMutableArray alloc] init];
     tracks = [[NSMutableArray alloc] init];
+    customSearch = [[NSMutableArray alloc] init];
     
     for (NSDictionary *o in autoCompletionSearchResults) {
         if ([[o objectForKey:@"type"] isEqualToString:@"artist"]) {
@@ -368,6 +346,29 @@
             [tracks addObject:o];
         }
     }
+    
+    queryResults = [[NSMutableArray alloc] init];
+    
+    if (artists.count > 0) {
+        [queryResults addObject:artists];
+    }
+    if (albums.count > 0) {
+        [queryResults addObject:albums];
+    }
+    if (tracks.count > 0) {
+        [queryResults addObject:tracks];
+    }
+    
+    //Custom Search
+        UIImage *image = [UIImage imageNamed:@"cover_default_large.png"];
+        
+        NSMutableDictionary *customObject = [[NSMutableDictionary alloc] init];
+        [customObject setObject:customSearchText forKey:@"value"];
+        [customObject setObject:customSearchText forKey:@"label"];
+        [customObject setObject:image forKey:@"image"];
+
+        [customSearch addObject:customObject];
+        [queryResults addObject:customSearch];
     
     //Reload table
     double delayInSeconds = 0.02;
