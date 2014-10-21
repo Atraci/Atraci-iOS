@@ -19,7 +19,6 @@
     BOOL repeatQueue,repeatSong,shuffleQueue;
     UIAlertView *deleteQueueAlert, *playlistAlert;
     UIActionSheet *actionSheetPlayerOptions, *actionSheetPlaylistAction;
-    QueueSingleton *queueSingleton;
 }
 @synthesize request,isPlaying,mainTable,shoudDisplayHUD;
 
@@ -35,7 +34,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    queueSingleton = [QueueSingleton sharedInstance];
     
     self.request = [[RequestClass alloc] init];
     self.request.delegate = self;
@@ -123,6 +121,7 @@
 
 #pragma mark -
 - (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition {
+    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
     queue = queueSingleton.queueSongs;
     
     if (reloadTable == YES) {
@@ -254,6 +253,7 @@
     }
     else
     {
+        QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
         int nextSongPosition = queueSingleton.currentSongIndex + 1;
         if (nextSongPosition < queue.count) {
             [self loadSongs:YES shouldReloadTable:NO withSongPostition:nextSongPosition];
@@ -269,21 +269,22 @@
 -(void)playPreviousSong
 {
     int previousSongPosition;
-        float seconds = self.playerView.currentTime;
-            if (seconds < 15.0) {
-                previousSongPosition = queueSingleton.currentSongIndex - 1;
-            } else{
-                previousSongPosition = queueSingleton.currentSongIndex;
-            }
-        if (previousSongPosition < queue.count) {
-            [self loadSongs:YES shouldReloadTable:NO withSongPostition:previousSongPosition];
+    float seconds = self.playerView.currentTime;
+    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+
+    if (seconds < 15.0) {
+        previousSongPosition = queueSingleton.currentSongIndex - 1;
+    } else{
+        previousSongPosition = queueSingleton.currentSongIndex;
+    }
+    if (previousSongPosition < queue.count) {
+        [self loadSongs:YES shouldReloadTable:NO withSongPostition:previousSongPosition];
+    }
+    else{
+        if (repeatQueue == YES) {
+            [self loadSongs:YES shouldReloadTable:NO withSongPostition:0];
         }
-        else{
-            if (repeatQueue == YES) {
-                [self loadSongs:YES shouldReloadTable:NO withSongPostition:0];
-            }
-        }
-    
+    }
 }
 
 -(void)getSongInfo
@@ -379,6 +380,8 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+    
     if (queueSingleton.currentSongIndex != -1) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:queueSingleton.currentSongIndex inSection: 0];
@@ -394,6 +397,7 @@
     self.shoudDisplayHUD = NO;
     [queue removeObjectAtIndex:indexPath.row];
     [tableView reloadData];
+    QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
     
     if (indexPath.row == queueSingleton.currentSongIndex) {
         [self.playerView stopVideo];
@@ -448,6 +452,7 @@
     }
     else if([self.playerView playerState] == kYTPlayerStateUnknown)
     {
+        QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
         if (queueSingleton.queueSongs.count > 0) {
             [self loadSongs:YES shouldReloadTable:NO withSongPostition:queueSingleton.currentSongIndex];
             
@@ -578,6 +583,7 @@
             
             self.shoudDisplayHUD = NO;
             [QueueViewController sharedQueue].isPlaying = NO;
+            QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
             queueSingleton.currentSongIndex = 0;
             [queueSingleton.queueSongs removeAllObjects];
             [queue removeAllObjects];
