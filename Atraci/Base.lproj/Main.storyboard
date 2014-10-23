@@ -215,7 +215,8 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="FyT-kE-std"/>
-                                    <barButtonItem image="Play" style="plain" id="rVk-FK-FE4"/>
+                                    <barButtonItem width="35" style="plain" systemItem="fixedSpace" id="DZ6-2S-uz5"/>
+                                    <barButtonItem tag="1" image="Play" style="plain" id="rVk-FK-FE4"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Ia9-ZV-pzl"/>
                                     <barButtonItem image="Forward" id="HHN-AJ-keb">
                                         <connections>
@@ -232,15 +233,20 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="VYg-Gn-0GN">
+                                <rect key="frame" x="290" y="162" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="Set-ot-mQn" secondAttribute="bottom" id="4z2-ic-Hyr"/>
                             <constraint firstItem="W2s-9J-J1p" firstAttribute="top" secondItem="uKI-Ni-Khg" secondAttribute="bottom" id="PV9-fb-EgC"/>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="W2s-9J-J1p" secondAttribute="bottom" id="VFQ-cl-V8s"/>
+                            <constraint firstItem="VYg-Gn-0GN" firstAttribute="centerX" secondItem="uKI-Ni-Khg" secondAttribute="centerX" id="VH4-Wx-PWO"/>
                             <constraint firstItem="uKI-Ni-Khg" firstAttribute="top" secondItem="Set-ot-mQn" secondAttribute="bottom" id="XTE-WK-fvV"/>
                             <constraint firstItem="uKI-Ni-Khg" firstAttribute="leading" secondItem="Set-ot-mQn" secondAttribute="leading" id="anO-up-b2F"/>
                             <constraint firstItem="Set-ot-mQn" firstAttribute="trailing" secondItem="W2s-9J-J1p" secondAttribute="trailing" id="bTD-s0-GbP"/>
+                            <constraint firstItem="VYg-Gn-0GN" firstAttribute="centerY" secondItem="uKI-Ni-Khg" secondAttribute="centerY" id="c0c-de-JSk"/>
                             <constraint firstAttribute="trailing" secondItem="W2s-9J-J1p" secondAttribute="trailing" id="ddR-Ih-hEv"/>
                             <constraint firstItem="W2s-9J-J1p" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" id="di0-bK-g4o"/>
                             <constraint firstItem="uKI-Ni-Khg" firstAttribute="trailing" secondItem="Set-ot-mQn" secondAttribute="trailing" id="gr7-t2-ypC"/>
@@ -265,10 +271,12 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="ActivityIndicator" destination="VYg-Gn-0GN" id="8ZO-Ow-FhB"/>
                         <outlet property="PlayListBtn" destination="L7G-YO-VC8" id="xVp-yh-xkr"/>
                         <outlet property="PlayPauseBtn" destination="rVk-FK-FE4" id="q3y-pq-Rkg"/>
                         <outlet property="PlayerOptionsBtn" destination="Jk0-oa-x7h" id="nR6-Jv-YNh"/>
                         <outlet property="QueueIcon" destination="cPa-gy-q4n" id="aZ2-Ak-Taq"/>
+                        <outlet property="fixedSpace" destination="DZ6-2S-uz5" id="PXq-Yt-kdh"/>
                         <outlet property="mainTable" destination="W2s-9J-J1p" id="5bN-El-Z3K"/>
                         <outlet property="playerView" destination="Set-ot-mQn" id="V1S-9a-emS"/>
                         <outlet property="toolbar" destination="uKI-Ni-Khg" id="jsm-dm-S30"/>

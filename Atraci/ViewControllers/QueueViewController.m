@@ -19,6 +19,7 @@
     BOOL repeatQueue,repeatSong,shuffleQueue, isQueueTab;
     UIAlertView *deleteQueueAlert, *playlistAlert;
     UIActionSheet *actionSheetPlayerOptions, *actionSheetPlaylistAction;
+    UIBarButtonItem *barButtonItemBackup;
 }
 @synthesize request,isPlaying,mainTable,shoudDisplayHUD;
 
@@ -68,6 +69,7 @@
     self.PlayPauseBtn.customView = button;
     
     self.tabBarController.delegate = self;
+    self.fixedSpace.width = 0.0;
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController
@@ -161,6 +163,11 @@
     }
     
     if (load == YES) {
+        [self hidePlayPauseBarButtonItem];
+        [self.ActivityIndicator startAnimating];
+        UIButton* button = (UIButton *)self.PlayPauseBtn.customView;
+        [button setSelected:YES];
+        
         queueSingleton.currentSongIndex = (int)songPosition;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:queueSingleton.currentSongIndex inSection: 0];
         [self.mainTable selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -176,9 +183,6 @@
         [self.request request:url withSelector:@selector(loadPlayerWithData:)];
         
         [self loadLockScreenAlbumArt:queueSingleton.currentSongIndex];
-        
-        UIButton* button = (UIButton *)self.PlayPauseBtn.customView;
-        [button setSelected:YES];
     }
 }
 
@@ -243,6 +247,9 @@
             button = (UIButton *)self.PlayPauseBtn.customView;
             [button setSelected:YES];
             
+            [self.ActivityIndicator stopAnimating];
+            [self showPlayPauseBarButtonItem];
+            
             [self resetPlayerSize];
             break;
         case kYTPlayerStatePaused:
@@ -267,8 +274,63 @@
             }
             
             break;
+        case kYTPlayerStateBuffering:
+            [self hidePlayPauseBarButtonItem];
+            [self.ActivityIndicator startAnimating];
+            break;
         default:
             break;
+    }
+}
+
+- (void)showPlayPauseBarButtonItem{
+    
+    NSMutableArray * toolbarButtonItems = [NSMutableArray arrayWithArray:
+                                           [self.toolbar items]];
+    
+    BOOL found = NO;
+    
+    for(UIBarButtonItem * tmpButton in toolbarButtonItems){
+        
+        if([tmpButton tag] == 1){ //settings button.
+            
+            //keep it
+            found = YES;
+            break;
+        }
+    }
+    
+    if(found == NO){
+        [toolbarButtonItems insertObject:barButtonItemBackup atIndex:4]; //insert item at index you like.
+        
+        [self.toolbar setItems:toolbarButtonItems];
+        self.fixedSpace.width = 0.0;
+    }
+}
+
+- (void)hidePlayPauseBarButtonItem{
+    NSMutableArray * toolbarButtonItems = [NSMutableArray arrayWithArray:
+                                           [self.toolbar items]];
+    
+    BOOL found = NO;
+    
+    for(UIBarButtonItem * tmpButton in toolbarButtonItems){
+        
+        if([tmpButton tag] == 1){ //settings button tag. set in IB.
+            
+            found = YES;
+            barButtonItemBackup = tmpButton; //save it for later.
+            //should keep a reference to your VC.
+            
+            [toolbarButtonItems removeObject:tmpButton];
+            self.fixedSpace.width = 35.0;
+            
+            break;
+        }
+    }
+    
+    if(found == YES){
+        [self.toolbar setItems:toolbarButtonItems];
     }
 }
 
@@ -441,15 +503,6 @@
     }
 }
 
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {    
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-    
-}
-
 #pragma mark -
 - (void)loadLockScreenAlbumArt:(int)index {
     ATCSong *songToUpdate = [queue objectAtIndex:index];
@@ -498,20 +551,20 @@
 }
 
 - (IBAction)playerOptions:(id)sender {
-    NSString *shuffleState = @"Turn Shuffle On";
-    NSString *repeatState = @"Turn Repeat All On";
-    NSString *repeatSongState = @"Turn Repeat Song On";
+    NSString *shuffleState = @"Shuffle is Off";
+    NSString *repeatState = @"Repeat All is Off";
+    NSString *repeatSongState = @"Repeat Song is Off";
     
     if (shuffleQueue == YES) {
-        shuffleState = @"Turn Shuffle Off";
+        shuffleState = @"Shuffle ✓";
     }
     
     if (repeatQueue == YES) {
-        repeatState = @"Turn Repeat All Off";
+        repeatState = @"Repeat All ✓";
     }
     
     if (repeatSong == YES) {
-        repeatSongState = @"Turn Repeat Song Off";
+        repeatSongState = @"Repeat Song ✓";
     }
     
     actionSheetPlayerOptions = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:shuffleState,repeatState,repeatSongState, nil];

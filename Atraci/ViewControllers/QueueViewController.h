@@ -28,6 +28,9 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *PlayListBtn;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *PlayPauseBtn;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *PlayerOptionsBtn;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *ActivityIndicator;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *fixedSpace;
 
 - (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition;
 + (instancetype)sharedQueue;
