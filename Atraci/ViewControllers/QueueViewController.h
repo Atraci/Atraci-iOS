@@ -13,8 +13,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 
-@interface QueueViewController : UIViewController <YTPlayerViewDelegate, RequestClassDelegate, AVAudioPlayerDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource
-                                                    ,ATCPlaylistHelperDelegate>
+@interface QueueViewController : UIViewController <YTPlayerViewDelegate, RequestClassDelegate, AVAudioPlayerDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource,ATCPlaylistHelperDelegate, UITabBarControllerDelegate>
 {
     UITabBarItem *tabBarItem;
 }
@@ -28,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UITabBarItem *QueueIcon;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *PlayListBtn;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *PlayPauseBtn;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *PlayerOptionsBtn;
 
 - (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition;
 + (instancetype)sharedQueue;

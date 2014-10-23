@@ -136,6 +136,8 @@
     {
         if (atcPlaylistHelper.recordsFound == YES) {
             qVc.shoudDisplayHUD = YES;
+            
+            [tabBarController setSelectedIndex:1];
         }
     }
 }

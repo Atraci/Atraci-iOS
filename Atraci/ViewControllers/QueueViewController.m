@@ -16,7 +16,7 @@
 {
     ATCSong* currentSongObj;
     NSMutableArray *artists, *albums, *tracks, *queue;
-    BOOL repeatQueue,repeatSong,shuffleQueue;
+    BOOL repeatQueue,repeatSong,shuffleQueue, isQueueTab;
     UIAlertView *deleteQueueAlert, *playlistAlert;
     UIActionSheet *actionSheetPlayerOptions, *actionSheetPlaylistAction;
 }
@@ -53,7 +53,7 @@
     //create the image for your button, and set the frame for its size
     UIImage *imagePlay = [UIImage imageNamed:@"Play"];
     UIImage *imagePause = [UIImage imageNamed:@"Pause"];
-    CGRect frame = CGRectMake(0, 0, 35, 35);
+    CGRect frame = CGRectMake(0, 0, 25, 25);
 
     //init a normal UIButton using that image
     UIButton* button = [[UIButton alloc] initWithFrame:frame];
@@ -66,6 +66,30 @@
 
     //finally, create your UIBarButtonItem using that button
     self.PlayPauseBtn.customView = button;
+    
+    self.tabBarController.delegate = self;
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController
+ didSelectViewController:(UIViewController *)viewController
+{
+    if ([viewController isEqual:self] == YES) {
+        //Set selected song index
+        if (isQueueTab == YES) {
+            QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:queueSingleton.currentSongIndex inSection: 0];
+            
+            if (queueSingleton.queueSongs.count > 0) {
+                [self.mainTable selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                [self.mainTable scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+            }
+        }
+        isQueueTab = YES;
+    }
+    else
+    {
+        isQueueTab = NO;
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -118,6 +142,8 @@
 - (IBAction)btnPlayNext:(id)sender {
     [self playNextSong];
 }
+
+
 
 #pragma mark -
 - (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition {
@@ -415,6 +441,15 @@
     }
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {    
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+    
+}
+
 #pragma mark -
 - (void)loadLockScreenAlbumArt:(int)index {
     ATCSong *songToUpdate = [queue objectAtIndex:index];
@@ -557,6 +592,14 @@
                     break;
                 default:
                     break;
+            }
+            
+            if (shuffleQueue == YES || repeatQueue == YES || repeatSong == YES) {
+                [self.PlayerOptionsBtn setTintColor:[UIColor blueColor]];
+            }
+            else
+            {
+                [self.PlayerOptionsBtn setTintColor:self.view.tintColor];
             }
         }
     }
