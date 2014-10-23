@@ -20,6 +20,7 @@
     UIAlertView *deleteQueueAlert, *playlistAlert;
     UIActionSheet *actionSheetPlayerOptions, *actionSheetPlaylistAction;
     UIBarButtonItem *barButtonItemBackup;
+    NSDictionary *playerVars;
 }
 @synthesize request,isPlaying,mainTable,shoudDisplayHUD;
 
@@ -35,6 +36,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    //LoadPlayerVars
+    [self loadPlayerVars];
     
     self.request = [[RequestClass alloc] init];
     self.request.delegate = self;
@@ -107,6 +111,23 @@
 -(BOOL)canBecomeFirstResponder
 {
     return  YES;
+}
+
+-(void)loadPlayerVars
+{
+    playerVars = @{
+                   @"controls" : @1,
+                   @"playsinline" : @1,
+                   @"autohide" : @1,
+                   @"showinfo" : @0,
+                   @"modestbranding" : @1,
+                   @"iv_load_policy" : @3,
+                   @"autoplay" : @1,
+                   @"rel": @0
+                   };
+    self.playerView.opaque = NO;
+    self.playerView.backgroundColor = [UIColor blackColor];
+    self.playerView.delegate = self;
 }
 
 //required delegate from defined protocol
@@ -199,29 +220,13 @@
     videoID = [videoID substringToIndex:charStart.location];
     
     //NSLog(@"%@",videoID);
-    
-    NSString *videoId = videoID;
-    NSDictionary *playerVars = @{
-                                 @"controls" : @1,
-                                 @"playsinline" : @1,
-                                 @"autohide" : @1,
-                                 @"showinfo" : @0,
-                                 @"modestbranding" : @1,
-                                 @"iv_load_policy" : @3,
-                                 @"autoplay" : @1,
-                                 @"rel": @0
-                                 };
-    self.playerView.opaque = NO;
-    self.playerView.backgroundColor = [UIColor blackColor];
-    self.playerView.delegate = self;
-    [self.playerView loadWithVideoId:videoId playerVars:playerVars];
+    [self.playerView loadWithVideoId:videoID playerVars:playerVars];
     
     double delayInSeconds = 3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [QueueViewController sharedQueue].playerView = self.playerView;
         [self.playerView playVideo];
-        //tabBarItem.badgeValue = @"1";
     });
 }
 
@@ -341,16 +346,20 @@
     }
     else
     {
-        QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
-        int nextSongPosition = queueSingleton.currentSongIndex + 1;
-        if (nextSongPosition < queue.count) {
-            [self loadSongs:YES shouldReloadTable:NO withSongPostition:nextSongPosition];
-        }
-        else{
-            if (repeatQueue == YES) {
-                [self loadSongs:YES shouldReloadTable:NO withSongPostition:0];
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+            //Your code goes in here
+            NSLog(@"Main Thread Code");
+            QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
+            int nextSongPosition = queueSingleton.currentSongIndex + 1;
+            if (nextSongPosition < queue.count) {
+                [self loadSongs:YES shouldReloadTable:NO withSongPostition:nextSongPosition];
             }
-        }
+            else{
+                if (repeatQueue == YES) {
+                    [self loadSongs:YES shouldReloadTable:NO withSongPostition:0];
+                }
+            }
+        }];
     }
 }
 

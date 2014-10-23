@@ -27,6 +27,7 @@
     self.window.tintColor = [UIColor colorWithRed:0.35 green:0.36 blue:0.35 alpha:1.0];
     
     [self LoadMainQueuePlaylist];
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
     return YES;
 }
@@ -36,11 +37,16 @@
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
     if([QueueViewController sharedQueue].isPlaying == YES){
-        double delayInSeconds = 1;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [[QueueViewController sharedQueue].playerView playVideo];
-        });
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+            //Your code goes in here
+            NSLog(@"Main Thread Code");
+            double delayInSeconds = 1;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                 [[QueueViewController sharedQueue].playerView playVideo];
+                 [[NSOperationQueue mainQueue] cancelAllOperations];
+            });
+        }];
     }
 }
 
@@ -55,9 +61,9 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    if([QueueViewController sharedQueue].isPlaying == YES){
-        [[QueueViewController sharedQueue].playerView playVideo];
-    }
+//    if([QueueViewController sharedQueue].isPlaying == YES){
+//        [[QueueViewController sharedQueue].playerView playVideo];
+//    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
