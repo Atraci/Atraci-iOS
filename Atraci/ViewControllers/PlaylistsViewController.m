@@ -85,7 +85,7 @@
     if([atcPlaylistHelper getPlaylist:playlist.name withPredicate:nil andSongs:YES] == YES)
     {
         if (atcPlaylistHelper.recordsFound == YES) {
-            [SVProgressHUD showWithStatus:@"Loading Playlist..."];
+            [SVProgressHUD showWithStatus:NSLocalizedString(@"loading", nil)];
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     }

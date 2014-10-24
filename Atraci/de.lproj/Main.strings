@@ -1,0 +1,51 @@
+
+/* Class = "IBUINavigationItem"; title = "Wiedergabelisten"; ObjectID = "0c1-Jb-HBn"; */
+"0c1-Jb-HBn.title" = "Wiedergabelisten";
+
+/* Class = "IBUILabel"; text = "Künstler"; ObjectID = "3a6-0F-YXf"; */
+"3a6-0F-YXf.text" = "Künstler";
+
+/* Class = "IBUINavigationItem"; title = "Einstellungen"; ObjectID = "4CF-SE-rpi"; */
+"4CF-SE-rpi.title" = "Einstellungen";
+
+/* Class = "IBUITextView"; text = "Atraci ist eine Anwendung für iOS, Mac, Windows und Linux, die Sie mehr als 60 Millionen Songs sofort können. Es erfordert keine Anmelde.\n\nJoin uns jetzt und tragen bei github.com/Atraci/Atraci. \n Vergessen Sie nicht, die Liebe zu teilen; Sie können nicht Atraci brauchen, aber einige Ihrer Freunde könnten. \n\nLaden die Desktop App kostenlos unter:http://atra.ci\nDie Atraci-Team (atraciapp@gmail.com)"; ObjectID = "4D7-L4-sb4"; */
+"4D7-L4-sb4.text" = "Atraci ist eine Anwendung für iOS, Mac, Windows und Linux, die Sie mehr als 60 Millionen Songs sofort können. Es erfordert keine Anmelde.\n\nJoin uns jetzt und tragen bei github.com/Atraci/Atraci. \n Vergessen Sie nicht, die Liebe zu teilen; Sie können nicht Atraci brauchen, aber einige Ihrer Freunde könnten. \n\nLaden die Desktop App kostenlos unter:http://atra.ci\nDie Atraci-Team (atraciapp@gmail.com)";
+
+/* Class = "IBUIBarButtonItem"; title = "Done"; ObjectID = "6On-D8-qqJ"; */
+"6On-D8-qqJ.title" = "Done";
+
+/* Class = "IBUILabel"; text = "Titel"; ObjectID = "Cej-Eq-BA0"; */
+"Cej-Eq-BA0.text" = "Titel";
+
+/* Class = "IBUIBarButtonItem"; title = "Atraci"; ObjectID = "L7G-YO-VC8"; */
+"L7G-YO-VC8.title" = "Atraci";
+
+/* Class = "IBUILabel"; text = "Teilen Sie mit Ihren Freunden!"; ObjectID = "Lfs-Be-Wnv"; */
+"Lfs-Be-Wnv.text" = "Teilen Sie mit Ihren Freunden!";
+
+/* Class = "IBUIViewController"; title = "Atraci"; ObjectID = "LnF-zN-PY8"; */
+"LnF-zN-PY8.title" = "Atraci";
+
+/* Class = "IBUILabel"; text = "Titel"; ObjectID = "Lxc-fy-gcX"; */
+"Lxc-fy-gcX.text" = "Titel";
+
+/* Class = "IBUITabBarItem"; title = "Einstellungen"; ObjectID = "LyB-bJ-f4T"; */
+"LyB-bJ-f4T.title" = "Einstellungen";
+
+/* Class = "IBUINavigationItem"; title = "Atraci"; ObjectID = "RNA-Kk-hbA"; */
+"RNA-Kk-hbA.title" = "Atraci";
+
+/* Class = "IBUITabBarItem"; title = "Queue"; ObjectID = "cPa-gy-q4n"; */
+"cPa-gy-q4n.title" = "Queue";
+
+/* Class = "IBUILabel"; text = "Künstler"; ObjectID = "gtm-6I-nsO"; */
+"gtm-6I-nsO.text" = "Künstler";
+
+/* Class = "IBUILabel"; text = "Über Atraci"; ObjectID = "mfG-nf-rOr"; */
+"mfG-nf-rOr.text" = "Über Atraci";
+
+/* Class = "IBUILabel"; text = "Unterstützen Sie uns"; ObjectID = "nGN-Lp-oB3"; */
+"nGN-Lp-oB3.text" = "Unterstützen Sie uns";
+
+/* Class = "IBUILabel"; text = "Ihre Spende"; ObjectID = "yTI-MJ-CHQ"; */
+"yTI-MJ-CHQ.text" = "Ihre Spende";

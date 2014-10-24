@@ -170,14 +170,14 @@
     
     if (tableView != self.mainTable) {
         if ([queryResults objectAtIndex:section] == artists) {
-            sectionTitle = @"Artists";
+            sectionTitle = NSLocalizedString(@"artists", nil);
         }else if([queryResults objectAtIndex:section] == albums) {
-            sectionTitle = @"Albums";
+            sectionTitle = NSLocalizedString(@"albums", nil);
         }else if([queryResults objectAtIndex:section] == tracks) {
-            sectionTitle = @"Songs";
+            sectionTitle = NSLocalizedString(@"songs", nil);
         }
         else if([queryResults objectAtIndex:section] == customSearch) {
-            sectionTitle = @"Search";
+            sectionTitle = NSLocalizedString(@"search", nil);
         }
     }
     return sectionTitle;
@@ -274,7 +274,7 @@
     
     if (tableView == self.mainTable) {
         //Choose index of the last added song or the position choosen
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Play Now",@"Play Next",@"Add To Queue", nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"pNow", nil),NSLocalizedString(@"pNext", nil),NSLocalizedString(@"pLast", nil), nil];
         [actionSheet showFromTabBar:self.tabBarController.tabBar];
     }
     else{
@@ -317,7 +317,7 @@
                 [self.mainTable reloadData];
             }
             else{
-                [SVProgressHUD showErrorWithStatus:@"No results"];
+                [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"nResults", nil)];
             }
         });
     });
@@ -408,7 +408,7 @@
         }
         else
         {
-            [SVProgressHUD showSuccessWithStatus:@"Song Added"];
+            [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"sAdded", nil)];
             [qVc loadSongs:NO shouldReloadTable:YES withSongPostition:0];
         }
     }

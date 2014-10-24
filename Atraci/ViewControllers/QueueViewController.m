@@ -581,8 +581,10 @@
 }
 
 - (IBAction)playlistAction:(id)sender {
-    actionSheetPlaylistAction = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Load Playlist",@"Save Playlist",@"Clear Queue", nil];
+    actionSheetPlaylistAction = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"lPlaylist", nil),NSLocalizedString(@"sPlaylist", nil),NSLocalizedString(@"dQueue", nil), nil];
+
     [actionSheetPlaylistAction showFromTabBar:self.tabBarController.tabBar];
+
 }
 
 #pragma mark -
@@ -623,15 +625,14 @@
                     break;
                 case 1:
                     if (queue.count > 0) {
-                        playlistAlert = [[UIAlertView alloc] initWithTitle:@"Playlist Name:" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
+                        playlistAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"pName", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", nil) otherButtonTitles:NSLocalizedString(@"save", nil), nil];
                         [playlistAlert setAlertViewStyle:UIAlertViewStylePlainTextInput];
                         [playlistAlert show];
                     }
                     break;
                     
                 case 2:
-                    deleteQueueAlert = [[UIAlertView alloc] initWithTitle:@"¿Proceed on clearing the queue?" message:@"" delegate:self
-                                                        cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
+                    deleteQueueAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"pClear", nil)message:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"no", nil) otherButtonTitles:NSLocalizedString(@"yes", nil),nil];
                     [deleteQueueAlert show];
                     break;
                 default:
@@ -664,6 +665,7 @@
             {
                 [self.PlayerOptionsBtn setTintColor:self.view.tintColor];
             }
+
         }
     }
 }
@@ -679,7 +681,7 @@
             NSString *inputText = [[playlistAlert textFieldAtIndex:0] text];
             if([ATCPlaylistHelper setPlaylist:inputText withSongQueue:queue])
             {
-                [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"Playlist %@ Saved",inputText]];
+                [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat: NSLocalizedString(@"pSaved", nil),inputText]];
             }
         }
         else

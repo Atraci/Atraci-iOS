@@ -1,0 +1,62 @@
+/* 
+  Localizable.strings
+  Atraci
+
+  Created by Adriana Elizondo on 10/12/14.
+  Copyright (c) 2014 Atraci. All rights reserved.
+*/
+
+//Table view
+
+"artists" = "Artists";
+
+"albums" = "Albums";
+
+"songs" = "Songs";
+
+//Action sheet
+
+"cancel" = "Cancel";
+
+"save" = "Save";
+
+"pNow" = "Play now";
+
+"pNext" = "Add next";
+
+"pLast" = "Add last";
+
+//SVProgress HUD
+
+"nResults" = "No results";
+
+"sAdded" = "Song added";
+
+"pSaved" = "Playlist %@ Saved";
+
+//Queue
+
+"lPlaylist" = "Load Playlist";
+
+"sPlaylist" = "Save Playlist";
+
+"dQueue" = "Delete Queue";
+
+"pName" = "Playlist Name:";
+
+"pClear" = "Proceed on clearing the queue?";
+
+"no" = "No";
+
+"yes" = "Yes";
+
+"loading" = "Loading Playlist...";
+
+//Settings
+
+"aAtraci" = "About Atraci v%@";
+
+"dFree" = "Download Atraci Music App for free";
+
+"mBody" = "Atraci is an application for iOS, Mac, Windows and Linux that lets you listen instantly to more than 60 million songs. It requires no sign up, displays no ads and is 100% safe and free. <br /><br />Download our iOS App on the App Store or our desktop apps for free at: <a href=\"http://atra.ci\">http://atra.ci</a><br /><br />The Atraci Team (<a href=\"mailto:atraciapp@gmail.com?Subject=Atraci iOS Support\">atraciapp@gmail.com</a>)";
+

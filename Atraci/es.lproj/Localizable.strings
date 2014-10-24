@@ -1,0 +1,62 @@
+/*
+ Localizable.strings
+ Atraci
+ 
+ Created by Adriana Elizondo on 10/12/14.
+ Copyright (c) 2014 Atraci. All rights reserved.
+ */
+
+//Table view
+
+"artists" = "Artistas";
+
+"albums" = "Albums";
+
+"songs" = "Canciones";
+
+//Action sheet
+
+"cancel" = "Cancelar";
+
+"save" = "Guardar";
+
+"pNow" = "Escuchar ahora";
+
+"pNext" = "Escuchar siguiente";
+
+"pLast" = "Agregar a cola";
+
+//SVProgress HUD
+
+"nResults" = "Sin resultados";
+
+"sAdded" = "Canción agregada";
+
+"pSaved" = "Lista de reproducción %@ Guardada";
+
+//Queue
+
+"lPlaylist" = "Cargar Lista";
+
+"sPlaylist" = "Guadar Lista";
+
+"dQueue" = "Borrar cola de reproducción";
+
+"pName" = "Nombre de la lista:";
+
+"pClear" = "Esta seguro de que quiere borrar la lista?";
+
+"no" = "No";
+
+"yes" = "Si";
+
+"loading" = "Cargando lista...";
+
+//Settings
+
+"aAtraci" = "Acerca de Atraci v%@";
+
+"dFree" = "Descarga Atraci Music App gratis!";
+
+"mBody" = "Atraci es una aplicación para iOS, Mac, Windows y Linux que te permite escuchar instantaneamente mas de 60 millones de canciones. No requiere registrarse, no tiene publicidad y es 100% gratis y segura. <br /><br />Descarga nuestra aplicación iOS en la App Store o nuestras aplicaciones de escritorio gratis en: <a href=\"http://atra.ci\">http://atra.ci</a><br /><br />El equipo Atraci (<a href=\"mailto:atraciapp@gmail.com?Subject=Atraci iOS Support\">atraciapp@gmail.com</a>)";
+

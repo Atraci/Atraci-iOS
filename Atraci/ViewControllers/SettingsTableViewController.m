@@ -19,7 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.AboutAtraciLabel.text = [NSString stringWithFormat:@"About Atraci v%@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+    self.AboutAtraciLabel.text = [NSString stringWithFormat:NSLocalizedString(@"aAtraci", nil),[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -41,9 +41,9 @@
 
 - (void)showEmail {
     // Email Subject
-    NSString *emailTitle = @"Download Atraci Music App for free";
+    NSString *emailTitle = NSLocalizedString(@"dFree", nil);
     // Email Content
-    NSString *messageBody = @"Atraci is an application for iOS, Mac, Windows and Linux that lets you listen instantly to more than 60 million songs. It requires no sign up, displays no ads and is 100% safe and free. <br /><br />Download our iOS App on the App Store or our desktop apps for free at: <a href=\"http://atra.ci\">http://atra.ci</a><br /><br />The Atraci Team (<a href=\"mailto:atraciapp@gmail.com?Subject=Atraci iOS Support\">atraciapp@gmail.com</a>)";
+    NSString *messageBody = NSLocalizedString(@"mBody", nil);
     // To address
     //NSArray *toRecipents = //[NSArray arrayWithObject:@"support@appcoda.com"];
     
