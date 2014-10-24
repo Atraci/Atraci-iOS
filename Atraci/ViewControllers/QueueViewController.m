@@ -628,6 +628,7 @@
                         [playlistAlert show];
                     }
                     break;
+                    
                 case 2:
                     deleteQueueAlert = [[UIAlertView alloc] initWithTitle:@"¿Proceed on clearing the queue?" message:@"" delegate:self
                                                         cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
