@@ -9,12 +9,10 @@
 #import "QueueViewController.h"
 #import "QueueSingleton.h"
 #import "ArtistCell.h"
-#import "ATCSong.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 @implementation QueueViewController
 {
-    ATCSong* currentSongObj;
     NSMutableArray *artists, *albums, *tracks, *queue;
     BOOL repeatQueue,repeatSong,shuffleQueue, isQueueTab;
     UIAlertView *deleteQueueAlert, *playlistAlert;
@@ -22,7 +20,7 @@
     UIBarButtonItem *barButtonItemBackup;
     NSDictionary *playerVars;
 }
-@synthesize request,isPlaying,mainTable,shoudDisplayHUD;
+@synthesize request,isPlaying,mainTable,shoudDisplayHUD,currentSongObj;
 
 + (instancetype)sharedQueue{
     static id _sharedInstance = nil;
@@ -42,10 +40,6 @@
     
     self.request = [[RequestClass alloc] init];
     self.request.delegate = self;
-    
-    // for run application in background
-    NSError *sessionError = nil;
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&sessionError];
     
     repeatQueue = NO;
     repeatSong = NO;
@@ -214,21 +208,79 @@
     NSDictionary *songDic = [[NSDictionary alloc] initWithDictionary:[NSJSONSerialization JSONObjectWithData:data options:0 error:&error]];
     NSString *url = [[[[[[songDic objectForKey:@"feed"] objectForKey:@"entry"] firstObject] objectForKey:@"link"] firstObject] objectForKey:@"href"];
     
-    NSRange charStart = [url rangeOfString:@"v="];
-    NSString *videoID = [url substringFromIndex:charStart.location + charStart.length];
-    charStart = [videoID rangeOfString:@"&"];
-    videoID = [videoID substringToIndex:charStart.location];
-    
-    //NSLog(@"%@",videoID);
-    [self.playerView loadWithVideoId:videoID playerVars:playerVars];
-    
-    double delayInSeconds = 3;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    if (url == nil) {
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"sNotAvailable", nil)];
+        [self playNextSong];
+        [self showPlayPauseBarButtonItem];
+        [self.ActivityIndicator stopAnimating];
+        UIButton* button = (UIButton *)self.PlayPauseBtn.customView;
+        [button setSelected:NO];
+    }
+    else
+    {
+        NSRange charStart = [url rangeOfString:@"v="];
+        NSString *videoID = [url substringFromIndex:charStart.location + charStart.length];
+        charStart = [videoID rangeOfString:@"&"];
+        videoID = [videoID substringToIndex:charStart.location];
+        
+        //NSLog(@"%@",videoID);
         [QueueViewController sharedQueue].playerView = self.playerView;
-        [self.playerView playVideo];
+        [self performSelectorOnMainThread:@selector(playInBackgroundStepOne:) withObject:videoID waitUntilDone:YES];
+        [self playInBackgroundStepOneB];
+    }
+}
+
+//--
+- (void)playInBackgroundStepOne:(NSString *)videoID
+{
+    UIApplication *application = [UIApplication sharedApplication];
+    __block UIBackgroundTaskIdentifier background_task;
+    background_task = [application beginBackgroundTaskWithExpirationHandler: ^{
+        [application endBackgroundTask: background_task];
+        background_task = UIBackgroundTaskInvalid;
+    }];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self performSelectorOnMainThread:@selector(playInBackgroundStepTwo:) withObject:videoID waitUntilDone:YES];
+        
+        [application endBackgroundTask: background_task];
+        background_task = UIBackgroundTaskInvalid;
     });
 }
+
+-(void)playInBackgroundStepTwo:(NSString *)videoID
+{
+    [self.playerView loadWithVideoId:videoID playerVars:playerVars];
+}
+
+- (void)playInBackgroundStepOneB
+{
+    UIApplication *application = [UIApplication sharedApplication];
+    __block UIBackgroundTaskIdentifier background_task;
+    background_task = [application beginBackgroundTaskWithExpirationHandler: ^{
+        [application endBackgroundTask: background_task];
+        background_task = UIBackgroundTaskInvalid;
+    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+      //  [self performSelectorOnMainThread:@selector(playInBackgroundStepTwoB) withObject:nil waitUntilDone:YES];
+                double delayInSeconds = 3;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                //for run application in background
+                    [self playInBackgroundStepTwoB];
+                });
+        [application endBackgroundTask: background_task];
+        background_task = UIBackgroundTaskInvalid;
+    });
+}
+
+-(void)playInBackgroundStepTwoB
+{
+   // [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+          [self.playerView playVideo];
+   // }];
+}
+//--
 
 - (BOOL)prefersStatusBarHidden {
     return YES;
@@ -240,8 +292,6 @@
 }
 
 - (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state {
-    //Always reload lockscreen data due to how the video api performs
-    [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
     
     UIButton *button;
     
@@ -256,6 +306,10 @@
             [self showPlayPauseBarButtonItem];
             
             [self resetPlayerSize];
+            
+            //Always reload lockscreen data due to how the video api performs
+            [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
+            [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
             break;
         case kYTPlayerStatePaused:
             NSLog(@"Paused playback");
@@ -263,6 +317,8 @@
             button = (UIButton *)self.PlayPauseBtn.customView;
             [button setSelected:NO];
             
+            //Always reload lockscreen data due to how the video api performs
+            [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
             break;
         case kYTPlayerStateEnded:
             NSLog(@"Ended playback");
@@ -386,7 +442,7 @@
 
 -(void)getSongInfo
 {
-    [self setLockSProperties:currentSongObj.artist withSong:currentSongObj.title andAlbumArt:currentSongObj.imageCoverLarge];
+    [self setLockSProperties:self.currentSongObj.artist withSong:self.currentSongObj.title andAlbumArt:self.currentSongObj.imageCoverLarge];
 }
 
 #pragma mark -
@@ -406,7 +462,9 @@
     [songInfo setObject:albumArt forKey:MPMediaItemPropertyArtwork];
     
     // Step 4: Set now playing info
-    [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:songInfo];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:songInfo];
+    });
 }
 
 #pragma mark -

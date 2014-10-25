@@ -211,7 +211,26 @@
             song.artist = [[searchResults objectAtIndex:rowIndex] objectForKey:@"artist"];
             song.title = [[searchResults objectAtIndex:rowIndex] objectForKey:@"title"];
             song.urlCoverMedium = [[searchResults objectAtIndex:rowIndex] objectForKey:@"cover_url_medium"];
-            song.urlCoverLarge = [[searchResults objectAtIndex:rowIndex] objectForKey:@"cover_url_large"];
+            //Update large album art for a bigger one
+            id urlCoverLarge = [[searchResults objectAtIndex:rowIndex] objectForKey:@"cover_url_large"];
+            
+            if (urlCoverLarge != [NSNull null] && urlCoverLarge != nil)
+            {
+                if ([urlCoverLarge containsString:@"100x100"] == YES) {
+                    song.urlCoverLarge = (id)[urlCoverLarge stringByReplacingOccurrencesOfString:@"100x100" withString:@"400x400"];
+                }
+                else if ([urlCoverLarge containsString:@"large.jpg"] == YES) {
+                    song.urlCoverLarge = (id)[urlCoverLarge stringByReplacingOccurrencesOfString:@"large.jpg" withString:@"t500x500.jpg"];
+                }
+                else
+                {
+                    song.urlCoverLarge = (id)urlCoverLarge;
+                }
+            }
+            else
+            {
+                song.urlCoverLarge = (id)urlCoverLarge;
+            }
             
             [ATCSearchResults addObject:song];
         }

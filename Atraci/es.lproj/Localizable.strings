@@ -22,7 +22,7 @@
 
 "pNow" = "Escuchar ahora";
 
-"pNext" = "Escuchar siguiente";
+"pNext" = "Siguiente a escuchar";
 
 "pLast" = "Agregar a cola";
 
@@ -33,6 +33,8 @@
 "sAdded" = "Canción agregada";
 
 "pSaved" = "Lista de reproducción %@ Guardada";
+
+"sNotAvailable" = "Canción no disponible!";
 
 //Queue
 

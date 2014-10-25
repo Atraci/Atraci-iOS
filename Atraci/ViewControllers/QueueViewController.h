@@ -12,12 +12,14 @@
 #import "ATCPlaylistHelper.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "ATCSong.h"
 
 @interface QueueViewController : UIViewController <YTPlayerViewDelegate, RequestClassDelegate, AVAudioPlayerDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource,ATCPlaylistHelperDelegate, UITabBarControllerDelegate>
 {
     UITabBarItem *tabBarItem;
 }
 
+@property (nonatomic, assign) ATCSong* currentSongObj;
 @property (nonatomic, assign) BOOL shoudDisplayHUD;
 @property (nonatomic, assign) BOOL isPlaying;
 @property(strong ,nonatomic) RequestClass *request;
@@ -33,6 +35,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *fixedSpace;
 
 - (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition;
+-(void)getSongInfo;
 + (instancetype)sharedQueue;
 @end
 

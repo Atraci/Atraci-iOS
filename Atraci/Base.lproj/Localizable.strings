@@ -22,9 +22,9 @@
 
 "pNow" = "Play now";
 
-"pNext" = "Add next";
+"pNext" = "Play next";
 
-"pLast" = "Add last";
+"pLast" = "Add to queue";
 
 //SVProgress HUD
 
@@ -33,6 +33,8 @@
 "sAdded" = "Song added";
 
 "pSaved" = "Playlist %@ Saved";
+
+"sNotAvailable" = "Song not available!";
 
 //Queue
 

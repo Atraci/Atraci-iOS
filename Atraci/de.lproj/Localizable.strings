@@ -36,6 +36,8 @@
 
 "pSaved" = "Playlist %@ Gespeichert";
 
+"sNotAvailable" = "Song nicht verfügbar!";
+
 //Queue
 
 "lPlaylist" = "Hören zur Playlist";

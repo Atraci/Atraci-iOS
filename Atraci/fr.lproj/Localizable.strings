@@ -34,6 +34,8 @@
 
 "pSaved" = "Liste %@ Enregistrée";
 
+"sNotAvailable" = "Chanson pas disponible!";
+
 //Queue
 
 "lPlaylist" = "Écouter Liste";

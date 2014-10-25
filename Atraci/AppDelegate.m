@@ -26,9 +26,12 @@
     // Override point for customization after application launch.
     self.window.tintColor = [UIColor colorWithRed:0.35 green:0.36 blue:0.35 alpha:1.0];
     
-    [self LoadMainQueuePlaylist];
-    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    // for run application in background
+    NSError *sessionError = nil;
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&sessionError];
     
+    [self LoadMainQueuePlaylist];
+
     return YES;
 }
 
@@ -37,17 +40,36 @@
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
     if([QueueViewController sharedQueue].isPlaying == YES){
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
-            //Your code goes in here
-            NSLog(@"Main Thread Code");
-            double delayInSeconds = 1;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                 [[QueueViewController sharedQueue].playerView playVideo];
-                 [[NSOperationQueue mainQueue] cancelAllOperations];
-            });
-        }];
+        [self performSelectorOnMainThread:@selector(playInBackgroundStepOne) withObject:nil waitUntilDone:YES];
     }
+}
+
+- (void)playInBackgroundStepOne
+{
+    UIApplication *application = [UIApplication sharedApplication];
+    __block UIBackgroundTaskIdentifier background_task;
+    background_task = [application beginBackgroundTaskWithExpirationHandler: ^{
+        [application endBackgroundTask: background_task];
+        background_task = UIBackgroundTaskInvalid;
+    }];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self performSelectorOnMainThread:@selector(playInBackgroundStepTwo) withObject:nil waitUntilDone:YES];
+        double delayInSeconds = 1.2;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                         // for run application in background
+                        [self playInBackgroundStepTwo];
+                    });
+
+        [application endBackgroundTask: background_task];
+        background_task = UIBackgroundTaskInvalid;
+    });
+}
+
+-(void)playInBackgroundStepTwo
+{
+    [[QueueViewController sharedQueue].playerView playVideo];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -61,9 +83,9 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-//    if([QueueViewController sharedQueue].isPlaying == YES){
-//        [[QueueViewController sharedQueue].playerView playVideo];
-//    }
+    if([QueueViewController sharedQueue].isPlaying == YES){
+            [[QueueViewController sharedQueue].playerView playVideo];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
