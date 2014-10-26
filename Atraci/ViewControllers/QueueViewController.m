@@ -10,6 +10,7 @@
 #import "QueueSingleton.h"
 #import "ArtistCell.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "PlaylistsViewController.h"
 
 @implementation QueueViewController
 {
@@ -19,7 +20,7 @@
     UIActionSheet *actionSheetPlayerOptions, *actionSheetPlaylistAction;
     UIBarButtonItem *barButtonItemBackup;
     NSDictionary *playerVars;
-    CGFloat uiWebViewHeight;
+    CGFloat uiPlayerViewHeight;
 }
 @synthesize request,isPlaying,mainTable,shoudDisplayHUD,currentSongObj,isPlaylistModalVisible;
 
@@ -35,6 +36,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    uiPlayerViewHeight = self.playerView.frame.size.height;
     
     //LoadPlayerVars
     [self loadPlayerVars];
@@ -443,7 +445,9 @@
 
 -(void)getSongInfo
 {
-    [self setLockSProperties:self.currentSongObj.artist withSong:self.currentSongObj.title andAlbumArt:self.currentSongObj.imageCoverLarge];
+    if (self.currentSongObj.artist != nil && self.currentSongObj.title != nil && self.currentSongObj.imageCoverLarge != nil) {
+        [self setLockSProperties:self.currentSongObj.artist withSong:self.currentSongObj.title andAlbumArt:self.currentSongObj.imageCoverLarge];
+    }
 }
 
 #pragma mark -
@@ -656,9 +660,14 @@
         self.toolbar.hidden = YES;
         self.tabBarController.tabBar.hidden = YES;
         if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
-            // code here
-            uiWebViewHeight = self.playerView.webView.frame.size.height;
             self.playerView.webView.frame = CGRectMake(0,0,self.view.bounds.size.width,self.view.bounds.size.height);
+            self.playerView.webView.bounds = CGRectMake(0,0,self.view.bounds.size.width,self.view.bounds.size.height);
+            self.mainTable.hidden = YES;
+        }
+        else
+        {
+            if ([[[UIDevice currentDevice] model] containsString:@"iPad"]) {
+            }
         }
         [self.playerView.webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('player').height = screen.width;"];
     }
@@ -667,7 +676,15 @@
         self.toolbar.hidden = NO;
         self.tabBarController.tabBar.hidden = NO;
         if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
-            self.playerView.webView.frame = CGRectMake(0,0,self.view.bounds.size.width,uiWebViewHeight);
+            self.playerView.webView.frame = CGRectMake(0,0,self.view.bounds.size.width,uiPlayerViewHeight);
+            self.playerView.webView.bounds = CGRectMake(0,0,self.view.bounds.size.width,uiPlayerViewHeight);
+            self.mainTable.hidden = NO;
+        }
+        else
+        {
+            if ([[[UIDevice currentDevice] model] containsString:@"iPad"]) {
+     
+            }
         }
         [self.playerView.webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('player').height=\"100%\";"];
     }
@@ -682,9 +699,10 @@
 }
 
 #pragma mark -
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (actionSheet == actionSheetPlaylistAction) {
+        
         if (buttonIndex != 3) {
             switch (buttonIndex) {
                 case 0:
