@@ -22,6 +22,7 @@
 @property (nonatomic, assign) ATCSong* currentSongObj;
 @property (nonatomic, assign) BOOL shoudDisplayHUD;
 @property (nonatomic, assign) BOOL isPlaying;
+@property (nonatomic, assign) BOOL isPlaylistModalVisible;
 @property(strong ,nonatomic) RequestClass *request;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
 @property(nonatomic, strong) IBOutlet YTPlayerView *playerView;

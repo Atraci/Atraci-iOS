@@ -11,4 +11,5 @@
 @interface PlaylistsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *playlistsTable;
+
 @end

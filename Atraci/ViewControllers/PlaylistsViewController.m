@@ -32,8 +32,19 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    [QueueViewController sharedQueue].isPlaylistModalVisible = YES;
     [self.playlistsTable reloadData];
 }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [QueueViewController sharedQueue].isPlaylistModalVisible = NO;
+}
+
+//- (NSUInteger)supportedInterfaceOrientations
+//{
+//    return UIInterfaceOrientationMaskPortrait;
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

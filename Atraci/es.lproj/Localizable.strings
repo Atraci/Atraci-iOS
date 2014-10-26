@@ -54,6 +54,20 @@
 
 "loading" = "Cargando lista...";
 
+//Player Options
+
+"shuffleOff" = "Aleatorio desactivado";
+
+"repeatAllOff" = "Repetir todo desactivado";
+
+"repeatSongOff" = "Repetir canción desactivado";
+
+"shuffle" = "Aleatorio";
+
+"repeatAll" = "Repetir todo";
+
+"repeatSong" = "Repetir canción";
+
 //Settings
 
 "aAtraci" = "Acerca de Atraci v%@";

@@ -19,8 +19,9 @@
     UIActionSheet *actionSheetPlayerOptions, *actionSheetPlaylistAction;
     UIBarButtonItem *barButtonItemBackup;
     NSDictionary *playerVars;
+    CGFloat uiWebViewHeight;
 }
-@synthesize request,isPlaying,mainTable,shoudDisplayHUD,currentSongObj;
+@synthesize request,isPlaying,mainTable,shoudDisplayHUD,currentSongObj,isPlaylistModalVisible;
 
 + (instancetype)sharedQueue{
     static id _sharedInstance = nil;
@@ -618,20 +619,20 @@
 }
 
 - (IBAction)playerOptions:(id)sender {
-    NSString *shuffleState = @"Shuffle is Off";
-    NSString *repeatState = @"Repeat All is Off";
-    NSString *repeatSongState = @"Repeat Song is Off";
+    NSString *shuffleState = NSLocalizedString(@"shuffleOff", nil);
+    NSString *repeatState = NSLocalizedString(@"repeatAllOff", nil);
+    NSString *repeatSongState = NSLocalizedString(@"repeatSongOff", nil);
     
     if (shuffleQueue == YES) {
-        shuffleState = @"Shuffle ✓";
+        shuffleState = [NSString stringWithFormat:@"%@ ✓",NSLocalizedString(@"shuffle", nil)];
     }
     
     if (repeatQueue == YES) {
-        repeatState = @"Repeat All ✓";
+        repeatState = [NSString stringWithFormat:@"%@ ✓",NSLocalizedString(@"repeatAll", nil)];
     }
     
     if (repeatSong == YES) {
-        repeatSongState = @"Repeat Song ✓";
+        repeatSongState = [NSString stringWithFormat:@"%@ ✓",NSLocalizedString(@"repeatSong", nil)];
     }
     
     actionSheetPlayerOptions = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:shuffleState,repeatState,repeatSongState, nil];
@@ -654,12 +655,20 @@
     {
         self.toolbar.hidden = YES;
         self.tabBarController.tabBar.hidden = YES;
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
+            // code here
+            uiWebViewHeight = self.playerView.webView.frame.size.height;
+            self.playerView.webView.frame = CGRectMake(0,0,self.view.bounds.size.width,self.view.bounds.size.height);
+        }
         [self.playerView.webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('player').height = screen.width;"];
     }
     else
     {
         self.toolbar.hidden = NO;
         self.tabBarController.tabBar.hidden = NO;
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
+            self.playerView.webView.frame = CGRectMake(0,0,self.view.bounds.size.width,uiWebViewHeight);
+        }
         [self.playerView.webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('player').height=\"100%\";"];
     }
 }

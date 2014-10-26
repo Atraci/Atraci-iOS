@@ -213,13 +213,13 @@
             song.urlCoverMedium = [[searchResults objectAtIndex:rowIndex] objectForKey:@"cover_url_medium"];
             //Update large album art for a bigger one
             id urlCoverLarge = [[searchResults objectAtIndex:rowIndex] objectForKey:@"cover_url_large"];
-            
+
             if (urlCoverLarge != [NSNull null] && urlCoverLarge != nil)
             {
-                if ([urlCoverLarge containsString:@"100x100"] == YES) {
+                if ([urlCoverLarge rangeOfString:@"100x100"].location != NSNotFound) {
                     song.urlCoverLarge = (id)[urlCoverLarge stringByReplacingOccurrencesOfString:@"100x100" withString:@"400x400"];
                 }
-                else if ([urlCoverLarge containsString:@"large.jpg"] == YES) {
+                else if ([urlCoverLarge rangeOfString:@"large.jpg"].location != NSNotFound) {
                     song.urlCoverLarge = (id)[urlCoverLarge stringByReplacingOccurrencesOfString:@"large.jpg" withString:@"t500x500.jpg"];
                 }
                 else

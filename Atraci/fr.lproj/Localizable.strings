@@ -54,6 +54,20 @@
 
 "loading" = "Chargement en cours...";
 
+//Player Options
+
+"shuffleOff" = "Aléatoire est éteint";
+
+"repeatAllOff" = "Répéter tout est Off";
+
+"repeatSongOff" = "Répéter cette chanson est Off";
+
+"shuffle" = "Aléatoire";
+
+"repeatAll" = "Répéter Tous";
+
+"repeatSong" = "Répéter chanson";
+
 //Settings
 
 "aAtraci" = "À propos d'Atraci v%@";

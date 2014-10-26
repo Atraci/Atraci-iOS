@@ -56,6 +56,20 @@
 
 "loading" = "Lade Playlist...";
 
+//Player Options
+
+"shuffleOff" = "Zufällige ist aus";
+
+"repeatAllOff" = "Alle wiederholen ausgeschaltet";
+
+"repeatSongOff" = "Song Wiederholung, ausgeschaltet";
+
+"shuffle" = "Zufällige";
+
+"repeatAll" = "Alle wiederholen";
+
+"repeatSong" = "Wiederholungs song";
+
 //Settings
 
 "aAtraci" = "Über Atraci v%@";

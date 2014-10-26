@@ -42,7 +42,7 @@
 
 "sPlaylist" = "Save Playlist";
 
-"dQueue" = "Delete Queue";
+"dQueue" = "Clear Queue";
 
 "pName" = "Playlist Name:";
 
@@ -53,6 +53,20 @@
 "yes" = "Yes";
 
 "loading" = "Loading Playlist...";
+
+//Player Options
+
+"shuffleOff" = "Shuffle is Off";
+
+"repeatAllOff" = "Repeat All is Off";
+
+"repeatSongOff" = "Repeat Song is Off";
+
+"shuffle" = "Shuffle";
+
+"repeatAll" = "Repeat All";
+
+"repeatSong" = "Repeat Song";
 
 //Settings
 
