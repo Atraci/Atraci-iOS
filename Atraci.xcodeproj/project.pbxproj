@@ -33,6 +33,7 @@
 		A4513EB919A3352F00E84374 /* QueueSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = A4513EB619A3352F00E84374 /* QueueSingleton.m */; };
 		A4513EBA19A3352F00E84374 /* RequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A4513EB819A3352F00E84374 /* RequestClass.m */; };
 		A464B13219E0F38A00F5ADCB /* ATCPlaylistHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A464B13119E0F38A00F5ADCB /* ATCPlaylistHelper.m */; };
+		A478743519FCB3AC00DE7149 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A478743419FCB3AC00DE7149 /* LICENSE */; };
 		A47ED785197272A1003AEDB7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A47ED784197272A1003AEDB7 /* AVFoundation.framework */; };
 		A49810F6197234E0000CAE28 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49810F5197234E0000CAE28 /* QuartzCore.framework */; };
 		A4A36965199C824A00F69560 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4EE477E195F9B20002C3AC8 /* Main.storyboard */; };
@@ -128,8 +129,10 @@
 		A4513EB819A3352F00E84374 /* RequestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestClass.m; sourceTree = "<group>"; };
 		A464B13019E0F38A00F5ADCB /* ATCPlaylistHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATCPlaylistHelper.h; sourceTree = "<group>"; };
 		A464B13119E0F38A00F5ADCB /* ATCPlaylistHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATCPlaylistHelper.m; sourceTree = "<group>"; };
+		A478743419FCB3AC00DE7149 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A47ED784197272A1003AEDB7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A49810F5197234E0000CAE28 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		A4B6E8C219FC996300421AD1 /* Atraci.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Atraci.entitlements; sourceTree = "<group>"; };
 		A4C2D18D19D2AD6400062518 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A4D2BCEF19E12FF50084DDC5 /* PlaylistsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistsViewController.h; sourceTree = "<group>"; };
 		A4D2BCF019E12FF50084DDC5 /* PlaylistsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistsViewController.m; sourceTree = "<group>"; };
@@ -320,6 +323,7 @@
 		A4EE4765195F9B20002C3AC8 = {
 			isa = PBXGroup;
 			children = (
+				A478743419FCB3AC00DE7149 /* LICENSE */,
 				A4EE4770195F9B20002C3AC8 /* Atraci */,
 				A4EE478A195F9B20002C3AC8 /* AtraciTests */,
 				A49810F71972350F000CAE28 /* Frameworks */,
@@ -339,6 +343,7 @@
 		A4EE4770195F9B20002C3AC8 /* Atraci */ = {
 			isa = PBXGroup;
 			children = (
+				A4B6E8C219FC996300421AD1 /* Atraci.entitlements */,
 				A4513E9F19A3350300E84374 /* Libraries */,
 				A442394819DA502900471DAD /* Model */,
 				A4E985A919D8DF78005AD8C6 /* Storage */,
@@ -436,6 +441,11 @@
 					A4EE476D195F9B20002C3AC8 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = LXTZ7EZD67;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					A4EE4786195F9B20002C3AC8 = {
 						CreatedOnToolsVersion = 6.0;
@@ -479,6 +489,7 @@
 				A4513E8319A334C800E84374 /* Atraci.ico in Resources */,
 				A426416D19D6AF4E00C79365 /* AtraciLogo.png in Resources */,
 				A4513E8519A334C800E84374 /* cover_default_large.png in Resources */,
+				A478743519FCB3AC00DE7149 /* LICENSE in Resources */,
 				A4513E8D19A334C800E84374 /* settings-25.png in Resources */,
 				A4513E8B19A334C800E84374 /* search.png in Resources */,
 				A4513E8619A334C800E84374 /* icon.icns in Resources */,
@@ -670,12 +681,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Atraci/Atraci.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREFIX_HEADER = "Atraci/Atraci-Prefix.pch";
 				INFOPLIST_FILE = Atraci/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -685,12 +699,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Atraci/Atraci.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREFIX_HEADER = "Atraci/Atraci-Prefix.pch";
 				INFOPLIST_FILE = Atraci/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
