@@ -34,8 +34,9 @@
 		A4513EBA19A3352F00E84374 /* RequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A4513EB819A3352F00E84374 /* RequestClass.m */; };
 		A464B13219E0F38A00F5ADCB /* ATCPlaylistHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A464B13119E0F38A00F5ADCB /* ATCPlaylistHelper.m */; };
 		A478743519FCB3AC00DE7149 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A478743419FCB3AC00DE7149 /* LICENSE */; };
-		A478743719FCC01100DE7149 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A478743619FCC01100DE7149 /* CloudKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A47ED785197272A1003AEDB7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A47ED784197272A1003AEDB7 /* AVFoundation.framework */; };
+		A483F55319FE023C0008418A /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A483F55219FE023C0008418A /* CloudKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A483F55419FE031D0008418A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4EE4781195F9B20002C3AC8 /* Images.xcassets */; };
 		A49810F6197234E0000CAE28 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49810F5197234E0000CAE28 /* QuartzCore.framework */; };
 		A4A36965199C824A00F69560 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4EE477E195F9B20002C3AC8 /* Main.storyboard */; };
 		A4C2D18E19D2AD6500062518 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C2D18D19D2AD6400062518 /* MessageUI.framework */; };
@@ -46,7 +47,6 @@
 		A4E985B119D8E7F0005AD8C6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4E985B019D8E7F0005AD8C6 /* CoreData.framework */; };
 		A4EE4774195F9B20002C3AC8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A4EE4773195F9B20002C3AC8 /* main.m */; };
 		A4EE4777195F9B20002C3AC8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A4EE4776195F9B20002C3AC8 /* AppDelegate.m */; };
-		A4EE4782195F9B20002C3AC8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4EE4781195F9B20002C3AC8 /* Images.xcassets */; };
 		A4EE478E195F9B20002C3AC8 /* AtraciTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4EE478D195F9B20002C3AC8 /* AtraciTests.m */; };
 		A4F57603197CC78600499E94 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4F57602197CC78600499E94 /* MediaPlayer.framework */; };
 		A4F71C2119BD2A5C000C93AB /* SettingsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4F71C2019BD2A5C000C93AB /* SettingsWebViewController.m */; };
@@ -131,8 +131,8 @@
 		A464B13019E0F38A00F5ADCB /* ATCPlaylistHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATCPlaylistHelper.h; sourceTree = "<group>"; };
 		A464B13119E0F38A00F5ADCB /* ATCPlaylistHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATCPlaylistHelper.m; sourceTree = "<group>"; };
 		A478743419FCB3AC00DE7149 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		A478743619FCC01100DE7149 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		A47ED784197272A1003AEDB7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		A483F55219FE023C0008418A /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		A49810F5197234E0000CAE28 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A4B6E8C219FC996300421AD1 /* Atraci.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Atraci.entitlements; sourceTree = "<group>"; };
 		A4C2D18D19D2AD6400062518 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -164,7 +164,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A478743719FCC01100DE7149 /* CloudKit.framework in Frameworks */,
+				A483F55319FE023C0008418A /* CloudKit.framework in Frameworks */,
 				A4E985B119D8E7F0005AD8C6 /* CoreData.framework in Frameworks */,
 				A4C2D18E19D2AD6500062518 /* MessageUI.framework in Frameworks */,
 				A4F57603197CC78600499E94 /* MediaPlayer.framework in Frameworks */,
@@ -300,7 +300,7 @@
 		A49810F71972350F000CAE28 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A478743619FCC01100DE7149 /* CloudKit.framework */,
+				A483F55219FE023C0008418A /* CloudKit.framework */,
 				A4E985B019D8E7F0005AD8C6 /* CoreData.framework */,
 				A4C2D18D19D2AD6400062518 /* MessageUI.framework */,
 				A4F57602197CC78600499E94 /* MediaPlayer.framework */,
@@ -496,11 +496,11 @@
 				A478743519FCB3AC00DE7149 /* LICENSE in Resources */,
 				A4513E8D19A334C800E84374 /* settings-25.png in Resources */,
 				A4513E8B19A334C800E84374 /* search.png in Resources */,
+				A483F55419FE031D0008418A /* Images.xcassets in Resources */,
 				A4513E8619A334C800E84374 /* icon.icns in Resources */,
 				A4513EB219A3350300E84374 /* SVProgressHUD.bundle in Resources */,
 				26F344F519EB6A11002850CF /* Localizable.strings in Resources */,
 				A4513E8C19A334C800E84374 /* search@2x.png in Resources */,
-				A4EE4782195F9B20002C3AC8 /* Images.xcassets in Resources */,
 				A4513EB019A3350300E84374 /* YTPlayerView-iframe-player.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -660,8 +660,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Alan Uriel Garcia Calvillo (LXTZ7EZD67)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Alan Uriel Garcia Calvillo (LXTZ7EZD67)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -686,8 +686,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Atraci/Atraci.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Alan Uriel Garcia Calvillo (LXTZ7EZD67)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Alan Uriel Garcia Calvillo (LXTZ7EZD67)";
 				GCC_PREFIX_HEADER = "Atraci/Atraci-Prefix.pch";
 				INFOPLIST_FILE = Atraci/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -704,8 +704,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Atraci/Atraci.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Alan Uriel Garcia Calvillo (LXTZ7EZD67)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Alan Uriel Garcia Calvillo (LXTZ7EZD67)";
 				GCC_PREFIX_HEADER = "Atraci/Atraci-Prefix.pch";
 				INFOPLIST_FILE = Atraci/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
