@@ -321,14 +321,14 @@
         [application endBackgroundTask: background_task];
         background_task = UIBackgroundTaskInvalid;
     }];
+    [self performSelectorOnMainThread:@selector(playInBackgroundStepTwoB) withObject:nil waitUntilDone:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-      //  [self performSelectorOnMainThread:@selector(playInBackgroundStepTwoB) withObject:nil waitUntilDone:YES];
-                double delayInSeconds = 1;
-                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                //for run application in background
-                    [self playInBackgroundStepTwoB];
-                });
+        double delayInSeconds = 1.2;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            // for run application in background
+              [self playInBackgroundStepTwoB];
+        });
         [application endBackgroundTask: background_task];
         background_task = UIBackgroundTaskInvalid;
     });
@@ -336,9 +336,7 @@
 
 -(void)playInBackgroundStepTwoB
 {
-   // [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
-          [self.playerView playVideo];
-   // }];
+    [self.playerView playVideo];
 }
 //--
 
@@ -479,12 +477,29 @@
 #pragma mark -
 #pragma mark RequestClass Delegates
 - (void)dataReceived:(SEL)selector withObject:(NSData *)data{
-    dispatch_sync(dispatch_get_main_queue(), ^{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [self performSelector:selector withObject:data];
-#pragma clang diagnostic pop
+    UIApplication *application = [UIApplication sharedApplication];
+    __block UIBackgroundTaskIdentifier background_task;
+    background_task = [application beginBackgroundTaskWithExpirationHandler: ^{
+        [application endBackgroundTask: background_task];
+        background_task = UIBackgroundTaskInvalid;
+    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self performSelectorOnMainThread:selector withObject:data waitUntilDone:YES];
+//        double delayInSeconds = 1;
+//        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+//        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//            //for run application in background
+//            [self performSelectorOnMainThread:selector withObject:data waitUntilDone:YES];
+//        });
+        [application endBackgroundTask: background_task];
+        background_task = UIBackgroundTaskInvalid;
     });
+//    dispatch_sync(dispatch_get_main_queue(), ^{
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+//        [self performSelector:selector withObject:data];
+//#pragma clang diagnostic pop
+//    });
 }
 
 #pragma mark -
