@@ -24,7 +24,8 @@ typedef enum {
     kYTPlayerStatePaused,
     kYTPlayerStateBuffering,
     kYTPlayerStateQueued,
-    kYTPlayerStateUnknown
+    kYTPlayerStateUnknown,
+    kYTPlayerStateReadyToPlay
 } YTPlayerState;
 
 /** These enums represent the resolution of the currently loaded video. */

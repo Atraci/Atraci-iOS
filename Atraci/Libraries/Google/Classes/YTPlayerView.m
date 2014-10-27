@@ -26,6 +26,7 @@ NSString static *const kYTPlayerStatePausedCode = @"2";
 NSString static *const kYTPlayerStateBufferingCode = @"3";
 NSString static *const kYTPlayerStateCuedCode = @"5";
 NSString static *const kYTPlayerStateUnknownCode = @"unknown";
+NSString static *const kYTPlayerStateReadyToPlayCode = @"10";
 
 // Constants representing playback quality.
 NSString static *const kYTPlaybackQualitySmallQuality = @"small";
@@ -52,6 +53,10 @@ NSString static *const kYTPlayerCallbackOnYouTubeIframeAPIReady = @"onYouTubeIfr
 NSString static *const kYTPlayerEmbedUrlRegexPattern = @"^http(s)://(www.)youtube.com/embed/(.*)$";
 
 @implementation YTPlayerView
+{
+    UIWebView *mainWebView;
+    int pageLoaded;
+}
 
 - (BOOL)loadWithVideoId:(NSString *)videoId {
   return [self loadWithVideoId:videoId playerVars:nil];
@@ -470,6 +475,8 @@ NSString static *const kYTPlayerEmbedUrlRegexPattern = @"^http(s)://(www.)youtub
     state = kYTPlayerStateBuffering;
   } else if ([stateString isEqualToString:kYTPlayerStateCuedCode]) {
     state = kYTPlayerStateQueued;
+  } else if ([stateString isEqualToString:kYTPlayerStateReadyToPlayCode]) {
+    state = kYTPlayerStateReadyToPlay;
   }
   return state;
 }
@@ -494,6 +501,8 @@ NSString static *const kYTPlayerEmbedUrlRegexPattern = @"^http(s)://(www.)youtub
       return kYTPlayerStateBufferingCode;
     case kYTPlayerStateQueued:
       return kYTPlayerStateCuedCode;
+    case kYTPlayerStateReadyToPlay:
+      return kYTPlayerStateReadyToPlayCode;
     default:
       return kYTPlayerStateUnknownCode;
   }
@@ -619,7 +628,7 @@ NSString static *const kYTPlayerEmbedUrlRegexPattern = @"^http(s)://(www.)youtub
   }
 
   // Remove the existing webView to reset any state
-  [self.webView removeFromSuperview];
+  [self.webView removeFromSuperview];// Remove this line in case of non continuous playback
   _webView = [self createNewWebView];
   [self addSubview:self.webView];
 
@@ -656,9 +665,6 @@ NSString static *const kYTPlayerEmbedUrlRegexPattern = @"^http(s)://(www.)youtub
   //CUSTOM: Altered Method
 //  [self.webView loadHTMLString:embedHTML baseURL:[NSURL URLWithString:@"about:blank"]];
   [self.webView loadHTMLString:embedHTML baseURL:[NSURL URLWithString:@"http://localhost:8000/"]];
-  self.webView.allowsInlineMediaPlayback = YES;
-  self.webView.mediaPlaybackRequiresUserAction = NO;
-  self.webView.mediaPlaybackAllowsAirPlay = YES;
     
   [self.webView setDelegate:self];
   return YES;
@@ -752,17 +758,35 @@ NSString static *const kYTPlayerEmbedUrlRegexPattern = @"^http(s)://(www.)youtub
 }
 
 - (UIWebView *)createNewWebView {
+  pageLoaded = 0;
+    
   //CUSTOM: Altered Method
-  UIWebView *webView = [[UIWebView alloc] initWithFrame:self.bounds];
-  webView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-  webView.opaque = NO;
-  webView.backgroundColor = [UIColor blackColor];
-  webView.scrollView.scrollEnabled = NO;
-  webView.scrollView.bounces = NO;
-  webView.allowsInlineMediaPlayback = YES;
-  webView.mediaPlaybackAllowsAirPlay = YES;
+    if (mainWebView == nil) {
+        mainWebView = [[UIWebView alloc] initWithFrame:self.bounds];
+        mainWebView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+        mainWebView.opaque = NO;
+        mainWebView.backgroundColor = [UIColor blackColor];
+        mainWebView.scrollView.scrollEnabled = NO;
+        mainWebView.scrollView.bounces = NO;
+        mainWebView.allowsInlineMediaPlayback = YES;
+        mainWebView.mediaPlaybackAllowsAirPlay = YES;
+        mainWebView.mediaPlaybackRequiresUserAction = NO;
+    }
 
-  return webView;
+  return mainWebView;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    if (pageLoaded == 2)
+    {
+        //video Ready To Play
+        [self.delegate playerView:self didChangeToState:kYTPlayerStateReadyToPlay];
+        pageLoaded = 0;
+    }
+    else
+    {
+        pageLoaded = pageLoaded + 1;
+    }
 }
 
 @end

@@ -38,6 +38,9 @@
     // Do any additional setup after loading the view, typically from a nib.
     uiPlayerViewHeight = self.playerView.frame.size.height;
     
+    //Initialize wwebView if songs available
+//    [self.playerView loadWithVideoId:@"dNoTvg0t52c"];
+    
     //LoadPlayerVars
     [self loadPlayerVars];
     
@@ -163,9 +166,64 @@
     [self playNextSong];
 }
 
-
-
 #pragma mark -
+- (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state {
+    
+    UIButton *button;
+    
+    switch (state) {
+        case kYTPlayerStatePlaying:
+            NSLog(@"Started playback");
+            [QueueViewController sharedQueue].isPlaying = YES;
+            button = (UIButton *)self.PlayPauseBtn.customView;
+            [button setSelected:YES];
+            
+            [self.ActivityIndicator stopAnimating];
+            [self showPlayPauseBarButtonItem];
+            
+            [self resetPlayerSize];
+            
+            //Always reload lockscreen data due to how the video api performs
+            [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
+            [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
+            break;
+        case kYTPlayerStatePaused:
+            NSLog(@"Paused playback");
+            [QueueViewController sharedQueue].isPlaying = NO;
+            button = (UIButton *)self.PlayPauseBtn.customView;
+            [button setSelected:NO];
+            
+            //Always reload lockscreen data due to how the video api performs
+            [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
+            break;
+        case kYTPlayerStateEnded:
+            NSLog(@"Ended playback");
+            [QueueViewController sharedQueue].isPlaying = NO;
+            button = (UIButton *)self.PlayPauseBtn.customView;
+            [button setSelected:YES];
+            
+            if (repeatSong == YES) {
+                [self.playerView seekToSeconds:0.0 allowSeekAhead:YES];
+            }
+            else
+            {
+                [self playNextSong];
+            }
+            
+            break;
+        case kYTPlayerStateBuffering:
+            [self hidePlayPauseBarButtonItem];
+            [self.ActivityIndicator startAnimating];
+            break;
+        case kYTPlayerStateReadyToPlay:
+            NSLog(@"videoReadyToPlay");
+            [self playInBackgroundStepOneB];
+            break;
+        default:
+            break;
+    }
+}
+
 - (void)loadSongs:(BOOL)load shouldReloadTable:(BOOL)reloadTable withSongPostition:(NSUInteger)songPosition {
     QueueSingleton *queueSingleton = [QueueSingleton sharedInstance];
     queue = queueSingleton.queueSongs;
@@ -229,7 +287,6 @@
         //NSLog(@"%@",videoID);
         [QueueViewController sharedQueue].playerView = self.playerView;
         [self performSelectorOnMainThread:@selector(playInBackgroundStepOne:) withObject:videoID waitUntilDone:YES];
-        [self playInBackgroundStepOneB];
     }
 }
 
@@ -266,7 +323,7 @@
     }];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
       //  [self performSelectorOnMainThread:@selector(playInBackgroundStepTwoB) withObject:nil waitUntilDone:YES];
-                double delayInSeconds = 3;
+                double delayInSeconds = 1;
                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 //for run application in background
@@ -292,59 +349,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state {
-    
-    UIButton *button;
-    
-    switch (state) {
-        case kYTPlayerStatePlaying:
-            NSLog(@"Started playback");
-            [QueueViewController sharedQueue].isPlaying = YES;
-            button = (UIButton *)self.PlayPauseBtn.customView;
-            [button setSelected:YES];
-            
-            [self.ActivityIndicator stopAnimating];
-            [self showPlayPauseBarButtonItem];
-            
-            [self resetPlayerSize];
-            
-            //Always reload lockscreen data due to how the video api performs
-            [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
-            [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
-            break;
-        case kYTPlayerStatePaused:
-            NSLog(@"Paused playback");
-            [QueueViewController sharedQueue].isPlaying = NO;
-            button = (UIButton *)self.PlayPauseBtn.customView;
-            [button setSelected:NO];
-            
-            //Always reload lockscreen data due to how the video api performs
-            [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(getSongInfo) userInfo:nil repeats:NO];
-            break;
-        case kYTPlayerStateEnded:
-            NSLog(@"Ended playback");
-            [QueueViewController sharedQueue].isPlaying = NO;
-            button = (UIButton *)self.PlayPauseBtn.customView;
-            [button setSelected:YES];
-            
-            if (repeatSong == YES) {
-                [self.playerView seekToSeconds:0.0 allowSeekAhead:YES];
-            }
-            else
-            {
-                [self playNextSong];
-            }
-            
-            break;
-        case kYTPlayerStateBuffering:
-            [self hidePlayPauseBarButtonItem];
-            [self.ActivityIndicator startAnimating];
-            break;
-        default:
-            break;
-    }
 }
 
 - (void)showPlayPauseBarButtonItem{
@@ -667,6 +671,9 @@
         else
         {
             if ([[[UIDevice currentDevice] model] containsString:@"iPad"]) {
+                self.playerView.webView.frame = CGRectMake(0,0,self.view.bounds.size.width,self.view.bounds.size.height);
+                self.playerView.webView.bounds = CGRectMake(0,0,self.view.bounds.size.width,self.view.bounds.size.height);
+                self.mainTable.hidden = YES;
             }
         }
         [self.playerView.webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('player').height = screen.width;"];
@@ -683,7 +690,9 @@
         else
         {
             if ([[[UIDevice currentDevice] model] containsString:@"iPad"]) {
-     
+                self.playerView.webView.frame = CGRectMake(0,0,self.view.bounds.size.width,uiPlayerViewHeight);
+                self.playerView.webView.bounds = CGRectMake(0,0,self.view.bounds.size.width,uiPlayerViewHeight);
+                self.mainTable.hidden = NO;
             }
         }
         [self.playerView.webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('player').height=\"100%\";"];
