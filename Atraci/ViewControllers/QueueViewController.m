@@ -310,7 +310,13 @@
 
 -(void)playInBackgroundStepTwo:(NSString *)videoID
 {
-    [self.playerView loadWithVideoId:videoID playerVars:playerVars];
+    if (self.playerView.webView == nil) {
+        [self.playerView loadWithVideoId:videoID playerVars:playerVars];
+    }
+    else
+    {
+        [self.playerView loadVideoById:videoID startSeconds:0.0f suggestedQuality:kYTPlaybackQualityLarge];
+    }
 }
 
 - (void)playInBackgroundStepOneB
