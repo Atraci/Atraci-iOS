@@ -2,3 +2,7 @@
 *.pbxproj
 
 *.xcuserstate
+
+Atraci/AppDelegate.m
+
+Atraci/Libraries/Google/Classes/YTPlayerView.m

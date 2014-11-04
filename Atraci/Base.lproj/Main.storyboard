@@ -379,7 +379,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bz3-fe-SlQ" id="Wv1-iV-2xh">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="About Atraci" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mfG-nf-rOr">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Copyright Information" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mfG-nf-rOr">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -388,33 +388,16 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="vM0-aS-Tkm" kind="show" id="rn3-0X-Hbu"/>
+                                            <segue destination="vM0-aS-Tkm" kind="show" identifier="CopyrightSegue" id="zYa-Lp-CPt"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="1" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="nGN-Lp-oB3" style="IBUITableViewCellStyleDefault" id="PJl-Sd-G3J">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PJl-Sd-G3J" id="blN-zX-yLU">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Support Us" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nGN-Lp-oB3">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="LnF-zN-PY8" kind="show" identifier="SupportSegue" id="bLq-At-qQH"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell tag="2" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ZjB-rq-EmF">
+                                    <tableViewCell tag="1" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ZjB-rq-EmF">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZjB-rq-EmF" id="NgU-QA-J4M">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="Donate Us" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yTI-MJ-CHQ">
+                                                <label opaque="NO" multipleTouchEnabled="YES" tag="1" contentMode="left" fixedFrame="YES" text="Send Feedback / Report Problems" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yTI-MJ-CHQ">
                                                     <rect key="frame" x="15" y="-1" width="570" height="44"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -423,13 +406,13 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell tag="3" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="Lfs-Be-Wnv" style="IBUITableViewCellStyleDefault" id="Shz-Zo-Pco">
+                                    <tableViewCell tag="2" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="Lfs-Be-Wnv" style="IBUITableViewCellStyleDefault" id="Shz-Zo-Pco">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Shz-Zo-Pco" id="ZWd-Pn-MBk">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="2" contentMode="center" tableViewCell="Shz-Zo-Pco" id="ZWd-Pn-MBk">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Share Atraci with your friends!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Lfs-Be-Wnv">
+                                                <label opaque="NO" multipleTouchEnabled="YES" tag="2" contentMode="left" text="Share Atraci with your friends!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Lfs-Be-Wnv">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -471,13 +454,13 @@
                                 <rect key="frame" x="16" y="72" width="568" height="471"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <string key="text">Atraci is an application for iOS, Mac, Windows and Linux that lets you listen instantly to more than 60 million songs. It requires no sign up.
+                                <mutableString key="text">Copyright Information
+All videos provided by the public third-party media service YouTube. All trademarks and copyrights belong to their respective owners and are used here under the terms of Fair Use and the Digital Millennium Copyrights Act (DMCA).
 
-Join us now and contribute at github.com/Atraci/Atraci. 
-Don't forget to share the love; you may not need Atraci, but some of your friends might. 
-
+Atraci links the content on Youtube via the Youtube Api, Atraci does not have control on Youtube's content. if any video violates or infringes copyrights, please report the videos to Youtube following this link:
+http://www.youtube.com/t/dmca_policy  About Atraci is an application for iOS, Mac, Windows and Linux that lets you listen instantly to more than 60 million songs. It requires no sign up. Join us now and contribute at github.com/Atraci/Atraci. Don't forget to share the love; you may not need Atraci, but some of your friends might. 
 Download our desktop app for free at: http://atra.ci 
-The Atraci Team (atraciapp@gmail.com)</string>
+The Atraci Team (atraciapp@gmail.com)</mutableString>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" link="YES"/>

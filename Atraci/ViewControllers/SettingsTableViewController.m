@@ -39,23 +39,17 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)showEmail {
-    // Email Subject
-    NSString *emailTitle = NSLocalizedString(@"dFree", nil);
-    // Email Content
-    NSString *messageBody = NSLocalizedString(@"mBody", nil);
-    // To address
-    //NSArray *toRecipents = //[NSArray arrayWithObject:@"support@appcoda.com"];
-    
+- (void)showEmailWithSubject:(NSString *)subject andMessageBody:(NSString *)messageBody toRecipients:(NSArray *)recipents{
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
     mc.mailComposeDelegate = self;
-    [mc setSubject:emailTitle];
+    [mc setSubject:subject];
     [mc setMessageBody:messageBody isHTML:YES];
-    //[mc setToRecipients:toRecipents];
+    if (recipents.count > 0) {
+        [mc setToRecipients:recipents];
+    }
     
     // Present mail view controller on screen
     [self presentViewController:mc animated:YES completion:NULL];
-    
 }
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
@@ -91,17 +85,33 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 4;
+    return 3;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger currentTag = [[tableView cellForRowAtIndexPath:indexPath] tag];
+    NSString *subject, *messageBody;
+    NSArray *recipents = [[NSArray alloc] init];
+    
     switch (currentTag) {
-        case 2:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:ATRACI_DONATION_LINK]];
+//        case 1:
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:ATRACI_DONATION_LINK]];
+//            break;
+        case 1:
+            // Email Subject
+            subject = NSLocalizedString(@"subjectFeedback", nil);
+            // Email Content
+            messageBody = NSLocalizedString(@"bodyFeedback", nil);
+            // To address
+            recipents = [NSArray arrayWithObject:@"atraciapp@gmail.com"];
+            [self showEmailWithSubject:subject andMessageBody:messageBody toRecipients:recipents];
             break;
-        case 3:
-            [self showEmail];
+        case 2:
+            // Email Subject
+            subject = NSLocalizedString(@"dFree", nil);
+            // Email Content
+            messageBody = NSLocalizedString(@"mBody", nil);
+            [self showEmailWithSubject:subject andMessageBody:messageBody toRecipients:recipents];
             break;
     }
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
@@ -157,12 +167,12 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    UIViewController *vC = [segue destinationViewController];
+//    UIViewController *vC = [segue destinationViewController];
     
-    if ([segue.identifier isEqualToString:@"SupportSegue"]) {
-        SettingsWebViewController *sWvC = (SettingsWebViewController *)vC;
-        sWvC.url = ATRACI_GITHUB_LINK;
-    }
+//    if ([segue.identifier isEqualToString:@"SupportSegue"]) {
+//        SettingsWebViewController *sWvC = (SettingsWebViewController *)vC;
+//        sWvC.url = ATRACI_GITHUB_LINK;
+//    }
 //    else if ([segue.identifier isEqualToString:@"DonateSegue"])
 //    {
 //        SettingsWebViewController *sWvC = (SettingsWebViewController *)vC;
